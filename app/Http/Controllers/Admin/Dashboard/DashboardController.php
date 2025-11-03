@@ -9,9 +9,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        dd(
-            'her'
-        );
         return view('admin.dashboard.index');
     }
 }

@@ -4,6 +4,9 @@
     <script src="{{ asset('admin/assets/js/plugins/choices.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/core/popper.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('admin/cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js') }}"></script>
+    <script src="{{ asset('admin/maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/js/plugins/dropzone.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
     <!-- Kanban scripts -->

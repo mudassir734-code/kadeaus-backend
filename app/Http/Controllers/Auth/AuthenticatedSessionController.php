@@ -24,7 +24,6 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        dd('here');
         $request->authenticate();
 
         $request->session()->regenerate();
@@ -32,33 +31,14 @@ class AuthenticatedSessionController extends Controller
         // Determine redirect route based on roles
         $user = Auth::user();
 
-        if ($user) {
-            // If the user has a 'role' attribute/property
-            if (isset($user->role) && $user->role === 'Admin') {
-                $user_route = 'admin.dashboard';
-            } else {
-                abort(404);
-            }
-
-                return redirect()->route($user_route);
-
-            // If the user has a 'role' attribute/property
-            if (isset($user->role) && $user->role === 'Admin') {
-                $user_route = 'admin.dashboard';
-
-                return redirect()->route($user_route);
-            }
-
-            // If the user model defines a role(...) method
-            if (method_exists($user, 'role') && $user->role('Admin')) {
-                $user_route = 'admin.dashboard';
-
-                return redirect()->route($user_route);
-            }
+        if (Auth::user()->hasRole('Admin')) {
+            $user_route = 'admin.dashboard';
+        } else {
+            abort(404);
         }
+        return redirect()->intended(route($user_route, absolute: false));
 
         // If the user has no roles or role cannot be determined, redirect to the home page
-        return redirect('/');
     }
 
     /**

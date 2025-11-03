@@ -28,20 +28,12 @@ class UserSeeder extends Seeder
         );
 
         // Retrieve or create the Admin role for both web and api guards
-        $webRole = Role::firstOrCreate(['name' => 'Admin', 'guard_name' => 'web']);
+        $adminRole = Role::firstOrCreate(['name' => 'Admin', 'guard_name' => 'web']);
+        $admin->syncRoles([$adminRole]); // full access is granted to Admin via PermissionSeeder
         // $apiRole = Role::firstOrCreate(['name' => 'Admin', 'guard_name' => 'api']);
 
         // Define the modules for which permissions exist
-        $modules = [
-            'Dashboard',
-            'Appointment',
-            'Chat',
-            'Hospital',
-            'Doctors',
-            'Patients',
-            'Admins',
-            'Setting',
-        ];
+        $modules = ['Dashboard','Appointment','Chat','Hospital','Doctors','Patients','Admins','Setting'];
 
         // Define the specific access level to assign (e.g., FullAccess)
         $desiredAccessLevel = 'FullAccess';
@@ -56,23 +48,12 @@ class UserSeeder extends Seeder
 
             // Assign to the web role if the permission exists
             if ($webPermission) {
-                $webRole->givePermissionTo($webPermission);
+                $adminRole->givePermissionTo($webPermission);
             }
-
-            // Get the permission for the desired access level for the api guard
-            // $apiPermission = Permission::where([
-            //     'name' => "{$module}_{$desiredAccessLevel}",
-            //     'guard_name' => 'api'
-            // ])->first();
-
-            // Assign to the api role if the permission exists
-            // if ($apiPermission) {
-            //     $apiRole->givePermissionTo($apiPermission);
-            // }
         }
 
         // Assign both web and api Admin roles to the single user
-        $admin->assignRole($webRole);
+        $admin->assignRole($adminRole);
         // $admin->assignRole($apiRole);
     }
 }

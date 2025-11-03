@@ -23,143 +23,68 @@
     </style>
 @endsection
 @section('content')
-   <div class="container-fluid py-4">
-            <section class="appointments-section">
-                <div class="appointments-header">
-                    <h4>Admins</h4>
-                    <div class="appointments-controls">
-                        <div class="search-box">
-                            <input type="text" placeholder="Type here..." class="search-input">
-                            <i class="fas fa-search search-icon"></i>
+    <div class="container-fluid py-4">
+        <section class="appointments-section">
+            <div class="appointments-header">
+                <h4>Admins</h4>
+                <div class="appointments-controls">
+                    <div class="search-box">
+                        <input type="text" placeholder="Type here..." class="search-input">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                    <button class="btn-primary schedule-btn"
+                        onclick="window.location.href='{{ route('admin.users.create') }}'">
+                        Add Admin
+                    </button>
+                </div>
+            </div>
+            <div class="appointments">
+                @forelse($users as $user)
+                    <div class="card doctor-card p-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
+                                class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
+                            <div>
+                                <h6 class="mb-0 fw-bold">{{ $user->name }}</h6>
+                                <small class="text-muted">
+                                    <i class="fa-regular fa-envelope text-danger"></i> {{ $user->email }}<br>
+                                    @if(!empty($user->phone))
+                                        <i class="fa-solid fa-phone text-danger"></i> {{ $user->phone }}
+                                    @endif
+                                </small>
+                            </div>
                         </div>
-                        <button class="btn-primary schedule-btn" onclick="window.location.href='{{ route('admin.users.addUser') }}'">
-                           Add Admin
+                        <button class="btn details mt-3"
+                            onclick="window.location.href='{{ route('admin.users.view', ['id' => $user->id]) }}'">
+                            View Details
                         </button>
                     </div>
-                </div>
-                <div class="appointments">
+                @empty
                     <div class="card doctor-card p-3">
-                        <div class="d-flex align-items-center mb-2">
-                            <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor" class="rounded-md border-radius-lg me-2"
-                                style="width: 100px; height: 100px;">
-                            <div>
-                                <h6 class="mb-0 fw-bold">Dr. George Lee</h6>
-                                <small class="text-muted">
-                                    <i class="fa-regular fa-envelope text-danger"></i> rachal@gmail.com<br>
-                                    <i class="fa-solid fa-phone text-danger"></i> (182)379-2691
-                                </small>
-                            </div>
-                        </div>
-                        <button class="btn details mt-3" onclick="window.location.href='{{ route('admin.users.viewUser') }}'">View Details</button>
+                        <small class="text-muted">No users found.</small>
                     </div>
+                @endforelse
+            </div>
 
-                    <div class="card doctor-card p-3">
-                        <div class="d-flex align-items-center mb-2">
-                            <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor" class="rounded-md border-radius-lg me-2"
-                                style="width: 100px; height: 100px;">
-                            <div>
-                                <h6 class="mb-0 fw-bold">Dr. Jane Smith</h6>
-                                <small class="text-muted">
-                                    <i class="fa-regular fa-envelope text-danger"></i> jane@gmail.com<br>
-                                    <i class="fa-solid fa-phone text-danger"></i> (123)456-7890
-                                </small>
-                            </div>
-                        </div>
-                        <button class="btn details mt-3" onclick="window.location.href='{{ route('admin.users.viewUser') }}'">View Details</button>
-                    </div>
-                      <div class="card doctor-card p-3">
-                        <div class="d-flex align-items-center mb-2">
-                            <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor" class="rounded-md border-radius-lg me-2"
-                                style="width: 100px; height: 100px;">
-                            <div>
-                                <h6 class="mb-0 fw-bold">Dr. George Lee</h6>
-                                <small class="text-muted">
-                                    <i class="fa-regular fa-envelope text-danger"></i> rachal@gmail.com<br>
-                                    <i class="fa-solid fa-phone text-danger"></i> (182)379-2691
-                                </small>
-                            </div>
-                        </div>
-                        <button class="btn details mt-3" onclick="window.location.href='{{ route('admin.users.viewUser') }}'">View Details</button>
-                    </div>
-
-                    <div class="card doctor-card p-3">
-                        <div class="d-flex align-items-center mb-2">
-                            <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor" class="rounded-md border-radius-lg me-2"
-                                style="width: 100px; height: 100px;">
-                            <div>
-                                <h6 class="mb-0 fw-bold">Dr. Jane Smith</h6>
-                                <small class="text-muted">
-                                    <i class="fa-regular fa-envelope text-danger"></i> jane@gmail.com<br>
-                                    <i class="fa-solid fa-phone text-danger"></i> (123)456-7890
-                                </small>
-                            </div>
-                        </div>
-                        <button class="btn details mt-3" onclick="window.location.href='{{ route('admin.users.viewUser') }}'">View Details</button>
-                    </div>
-                      <div class="card doctor-card p-3">
-                        <div class="d-flex align-items-center mb-2">
-                            <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor" class="rounded-md border-radius-lg me-2"
-                                style="width: 100px; height: 100px;">
-                            <div>
-                                <h6 class="mb-0 fw-bold">Dr. George Lee</h6>
-                                <small class="text-muted">
-                                    <i class="fa-regular fa-envelope text-danger"></i> rachal@gmail.com<br>
-                                    <i class="fa-solid fa-phone text-danger"></i> (182)379-2691
-                                </small>
-                            </div>
-                        </div>
-                        <button class="btn details mt-3" onclick="window.location.href='{{ route('admin.users.viewUser') }}'">View Details</button>
-                    </div>
-
-                    <div class="card doctor-card p-3">
-                        <div class="d-flex align-items-center mb-2">
-                            <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor" class="rounded-md border-radius-lg me-2"
-                                style="width: 100px; height: 100px;">
-                            <div>
-                                <h6 class="mb-0 fw-bold">Dr. Jane Smith</h6>
-                                <small class="text-muted">
-                                    <i class="fa-regular fa-envelope text-danger"></i> jane@gmail.com<br>
-                                    <i class="fa-solid fa-phone text-danger"></i> (123)456-7890
-                                </small>
-                            </div>
-                        </div>
-                        <button class="btn details mt-3" onclick="window.location.href='{{ route('admin.users.viewUser') }}'">View Details</button>
-                    </div>
-                      <div class="card doctor-card p-3">
-                        <div class="d-flex align-items-center mb-2">
-                            <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor" class="rounded-md border-radius-lg me-2"
-                                style="width: 100px; height: 100px;">
-                            <div>
-                                <h6 class="mb-0 fw-bold">Dr. George Lee</h6>
-                                <small class="text-muted">
-                                    <i class="fa-regular fa-envelope text-danger"></i> rachal@gmail.com<br>
-                                    <i class="fa-solid fa-phone text-danger"></i> (182)379-2691
-                                </small>
-                            </div>
-                        </div>
-                        <button class="btn details mt-3" onclick="window.location.href='{{ route('admin.users.viewUser') }}'">View Details</button>
-                    </div>
-
-                    <div class="card doctor-card p-3">
-                        <div class="d-flex align-items-center mb-2">
-                            <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor" class="rounded-md border-radius-lg me-2"
-                                style="width: 100px; height: 100px;">
-                            <div>
-                                <h6 class="mb-0 fw-bold">Dr. Jane Smith</h6>
-                                <small class="text-muted">
-                                    <i class="fa-regular fa-envelope text-danger"></i> jane@gmail.com<br>
-                                    <i class="fa-solid fa-phone text-danger"></i> (123)456-7890
-                                </small>
-                            </div>
-                        </div>
-                        <button class="btn details mt-3" onclick="window.location.href='{{ route('admin.users.viewUser') }}'">View Details</button>
-                    </div>
-
-                </div>
-            </section>
-        </div> 
+        </section>
+    </div>
 @endsection
 @section('script')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById("searchInput");
+        const userCards = document.querySelectorAll(".user-card");
+
+        searchInput.addEventListener("input", function() {
+            const query = this.value.toLowerCase();
+            userCards.forEach(card => {
+                const name = card.dataset.name;
+                const email = card.dataset.email;
+                card.style.display = (name.includes(query) || email.includes(query)) ? "" : "none";
+            });
+        });
+    });
+</script>
     <script>
         const cards = document.querySelectorAll(".doctor-card");
 
@@ -174,7 +99,6 @@
     </script>
 
     <script>
-
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
             var options = {

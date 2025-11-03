@@ -15,12 +15,18 @@ use App\Http\Controllers\Admin\Appointment\AppointmentController;
 Route::get('/', function () {
     return redirect(route('login'));
 });
+// only Admins can manage users
+Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/users', [UserController::class, 'index'])->name('users');
+        Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/users',       [UserController::class, 'store'])->name('users.store');
+        Route::get('/users/view', [UserController::class, 'view'])->name('users.view');
+});
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin','as' => 'admin.'], function () {
     Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard');
     Route::get('/appointment',[AppointmentController::class, 'index'])->name('appointment');
     Route::get('/appointment/view-detail',[AppointmentController::class, 'viewDetail'])->name('appointment.viewDetail');
-
 
     // chat routes 
     Route::get('/chat', [ChatController::class, 'index'])->name('chat');
@@ -41,13 +47,12 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin','as' => 'admin.'], f
     Route::get('/patient', [PatientController::class, 'index'])->name('patient');
     Route::get('/patient/view-patient', [PatientController::class, 'viewPatient'])->name('patient.viewPatient');
 
-    // User Routes
-    Route::get('/users', [UserController::class, 'index'])->name('users');
-    Route::get('/users/add-user', [UserController::class, 'addUser'])->name('users.addUser');
-    Route::get('/users/view-user', [UserController::class, 'viewUser'])->name('users.viewUser');
-
     // Setting Routes
-    Route::get('/setting', [SettingController::class, 'index'])->name('setting');    
+    Route::get('/setting',       [SettingController::class, 'index'])->name('setting');          
+    Route::post('/setting',       [SettingController::class, 'update'])->name('setting.update');  
+    Route::post('/setting/avatar',[SettingController::class, 'updateAvatar'])->name('setting.avatar');
+    Route::post('/setting/password', [SettingController::class, 'changePassword'])->name('setting.password');
+
 });
 
 // Route::middleware('auth')->group(function () {
