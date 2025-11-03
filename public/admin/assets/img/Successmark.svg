@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="126" height="126" viewBox="0 0 126 126">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Successmark_Frame_Clip_Content_Mask_" data-name="Successmark [Frame Clip Content Mask]" width="126" height="126" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Successmark_Clip_Content_" data-name="Successmark (Clip Content)" clip-path="url(#clip-path)">
+    <rect id="Successmark_Frame_Background_" data-name="Successmark [Frame Background]" width="126" height="126" fill="none"/>
+    <g id="Sticker" transform="translate(0.002 -0.001)">
+      <path id="Vector" d="M121.564,63a18.356,18.356,0,0,1-7.844,29.283,18.356,18.356,0,0,1-21.436,21.436A18.356,18.356,0,0,1,63,121.567a18.359,18.359,0,0,1-29.283-7.847A18.353,18.353,0,0,1,12.282,92.287,18.356,18.356,0,0,1,4.432,63a18.359,18.359,0,0,1,7.847-29.283A18.359,18.359,0,0,1,33.712,12.282,18.359,18.359,0,0,1,63,4.435a18.353,18.353,0,0,1,29.283,7.844,18.359,18.359,0,0,1,21.439,21.436A18.359,18.359,0,0,1,121.564,63Z" transform="translate(0 0)" fill="#18c07a"/>
+      <path id="Vector-2" data-name="Vector" d="M18.545,44.888,1.038,27.392a3.549,3.549,0,0,1,0-5.016l2.127-2.13a3.549,3.549,0,0,1,5.016,0L20.906,32.965,50.877,1.115A3.549,3.549,0,0,1,55.89.962l2.184,2.061a3.549,3.549,0,0,1,.153,5.016L23.645,44.809a3.549,3.549,0,0,1-5.1.079Z" transform="translate(33.144 42.159)" fill="#fff"/>
+    </g>
+  </g>
+</svg>
