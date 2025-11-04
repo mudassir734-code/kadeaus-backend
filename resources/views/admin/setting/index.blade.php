@@ -109,33 +109,33 @@
         }
 
         /* .avatar-profile {
-                color: #fff;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1rem;
-                border-radius: 50rem;
-                height: 90px;
-                width: 90px;
-                transition: all .2s ease-in-out;
-            }
+                    color: #fff;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1rem;
+                    border-radius: 50rem;
+                    height: 90px;
+                    width: 90px;
+                    transition: all .2s ease-in-out;
+                }
 
-            .avatar-edit input {
-                display: none;
-            }
+                .avatar-edit input {
+                    display: none;
+                }
 
-            .avatar-edit label {
-                display: inline-block;
-                width: 150%;
-                height: 150%;
-                margin-left: 120px;
-                margin-top: -9px;
-                position: absolute;
-                z-index: 1;
-                cursor: pointer;
-                background: url(../assets/img/camera\ copy.png) center center no-repeat;
-                background-size: 150%;
-            } */
+                .avatar-edit label {
+                    display: inline-block;
+                    width: 150%;
+                    height: 150%;
+                    margin-left: 120px;
+                    margin-top: -9px;
+                    position: absolute;
+                    z-index: 1;
+                    cursor: pointer;
+                    background: url(../assets/img/camera\ copy.png) center center no-repeat;
+                    background-size: 150%;
+                } */
         .avatar-upload {
             display: flex;
             flex-direction: column;
@@ -191,7 +191,7 @@
 
         <div class="row mx-2" style="border-radius: 10%;box-shadow:none; ">
             <div class="col-md-7 ">
-                <div class="nav  flex-row nav-pills   mb-3 v-links p-1  " id="v-pills-tab" role="tablist"
+                <div class="nav  flex-row nav-pills mb-3 v-links p-1" id="v-pills-tab" role="tablist"
                     aria-orientation="horizontal" style="background-color: #fff;">
                     <button class="nav-link h-navlinks py-2 v-links my-0 active " id="v-pills-home-tab" data-bs-toggle="pill"
                         data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-profile"
@@ -207,13 +207,10 @@
                             Update Password
                         </a>
                     </button>
-
-
                 </div>
             </div>
             <div class="col-md-12 m-auto ">
                 <!-- Image container -->
-
                 <div class="tab-content" id="v-pills-tabContent">
                     <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
                         aria-labelledby="v-pills-home-tab">
@@ -440,65 +437,71 @@
                                 </form>
                             </div>
                             <div class="text-end p-3 col-md-10">
-                                <button id="saveSettingsBtn" type="button" class="btn btn-sm btn-info btn-lg mt-4">Save Changes</button>
+                                <button id="saveSettingsBtn" type="button" class="btn btn-sm btn-info btn-lg mt-4">Save
+                                    Changes</button>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="v-pills-Vaccine" role="tabpanel"
                         aria-labelledby="v-pills-Vaccine-tab">
-                        <form action="{{ route('admin.setting.password') }}" method="POST" class="p-3 card col-md-10 border-radius-lg" style="border: 1px solid rgb(208, 208, 208);">
-                                @csrf
-                                <h6>Change Password</h6>
+                        <form action="{{ route('admin.setting.password') }}" method="POST"
+                            class="p-3 card col-md-10 border-radius-lg" style="border: 1px solid rgb(208, 208, 208);">
+                            @csrf
+                            <h6>Change Password</h6>
 
-                                <div class="col-lg-12 col-sm-12">
-                                    <div class="mb-3 position-relative">
-                                        <input type="password" class="form-control form-control-lg password-field"
-                                            id="current-password" name="current_password" placeholder="Current Password" aria-label="Password" />
-                                        <span class="toggle-password" onclick="togglePassword('current-password', this)">
-                                            <i class="fas fa-eye"></i>
-                                        </span>
-                                        @error('current_password')
-                                            <small class="text-danger d-block mt-1">{{ $message }}</small>
-                                        @enderror
-                                    </div>
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="mb-3 position-relative">
+                                    <input type="password" class="form-control form-control-lg password-field"
+                                        id="current-password" name="current_password" placeholder="Current Password"
+                                        aria-label="Password" />
+                                    <span class="toggle-password" onclick="togglePassword('current-password', this)">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                    @error('current_password')
+                                        <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                    @enderror
                                 </div>
+                            </div>
 
-                                <div class="col-lg-12 col-sm-12 my-3">
-                                    <div class="mb-3 position-relative">
-                                        <input type="password" class="form-control form-control-lg password-field"
-                                            id="new-password" name="new_password" placeholder="New Password" aria-label="Password" />
-                                        <span class="toggle-password" onclick="togglePassword('new-password', this)">
-                                            <i class="fas fa-eye"></i>
-                                        </span>
-                                        @error('new_password')
-                                            <small class="text-danger d-block mt-1">{{ $message }}</small>
-                                        @enderror
-                                    </div>
+                            <div class="col-lg-12 col-sm-12 my-3">
+                                <div class="mb-3 position-relative">
+                                    <input type="password" class="form-control form-control-lg password-field"
+                                        id="new-password" name="new_password" placeholder="New Password"
+                                        aria-label="Password" />
+                                    <span class="toggle-password" onclick="togglePassword('new-password', this)">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                    @error('new_password')
+                                        <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                    @enderror
                                 </div>
+                            </div>
 
-                                <div class="col-lg-12 col-sm-12">
-                                    <div class="mb-3 position-relative">
-                                        <input type="password" class="form-control form-control-lg password-field"
-                                            id="confirm-password" name="new_password_confirm" placeholder="Confirm New Password" aria-label="Password" />
-                                        <span class="toggle-password" onclick="togglePassword('confirm-password', this)">
-                                            <i class="fas fa-eye"></i>
-                                        </span>
-                                        @error('new_password_confirm')
-                                            <small class="text-danger d-block mt-1">{{ $message }}</small>
-                                        @enderror
-                                    </div>
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="mb-3 position-relative">
+                                    <input type="password" class="form-control form-control-lg password-field"
+                                        id="confirm-password" name="new_password_confirm"
+                                        placeholder="Confirm New Password" aria-label="Password" />
+                                    <span class="toggle-password" onclick="togglePassword('confirm-password', this)">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                    @error('new_password_confirm')
+                                        <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                    @enderror
                                 </div>
+                            </div>
 
-                                <div class="mt-5">
-                                    <h6>Password requirements</h6>
-                                    <p class="text-sm font-weight-normal">Please follow this guide for a strong password:</p>
-                                    <p class="text-sm font-weight-normal">One special characters<br /> Min 6 characters<br /> One number (2 are recommended)<br /> Change it often</p>
-                                </div>
+                            <div class="mt-5">
+                                <h6>Password requirements</h6>
+                                <p class="text-sm font-weight-normal">Please follow this guide for a strong password:</p>
+                                <p class="text-sm font-weight-normal">One special characters<br /> Min 6 characters<br />
+                                    One number (2 are recommended)<br /> Change it often</p>
+                            </div>
 
-                                <div class="text-end">
-                                    <button type="submit" class="btn btn-sm btn-info btn-lg mt-4 mb-0">Save Changes</button>
-                                </div>
-                            </form>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-sm btn-info btn-lg mt-4 mb-0">Save Changes</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -507,28 +510,28 @@
 @endsection
 @section('script')
     <script>
-        function togglePassword(id, el){
+        function togglePassword(id, el) {
             const i = document.getElementById(id);
-            if(!i) return;
+            if (!i) return;
             const is = i.type === 'password';
             i.type = is ? 'text' : 'password';
             const icon = el.querySelector('i');
-            if(icon){
+            if (icon) {
                 icon.classList.toggle('fa-eye');
                 icon.classList.toggle('fa-eye-slash');
             }
         }
     </script>
     <script>
-        document.getElementById('imageUpload')?.addEventListener('change', function(){
-            if(this.files && this.files[0]){
+        document.getElementById('imageUpload')?.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
                 const reader = new FileReader();
                 reader.onload = e => document.getElementById('avatarImage').src = e.target.result;
                 reader.readAsDataURL(this.files[0]);
                 document.getElementById('avatarForm').submit();
             }
         });
-        document.getElementById('saveSettingsBtn')?.addEventListener('click', function(){
+        document.getElementById('saveSettingsBtn')?.addEventListener('click', function() {
             document.getElementById('settingsForm')?.submit();
         });
     </script>
@@ -591,59 +594,6 @@
                 icon.classList.add("fa-eye");
             }
         }
-        if (document.getElementById('products-list')) {
-            const dataTableSearch = new simpleDatatables.DataTable("#products-list", {
-                searchable: true,
-                fixedHeight: false,
-                perPage: 7
-            });
-        }
-        if (document.getElementById('Vaccines-list')) {
-            const dataTableSearch = new simpleDatatables.DataTable("#Vaccines-list", {
-                searchable: true,
-                fixedHeight: false,
-                perPage: 7
-            });
-        }
-        if (document.getElementById('permission-list')) {
-            const dataTableSearch = new simpleDatatables.DataTable("#permission-list", {
-                searchable: true,
-                fixedHeight: false,
-                perPage: 7
-            });
-        }
-    </script>
-    <script>
-        document.getElementById("imageUpload").addEventListener("change", function(event) {
-            const file = event.target.files[0];
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById("avatarImage").src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        function switchDocument() {
-            if (document.getElementById('Divone')) {
-
-                if (document.getElementById('Divone').style.display == 'none') {
-                    document.getElementById('Divone').style.display = 'block';
-                    document.getElementById('Divtwo').style.display = 'none';
-                } else {
-                    document.getElementById('Divone').style.display = 'none';
-                    document.getElementById('Divtwo').style.display = 'block';
-                }
-            }
-        }
-
-        const dataTableSearch = new simpleDatatables.DataTable("#datatable-search", {
-            searchable: false,
-            fixedHeight: false,
-            perPageSelect: false
-        });
     </script>
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
