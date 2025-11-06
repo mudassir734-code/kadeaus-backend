@@ -57,7 +57,7 @@ class Hospital extends Model
         return $this->hasMany(Patient::class);
     }
 
-    public function doctor()
+    public function doctors()
     {
         return $this->hasMany(Doctor::class);
     }

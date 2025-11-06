@@ -113,7 +113,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Speciality Hours</label>
-                        <input name="speciality_hours" type="text" class="form-control">
+                        <input name="speciality_hours" type="time" class="form-control">
                     </div>
 
                     <div class="col-md-6">

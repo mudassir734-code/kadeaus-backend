@@ -27,14 +27,14 @@ class Qualification extends Model
         return $this->belongsTo(Hospital::class);
     }
 
-    public function doctors()
-    {
-        return $this->belongsTo(Doctor::class);
-    }
-
     public function doctor()
     {
-        return $this->hasMany(Doctor::class);
+        return $this->belongsTo(Doctor::class, 'doctor_id', 'id');
     }
+
+    // public function doctor()
+    // {
+    //     return $this->hasMany(Doctor::class);
+    // }
 
 }

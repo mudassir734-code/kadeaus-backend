@@ -83,7 +83,7 @@ class User extends Authenticatable
         return $this->hasOne(Patient::class);
     }
 
-    public function doctor()
+    public function doctors()
     {
         return $this->hasOne(Doctor::class);
     }

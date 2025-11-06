@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Department;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
@@ -10,9 +11,9 @@ use App\Http\Controllers\Admin\Patient\PatientController;
 use App\Http\Controllers\Admin\Setting\SettingController;
 use App\Http\Controllers\Admin\Hospital\HospitalController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
-use App\Http\Controllers\Admin\Appointment\AppointmentController;
 use App\Http\Controllers\Admin\Department\DepartmentController;
-use App\Models\Department;
+use App\Http\Controllers\Admin\Appointment\AppointmentController;
+use App\Http\Controllers\Admin\Hospital\HospitalDetailController;
 
 Route::get('/', function () {
     return redirect(route('login'));
@@ -43,6 +44,11 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin','as' => 'admin.'], f
     Route::get('/hospital/detail', [HospitalController::class, 'view'])->name('hospital.hospitalDetail');
     Route::delete('/hospital/delete/{id}', [HospitalController::class, 'destroy'])->name('hospital.destroy');
     Route::get('/hospital/invoice/billing/detail', [HospitalController::class, 'invoiceDetail'])->name('hospital.invoiceDetail');
+
+    Route::group(['prefix' => 'hospital'], function(){
+        Route::get('detail', [HospitalDetailController::class, 'detail'])->name('hospital.detail');
+        Route::get('doctor/view/{id}', [HospitalDetailController::class, 'view'])->name('hospital.view');
+    });
 
     // Department Routes
     Route::post('department/create', [DepartmentController::class, 'create'])->name('department.create');

@@ -38,6 +38,6 @@ class Doctor extends Model
 
     public function qualification()
     {
-        return $this->belongsTo(Qualification::class);
+        return $this->hasOne(Qualification::class, 'doctor_id', 'id');
     }
 }
