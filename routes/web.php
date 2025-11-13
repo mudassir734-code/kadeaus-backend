@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\Department\DepartmentController;
 use App\Http\Controllers\Admin\Appointment\AppointmentController;
 use App\Http\Controllers\Admin\Hospital\HospitalDetailController;
+use App\Models\Hospital;
 
 Route::get('/', function () {
     return redirect(route('login'));
@@ -36,18 +37,34 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin','as' => 'admin.'], f
 
 
     //Hospital Routes
-    Route::get('/hospital', [HospitalController::class, 'index'])->name('hospital');
-    Route::get('/hospital/add-hospital', [HospitalController::class, 'create'])->name('hospital.addHospital');
-    Route::post('/hospitals', [HospitalController::class, 'store'])->name('hospitals.store');
-    Route::get('/hospital/edit/{id}', [HospitalController::class, 'edit'])->name('hospital.hospitalEdit');
-    Route::post('/hospital/update/{id}', [HospitalController::class, 'update'])->name('hospital.hospitalUpdate');
-    Route::get('/hospital/detail', [HospitalController::class, 'view'])->name('hospital.hospitalDetail');
-    Route::delete('/hospital/delete/{id}', [HospitalController::class, 'destroy'])->name('hospital.destroy');
-    Route::get('/hospital/invoice/billing/detail', [HospitalController::class, 'invoiceDetail'])->name('hospital.invoiceDetail');
-
     Route::group(['prefix' => 'hospital'], function(){
-        Route::get('detail', [HospitalDetailController::class, 'detail'])->name('hospital.detail');
+        Route::get('/list', [HospitalController::class, 'index'])->name('hospital');
+        Route::get('/add-hospital', [HospitalController::class, 'create'])->name('hospital.addHospital');
+        Route::post('/store', [HospitalController::class, 'store'])->name('hospitals.store');
+        Route::get('/edit/{id}', [HospitalController::class, 'edit'])->name('hospital.hospitalEdit');
+        Route::post('/update/{id}', [HospitalController::class, 'update'])->name('hospital.hospitalUpdate');
+        Route::get('/detail/{id}', [HospitalController::class, 'view'])->name('hospital.hospitalDetail');
+        Route::delete('/delete/{id}', [HospitalController::class, 'destroy'])->name('hospital.destroy');
+        Route::get('/invoice/billing/detail', [HospitalController::class, 'invoiceDetail'])->name('hospital.invoiceDetail');
+    });
+
+    Route::group(['prefix' => 'hospital/tab'], function() {
+        Route::get('detail/{id}', [HospitalDetailController::class, 'detail'])->name('hospital.detail');
         Route::get('doctor/view/{id}', [HospitalDetailController::class, 'view'])->name('hospital.view');
+        Route::get('nurse/list', [HospitalDetailController::class, 'nurse_list'])->name('hospital.nurse_list');
+        Route::get('add/nurse', [HospitalDetailController::class, 'add_nurse'])->name('hospital.add_nurse');
+        Route::post('store/nurse', [HospitalDetailController::class, 'store_nurse'])->name('hospital.store_nurse');
+        Route::get('nurse/view/{id}', [HospitalDetailController::class, 'nurse_view'])->name('hospital.nurse_view');
+        Route::get('receptionist/list', [HospitalDetailController::class, 'receptionist_list'])->name('hospital.receptionist_list');
+        Route::get('create/receptionist', [HospitalDetailController::class, 'create_receptionist'])->name('hospital.create_receptionist');
+        Route::post('store/receptionist', [HospitalDetailController::class, 'store_receptionist'])->name('hospital.store_receptionist');
+        Route::get('receptionist/view/{id}', [HospitalDetailController::class, 'view_receptionist'])->name('hospital.view_receptionist');
+        Route::get('pharmacist/list', [HospitalDetailController::class, 'pharmacist_list'])->name('hospital.pharmacist_list');
+        Route::get('create/pharmacist', [HospitalDetailController::class, 'create_pharmacist'])->name('hospital.create_pharmacist');
+        Route::post('store/pharmacist', [HospitalDetailController::class, 'store_pharmacist'])->name('hospital.store_pharmacist');
+        Route::get('view/pharmacist/{id}', [HospitalDetailController::class, 'view_pharmacist'])->name('hospital.view_pharmacist');
+        Route::get('patient/list', [HospitalDetailController::class, 'patient_list'])->name('hospital.patient_list');
+        Route::get('department/list', [HospitalDetailController::class, 'department_list'])->name('hospital.department_list');
     });
 
     // Department Routes
@@ -55,14 +72,20 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin','as' => 'admin.'], f
     Route::post('department/store', [DepartmentController::class, 'store'])->name('department.store');
 
     // Doctor Routes
-    Route::get('/doctor', [DoctorController::class, 'index'])->name('doctor');
-    Route::get('/doctor/add-doctor', [DoctorController::class, 'create'])->name('doctor.addDoctor');
-    Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
-    Route::get('/doctor/view-doctor', [DoctorController::class, 'viewDoctor'])->name('doctor.viewDoctor');
+    Route::group(['prefix' => 'doctor'], function() {
+    Route::get('/', [DoctorController::class, 'index'])->name('doctor');
+    Route::get('/add-doctor', [DoctorController::class, 'create'])->name('doctor.addDoctor');
+    Route::post('/store', [DoctorController::class, 'store'])->name('doctors.store');
+    Route::get('/view-doctor', [DoctorController::class, 'viewDoctor'])->name('doctor.viewDoctor');
+    Route::get('/departments/{id}', [DoctorController::class, 'getDepartments'])->name('doctor.departments');
+    });
+
 
     // Patient Routes
-    Route::get('/patient', [PatientController::class, 'index'])->name('patient');
+    Route::group(['prefix' => 'patient'], function() {
+    Route::get('/', [PatientController::class, 'index'])->name('patient');
     Route::get('/patient/view-patient', [PatientController::class, 'viewPatient'])->name('patient.viewPatient');
+    });
 
     // Setting Routes
     Route::get('/setting',       [SettingController::class, 'index'])->name('setting');          

@@ -88,9 +88,10 @@ class HospitalController extends Controller
         return redirect()->route('admin.hospital')->with('success', 'Record saved successfully.');
     }
 
-    public function view()
+    public function view($id)
     {
-        return view('admin.hospital.hospital-detail');
+        $hospital = Hospital::with('user')->findOrFail($id);
+        return view('admin.hospital.hospital-detail', compact('hospital'));
     }
 
     public function edit($hospital_id)

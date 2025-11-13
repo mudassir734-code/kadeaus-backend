@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('working_hours')->nullable();
             $table->unsignedBigInteger('hospital_id')->nullable();
             $table->unsignedBigInteger('department_id')->nullable();
-            $table->unsignedBigInteger('qualification_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();

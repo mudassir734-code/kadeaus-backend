@@ -1,4 +1,4 @@
-<div class="tab-pane fade" id="v-pills-nurses" role="tabpanel" aria-labelledby="v-pills-nurses-tab">
+{{-- <div class="tab-pane fade" id="v-pills-nurses" role="tabpanel" aria-labelledby="v-pills-nurses-tab"> --}}
     <section class="appointments-section">
         <div class="appointments-header">
             <h4>Nurse</h4>
@@ -7,32 +7,49 @@
                     <input type="text" placeholder="Type here..." class="search-input">
                     <i class="fas fa-search search-icon"></i>
                 </div>
-                <a href="Add-nurses.html"><button class="btn-primary schedule-btn">
-                        Add Nurse
-                    </button></a>
+                <a href="{{ route('admin.hospital.add_nurse') }}"><button class="btn-primary schedule-btn">Add Nurse</button></a>
             </div>
         </div>
-        <div class="appointments">
-            <div class="card doctor-card p-3">
-                <div class="d-flex align-items-center mb-2">
-                    <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                        class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                    <div>
-                        <h6 class="mb-0 fw-bold">Dr. George Lee</h6>
-                        <small class="text-muted">
-                            <i class="fa-regular fa-envelope text-danger"></i>
-                            rachal@gmail.com<br>
-                            <i class="fa-solid fa-phone text-danger"></i> (182)379-2691
-                        </small>
+        @if(($nurses ?? null) && $nurses->count())
+            <div class="appointments">
+                @foreach($nurses as $nurse)
+                    <div class="card doctor-card p-3 mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Nurse"
+                                class="rounded-md border-radius-lg me-2"
+                                style="width: 100px; height: 100px;">
+                            <div>
+                                <h6 class="mb-0 fw-bold">
+                                    {{ $nurse->user?->name ?? 'N/A' }}
+                                </h6>
+                                <small class="text-muted">
+                                    <i class="fa-regular fa-envelope text-danger"></i>
+                                    {{ $nurse->user?->email ?? '—' }}<br>
+                                    <i class="fa-solid fa-phone text-danger"></i>
+                                    {{ $nurse->user?->phone ?? '—' }}
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <h6 class="fw-bold mb-0">
+                                {{ $nurse->hospital?->user?->name ?? 'Unknown Hospital' }}
+                            </h6>
+                            <p class="text-muted mb-0">
+                                {{ $nurse->created_at?->diffForHumans() ?? '—' }}
+                            </p>
+                        </div>
+
+                        <button class="btn details mt-3"
+                                onclick="window.location.href='{{ route('admin.hospital.nurse_view', $nurse->id) }}'">
+                            View Details
+                        </button>
                     </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <h6 class="fw-bold mb-0">212 Patients</h6>
-                    <p class="text-muted">1 Day Ago</p>
-                </div>
-                <button class="btn details mt-3" onclick="window.location.href='Nurse-detail.html'">View
-                    Details</button>
+                @endforeach
             </div>
-        </div>
+        @else
+            <div class="text-muted text-center">No nurse found. Please create Nurse</div>
+        @endif
+
     </section>
-</div>
+{{-- </div> --}}

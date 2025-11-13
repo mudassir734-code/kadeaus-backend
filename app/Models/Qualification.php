@@ -11,7 +11,7 @@ class Qualification extends Model
 {
     use SoftDeletes, HasFactory, Notifiable;
 
-    protected $fillable = ['degree', 'institute', 'start_date', 'end_date', 'total_marks_CGPA', 'achieved_marks_CGPA', 'attachment', 'nurse_id', 'hospital_id', 'doctor_id', 'user_id'];
+    protected $fillable = ['degree', 'institute', 'start_date', 'end_date', 'total_marks_CGPA', 'achieved_marks_CGPA', 'attachment', 'nurse_id', 'hospital_id', 'doctor_id', 'pharmacist_id', 'user_id'];
 
     public function users()
     {
@@ -32,6 +32,10 @@ class Qualification extends Model
         return $this->belongsTo(Doctor::class, 'doctor_id', 'id');
     }
 
+    public function pharmacist()
+    {
+        return $this->belongsTo(Nurse::class);
+    }
     // public function doctor()
     // {
     //     return $this->hasMany(Doctor::class);

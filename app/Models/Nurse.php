@@ -11,13 +11,13 @@ class Nurse extends Model
 {
     use SoftDeletes, HasFactory, Notifiable;
 
-    protected $fillable = ['hospital_id', 'department_id', 'working_hours', 'added_by'];
+    protected $fillable = ['hospital_id', 'department_id', 'working_hours', 'user_id'];
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
-    public function hospitals()
+    public function hospital()
     {
         return $this->belongsTo(Hospital::class);
     }
@@ -29,7 +29,7 @@ class Nurse extends Model
 
     public function qualifications()
     {
-        return $this->hasMany(Qualification::class);
+        return $this->hasOne(Qualification::class);
     }
 
 }

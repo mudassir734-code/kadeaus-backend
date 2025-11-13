@@ -11,14 +11,14 @@ class Department extends Model
 {
     use SoftDeletes, HasFactory,Notifiable;
 
-    protected $fillable = ['name', 'user_id', 'hospital_id'];
+    protected $fillable = ['name', 'user_id', 'hospital_id', 'nurse_id'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function hospitals()
+    public function hospital()
     {
         return $this->belongsTo(Hospital::class);
     }

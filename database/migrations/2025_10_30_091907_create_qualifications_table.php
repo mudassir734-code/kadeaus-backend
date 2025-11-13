@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('nurse_id')->nullable();
             $table->unsignedBigInteger('hospital_id')->nullable();
             $table->unsignedBigInteger('doctor_id')->nullable();
+            $table->unsignedBigInteger('pharmacist_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();

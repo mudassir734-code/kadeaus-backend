@@ -327,6 +327,7 @@
                     </button>
                 </div>
             </div>
+            @if (($doctors ?? null) && $doctors->count())
             <div class="appointments">
                 @foreach($doctors as $doctor)
                 <div class="card doctor-card p-3">
@@ -364,7 +365,9 @@
                 </div>
                  @endforeach
             </div>
-
+            @else
+            <div class="text-muted text-center">No doctor found. Please create doctor</div>
+            @endif
         </div>
 
         <!-- Patient Detail View -->

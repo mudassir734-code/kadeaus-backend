@@ -42,7 +42,7 @@
                 <tbody id="patientTableBody">
                     @forelse($hospitals as $hospital)
                         <tr>
-                            <td class="text-nowrap">{{ $hospital->hospital_id }}</td>
+                            <td class="text-nowrap">{{ $loop->iteration  }}</td>
                             <td>{{ $hospital->user?->name ?? '—' }}</td>
                             <td>{{ $hospital->user?->email ?? '—' }}</td>
                             <td>{{ $hospital->user?->phone ?? '—' }}</td>
@@ -103,8 +103,8 @@
 @section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        // ---- Configuration ----admin.hospital.hospitalDetail
-        const BASE_DETAIL_URL = "{{ route('admin.hospital.detail') }}";   
+        // ---- Configuration ----
+        const BASE_DETAIL_URL = "{{ route('admin.hospital.hospitalDetail', ['id' => ':id']) }}";
         const BASE_EDIT_URL   = "{{ route('admin.hospital.hospitalEdit', ':id') }}"; 
         const BASE_DELETE_URL = "{{ route('admin.hospital.destroy', ':id') }}";   
 
@@ -184,8 +184,9 @@
         // ---- Actions ----
         function handleAction(id, action) {
             if (action === "view") {
-                window.location.href = `${BASE_DETAIL_URL}?id=${encodeURIComponent(id)}`;
-            } else if (action === "edit") {
+                const url = BASE_DETAIL_URL.replace(':id', id);
+                window.location.href = url;
+            }else if (action === "edit") {
                 const url = BASE_EDIT_URL.replace(":id", id);
                 window.location.href = url;
             } else if (action === "delete") {

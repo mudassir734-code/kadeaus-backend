@@ -13,16 +13,16 @@ class Pharmacist extends Model
 
     protected $fillable = ['hospital_id', 'working_hours', 'qualification_id', 'user_id'];
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
-    public function hospitals()
+    public function hospital()
     {
         return $this->belongsTo(Hospital::class);
     }
 
-    public function departments()
+    public function department()
     {
         return $this->belongsTo(Department::class);
     }
@@ -30,5 +30,10 @@ class Pharmacist extends Model
     public function prescriptionReport()
     {
         return $this->hasMany(PrescriptionReport::class);
+    }
+
+     public function qualification()
+    {
+        return $this->hasOne(Qualification::class);
     }
 }

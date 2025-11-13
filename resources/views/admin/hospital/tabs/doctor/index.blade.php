@@ -1,4 +1,8 @@
-<div class="tab-pane fade " id="v-pills-doctor" role="tabpanel" aria-labelledby="v-pills-doctor-tab">
+<style>
+    .fl-wrapper{
+        z-index: 999999 !important;
+    }
+</style>
     <section class="appointments-section">
         <div class="appointments-header">
             <h4>Doctor</h4>
@@ -10,6 +14,7 @@
                 <!-- <button class="btn-primary schedule-btn" onclick="window.location.href='Add-Doctors.html')">Add Nurse</button> -->
             </div>
         </div>
+        
             @if(($doctors ?? null) && $doctors->count())
                 <div class="appointments">
                     @foreach($doctors as $doctor)
@@ -45,4 +50,4 @@
                 <div class="text-muted">No doctors found for this hospital.</div>
             @endif
     </section>
-</div>
+

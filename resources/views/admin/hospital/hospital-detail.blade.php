@@ -377,7 +377,7 @@
             <div class="col-md-12" style="width: fit-content;">
                 <div class="nav  flex-row nav-pills   mb-3 v-links p-1  " id="v-pills-tab" role="tablist"
                     aria-orientation="horizontal" style="background-color: #fff;">
-                    <button class="nav-link h-navlinks py-2 v-links my-0  active " id="v-pills-overview-tab"
+                    <button class="nav-link h-navlinks py-2 v-links my-0  active" id="v-pills-overview-tab"
                         data-bs-toggle="pill" data-bs-target="#v-pills-overview" type="button" role="tab"
                         aria-controls="v-pills-profile" aria-selected="false">
                         <a class="nav-link1 d-flex align-items-center px-0 mx-0 " href="#overview">
@@ -392,7 +392,7 @@
                         </a>
                     </button>
                     <button class="nav-link h-navlinks py-2 v-links my-0  " id="v-pills-nurses-tab" data-bs-toggle="pill"
-                        data-bs-target="#v-pills-nurses" type="button" role="tab" aria-controls="v-pills-profile"
+                        data-bs-target="#v-pills-nurses" type="button" role="tab" aria-controls="v-pills-nurses"
                         aria-selected="false">
                         <a class="nav-link1 d-flex align-items-center px-0 mx-0 " href="#nurses">
                             Nurses
@@ -452,801 +452,26 @@
             <div class=" ">
                 <div class="tab-content" id="v-pills-tabContent">
                     @include('admin.hospital.tabs.overview.dashboard')
-                    @include('admin.hospital.tabs.doctor.index', ['doctors' => $hospital->doctors])
-                    @include('admin.hospital.tabs.nurse.index')
-                    <div class="tab-pane fade" id="v-pills-receptionists" role="tabpanel"
-                        aria-labelledby="v-pills-receptionists-tab">
-
-                        <section class="appointments-section">
-                            <div class="appointments-header">
-                                <h4>Receptionists</h4>
-                                <div class="appointments-controls">
-                                    <div class="search-box">
-                                        <input type="text" placeholder="Type here..." class="search-input">
-                                        <i class="fas fa-search search-icon"></i>
-                                    </div>
-                                    <button class="btn-primary schedule-btn"
-                                        onclick="window.location.href='Add-receptionists.html'">
-                                        Add Receptionists
-                                    </button>
-
-                                </div>
-                            </div>
-                            <div class="appointments">
-                                <div class="card doctor-card p-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                                            class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">George Lee</h6>
-                                            <small class="text-muted">
-                                                <i class="fa-regular fa-envelope text-danger"></i>
-                                                rachal@gmail.com<br>
-                                                <i class="fa-solid fa-phone text-danger"></i> (182)379-2691
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <button class="btn details mt-3"
-                                        onclick="window.location.href='Receptionists-detail.html'">View
-                                        Details</button>
-                                </div>
-
-                                <div class="card doctor-card p-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                                            class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">Dr. Jane Smith</h6>
-                                            <small class="text-muted">
-                                                <i class="fa-regular fa-envelope text-danger"></i>
-                                                jane@gmail.com<br>
-                                                <i class="fa-solid fa-phone text-danger"></i> (123)456-7890
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <button class="btn details mt-3"
-                                        onclick="window.location.href='Receptionists-detail.html'">View
-                                        Details</button>
-                                </div>
-                                <div class="card doctor-card p-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                                            class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">George Lee</h6>
-                                            <small class="text-muted">
-                                                <i class="fa-regular fa-envelope text-danger"></i>
-                                                rachal@gmail.com<br>
-                                                <i class="fa-solid fa-phone text-danger"></i> (182)379-2691
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <button class="btn details mt-3"
-                                        onclick="window.location.href='Receptionists-detail.html'">View
-                                        Details</button>
-                                </div>
-
-                                <div class="card doctor-card p-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                                            class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">Dr. Jane Smith</h6>
-                                            <small class="text-muted">
-                                                <i class="fa-regular fa-envelope text-danger"></i>
-                                                jane@gmail.com<br>
-                                                <i class="fa-solid fa-phone text-danger"></i> (123)456-7890
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <button class="btn details mt-3"
-                                        onclick="window.location.href='Receptionists-detail.html'">View
-                                        Details</button>
-                                </div>
-                                <div class="card doctor-card p-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                                            class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">George Lee</h6>
-                                            <small class="text-muted">
-                                                <i class="fa-regular fa-envelope text-danger"></i>
-                                                rachal@gmail.com<br>
-                                                <i class="fa-solid fa-phone text-danger"></i> (182)379-2691
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <button class="btn details mt-3"
-                                        onclick="window.location.href='Receptionists-detail.html'">View
-                                        Details</button>
-                                </div>
-
-                                <div class="card doctor-card p-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                                            class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">Dr. Jane Smith</h6>
-                                            <small class="text-muted">
-                                                <i class="fa-regular fa-envelope text-danger"></i>
-                                                jane@gmail.com<br>
-                                                <i class="fa-solid fa-phone text-danger"></i> (123)456-7890
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <button class="btn details mt-3"
-                                        onclick="window.location.href='Receptionists-detail.html'">View
-                                        Details</button>
-                                </div>
-                                <div class="card doctor-card p-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                                            class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">George Lee</h6>
-                                            <small class="text-muted">
-                                                <i class="fa-regular fa-envelope text-danger"></i>
-                                                rachal@gmail.com<br>
-                                                <i class="fa-solid fa-phone text-danger"></i> (182)379-2691
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <button class="btn details mt-3"
-                                        onclick="window.location.href='Receptionists-detail.html'">View
-                                        Details</button>
-                                </div>
-
-                                <div class="card doctor-card p-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                                            class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">Dr. Jane Smith</h6>
-                                            <small class="text-muted">
-                                                <i class="fa-regular fa-envelope text-danger"></i>
-                                                jane@gmail.com<br>
-                                                <i class="fa-solid fa-phone text-danger"></i> (123)456-7890
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <button class="btn details mt-3"
-                                        onclick="window.location.href='Receptionists-detail.html'">View
-                                        Details</button>
-                                </div>
-
-                            </div>
-                        </section>
+                   <div class="tab-pane fade" id="v-pills-doctor" role="tabpanel" aria-labelledby="v-pills-doctor-tab">
+                        
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-nurses" role="tabpanel" aria-labelledby="v-pills-nurses-tab">
+                    
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-receptionists" role="tabpanel" aria-labelledby="v-pills-receptionists-tab">
 
                     </div>
                     <div class="tab-pane fade" id="v-pills-pharmacists" role="tabpanel"
                         aria-labelledby="v-pills-pharmacists-tab">
-                        <section class="appointments-section">
-                            <div class="appointments-header">
-                                <h4>Pharmacists</h4>
-                                <div class="appointments-controls">
-                                    <div class="search-box">
-                                        <input type="text" placeholder="Type here..." class="search-input">
-                                        <i class="fas fa-search search-icon"></i>
-                                    </div>
-                                    <button class="btn-primary schedule-btn"
-                                        onclick="window.location.href='AddPharmacists.html'">
-                                        Add Pharmacists
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="appointments">
-                                <div class="card doctor-card p-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                                            class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">George Lee</h6>
-                                            <small class="text-muted">
-                                                <i class="fa-regular fa-envelope text-danger"></i>
-                                                rachal@gmail.com<br>
-                                                <i class="fa-solid fa-phone text-danger"></i> (182)379-2691
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <button class="btn details mt-3"
-                                        onclick="window.location.href='Pharmacists-detail.html'">View
-                                        Details</button>
-                                </div>
-
-                                <div class="card doctor-card p-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                                            class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">Dr. Jane Smith</h6>
-                                            <small class="text-muted">
-                                                <i class="fa-regular fa-envelope text-danger"></i>
-                                                jane@gmail.com<br>
-                                                <i class="fa-solid fa-phone text-danger"></i> (123)456-7890
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <button class="btn details mt-3"
-                                        onclick="window.location.href='Pharmacists-detail.html'">View
-                                        Details</button>
-                                </div>
-                                <div class="card doctor-card p-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                                            class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">George Lee</h6>
-                                            <small class="text-muted">
-                                                <i class="fa-regular fa-envelope text-danger"></i>
-                                                rachal@gmail.com<br>
-                                                <i class="fa-solid fa-phone text-danger"></i> (182)379-2691
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <button class="btn details mt-3"
-                                        onclick="window.location.href='Pharmacists-detail.html'">View
-                                        Details</button>
-                                </div>
-
-                                <div class="card doctor-card p-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                                            class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">Dr. Jane Smith</h6>
-                                            <small class="text-muted">
-                                                <i class="fa-regular fa-envelope text-danger"></i>
-                                                jane@gmail.com<br>
-                                                <i class="fa-solid fa-phone text-danger"></i> (123)456-7890
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <button class="btn details mt-3"
-                                        onclick="window.location.href='Pharmacists-detail.html'">View
-                                        Details</button>
-                                </div>
-                                <div class="card doctor-card p-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                                            class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">George Lee</h6>
-                                            <small class="text-muted">
-                                                <i class="fa-regular fa-envelope text-danger"></i>
-                                                rachal@gmail.com<br>
-                                                <i class="fa-solid fa-phone text-danger"></i> (182)379-2691
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <button class="btn details mt-3"
-                                        onclick="window.location.href='Pharmacists-detail.html'">View
-                                        Details</button>
-                                </div>
-
-                                <div class="card doctor-card p-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                                            class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">Dr. Jane Smith</h6>
-                                            <small class="text-muted">
-                                                <i class="fa-regular fa-envelope text-danger"></i>
-                                                jane@gmail.com<br>
-                                                <i class="fa-solid fa-phone text-danger"></i> (123)456-7890
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <button class="btn details mt-3"
-                                        onclick="window.location.href='Pharmacists-detail.html'">View
-                                        Details</button>
-                                </div>
-                                <div class="card doctor-card p-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                                            class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">George Lee</h6>
-                                            <small class="text-muted">
-                                                <i class="fa-regular fa-envelope text-danger"></i>
-                                                rachal@gmail.com<br>
-                                                <i class="fa-solid fa-phone text-danger"></i> (182)379-2691
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <button class="btn details mt-3"
-                                        onclick="window.location.href='Pharmacists-detail.html'">View
-                                        Details</button>
-                                </div>
-
-                                <div class="card doctor-card p-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Doctor"
-                                            class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">Dr. Jane Smith</h6>
-                                            <small class="text-muted">
-                                                <i class="fa-regular fa-envelope text-danger"></i>
-                                                jane@gmail.com<br>
-                                                <i class="fa-solid fa-phone text-danger"></i> (123)456-7890
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <button class="btn details mt-3"
-                                        onclick="window.location.href='Pharmacists-detail.html'">View
-                                        Details</button>
-                                </div>
-
-                            </div>
-                        </section>
+                        
                     </div>
                     <div class="tab-pane fade" id="v-pills-patients" role="tabpanel"
                         aria-labelledby="v-pills-patients-tab">
-
-                        <div class="appointments mb-0">
-                            <div class="card doctor-card p-3">
-                                <div class="text-success font-weight-bold completed">Completed</div>
-                                <div class="options"> <i class="fas fa-ellipsis-h"></i></div>
-                                <div class="user-profile-section">
-                                    <div class="profile-image-container">
-                                        <img src="{{ asset('admin/assets/img/Circle-3.png') }}" alt="Justin Carrol"
-                                            class="profile-image">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div class="user-name">Justin Carrol</div>
-                                </div>
-                                <div class="appointment-details mb-0">
-                                    <div class="detail-row">
-                                        <span class="detail-label">Patient ID:</span>
-                                        <span class="detail-value text-danger">P-001</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Email:</span>
-                                        <span class="detail-value">barbara@gmail.com</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Contact</span>
-                                        <span class="detail-value"> (123) 456-7890</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Gender:</span>
-                                        <span class="detail-value">Female</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">DOB:</span>
-                                        <span class="detail-value">06/03/2005</span>
-                                    </div>
-                                </div>
-                                <div class="btns mt-0">
-                                    <button class="btn details w-100"
-                                        onclick="window.location.href='Patient-Details.html'">View Details</button>
-                                </div>
-                            </div>
-                            <div class="card doctor-card p-3">
-                                <div class="text-success font-weight-bold completed cursor-pointer">Completed</div>
-                                <div class="options"> <i class="fas fa-ellipsis-h"></i></div>
-                                <div class="user-profile-section">
-                                    <div class="profile-image-container">
-                                        <img src="{{ asset('admin/assets/img/Circle-5.png') }}" alt="Justin Carrol"
-                                            class="profile-image">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div class="user-name">Justin Carrol</div>
-                                </div>
-                                <div class="appointment-details mb-0">
-                                    <div class="detail-row">
-                                        <span class="detail-label">Patient ID:</span>
-                                        <span class="detail-value text-danger">P-001</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Email:</span>
-                                        <span class="detail-value">barbara@gmail.com</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Contact</span>
-                                        <span class="detail-value"> (123) 456-7890</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Gender:</span>
-                                        <span class="detail-value">Female</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">DOB:</span>
-                                        <span class="detail-value">06/03/2005</span>
-                                    </div>
-                                </div>
-                                <div class="btns mt-0">
-                                    <button class="btn details w-100"
-                                        onclick="window.location.href='Patient-Details.html'">View Details</button>
-                                </div>
-                            </div>
-                            <div class="card doctor-card p-3">
-                                <div class="text-success font-weight-bold completed">Completed</div>
-                                <div class="options"> <i class="fas fa-ellipsis-h"></i></div>
-                                <div class="user-profile-section">
-                                    <div class="profile-image-container">
-                                        <img src="{{ asset('admin/assets/img/Circle-3.png') }}" alt="Justin Carrol"
-                                            class="profile-image">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div class="user-name">Justin Carrol</div>
-                                </div>
-                                <div class="appointment-details mb-0">
-                                    <div class="detail-row">
-                                        <span class="detail-label">Patient ID:</span>
-                                        <span class="detail-value text-danger">P-001</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Email:</span>
-                                        <span class="detail-value">barbara@gmail.com</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Contact</span>
-                                        <span class="detail-value"> (123) 456-7890</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Gender:</span>
-                                        <span class="detail-value">Female</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">DOB:</span>
-                                        <span class="detail-value">06/03/2005</span>
-                                    </div>
-                                </div>
-                                <div class="btns mt-0">
-                                    <button class="btn details w-100"
-                                        onclick="window.location.href='Patient-Details.html'">View Details</button>
-                                </div>
-                            </div>
-                            <div class="card doctor-card p-3">
-                                <div class="text-success font-weight-bold completed">Completed</div>
-                                <div class="options"> <i class="fas fa-ellipsis-h"></i></div>
-                                <div class="user-profile-section">
-                                    <div class="profile-image-container">
-                                        <img src="{{ asset('admin/assets/img/Circle-3.png') }}" alt="Justin Carrol"
-                                            class="profile-image">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div class="user-name">Justin Carrol</div>
-                                </div>
-                                <div class="appointment-details mb-0">
-                                    <div class="detail-row">
-                                        <span class="detail-label">Patient ID:</span>
-                                        <span class="detail-value text-danger">P-001</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Email:</span>
-                                        <span class="detail-value">barbara@gmail.com</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Contact</span>
-                                        <span class="detail-value"> (123) 456-7890</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Gender:</span>
-                                        <span class="detail-value">Female</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">DOB:</span>
-                                        <span class="detail-value">06/03/2005</span>
-                                    </div>
-                                </div>
-                                <div class="btns mt-0">
-                                    <button class="btn details w-100"
-                                        onclick="window.location.href='Patient-Details.html'">View Details</button>
-                                </div>
-                            </div>
-                            <div class="card doctor-card p-3">
-                                <div class="text-success font-weight-bold completed">Completed</div>
-                                <div class="options"> <i class="fas fa-ellipsis-h"></i></div>
-                                <div class="user-profile-section">
-                                    <div class="profile-image-container">
-                                        <img src="{{ asset('admin/assets/img/Circle-3.png') }}" alt="Justin Carrol"
-                                            class="profile-image">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div class="user-name">Justin Carrol</div>
-                                </div>
-                                <div class="appointment-details mb-0">
-                                    <div class="detail-row">
-                                        <span class="detail-label">Patient ID:</span>
-                                        <span class="detail-value text-danger">P-001</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Email:</span>
-                                        <span class="detail-value">barbara@gmail.com</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Contact</span>
-                                        <span class="detail-value"> (123) 456-7890</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Gender:</span>
-                                        <span class="detail-value">Female</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">DOB:</span>
-                                        <span class="detail-value">06/03/2005</span>
-                                    </div>
-                                </div>
-                                <div class="btns mt-0">
-                                    <button class="btn details w-100"
-                                        onclick="window.location.href='Patient-Details.html'">View Details</button>
-                                </div>
-                            </div>
-                            <div class="card doctor-card p-3">
-                                <div class="text-success font-weight-bold completed cursor-pointer">Completed</div>
-                                <div class="options"> <i class="fas fa-ellipsis-h"></i></div>
-                                <div class="user-profile-section">
-                                    <div class="profile-image-container">
-                                        <img src="{{ asset('admin/assets/img/Circle-5.png') }}" alt="Justin Carrol"
-                                            class="profile-image">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div class="user-name">Justin Carrol</div>
-                                </div>
-                                <div class="appointment-details mb-0">
-                                    <div class="detail-row">
-                                        <span class="detail-label">Patient ID:</span>
-                                        <span class="detail-value text-danger">P-001</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Email:</span>
-                                        <span class="detail-value">barbara@gmail.com</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Contact</span>
-                                        <span class="detail-value"> (123) 456-7890</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Gender:</span>
-                                        <span class="detail-value">Female</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">DOB:</span>
-                                        <span class="detail-value">06/03/2005</span>
-                                    </div>
-                                </div>
-                                <div class="btns mt-0">
-                                    <button class="btn details w-100"
-                                        onclick="window.location.href='Patient-Details.html'">View Details</button>
-                                </div>
-                            </div>
-                            <div class="card doctor-card p-3">
-                                <div class="text-success font-weight-bold completed">Completed</div>
-                                <div class="options"> <i class="fas fa-ellipsis-h"></i></div>
-                                <div class="user-profile-section">
-                                    <div class="profile-image-container">
-                                        <img src="{{ asset('admin/assets/img/Circle-3.png') }}" alt="Justin Carrol"
-                                            class="profile-image">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div class="user-name">Justin Carrol</div>
-                                </div>
-                                <div class="appointment-details mb-0">
-                                    <div class="detail-row">
-                                        <span class="detail-label">Patient ID:</span>
-                                        <span class="detail-value text-danger">P-001</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Email:</span>
-                                        <span class="detail-value">barbara@gmail.com</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Contact</span>
-                                        <span class="detail-value"> (123) 456-7890</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Gender:</span>
-                                        <span class="detail-value">Female</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">DOB:</span>
-                                        <span class="detail-value">06/03/2005</span>
-                                    </div>
-                                </div>
-                                <div class="btns mt-0">
-                                    <button class="btn details w-100"
-                                        onclick="window.location.href='Patient-Details.html'">View Details</button>
-                                </div>
-                            </div>
-                            <div class="card doctor-card p-3">
-                                <div class="text-success font-weight-bold completed">Completed</div>
-                                <div class="options"> <i class="fas fa-ellipsis-h"></i></div>
-                                <div class="user-profile-section">
-                                    <div class="profile-image-container">
-                                        <img src="{{ asset('admin/assets/img/Circle-3.png') }}" alt="Justin Carrol"
-                                            class="profile-image">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div class="user-name">Justin Carrol</div>
-                                </div>
-                                <div class="appointment-details mb-0">
-                                    <div class="detail-row">
-                                        <span class="detail-label">Patient ID:</span>
-                                        <span class="detail-value text-danger">P-001</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Email:</span>
-                                        <span class="detail-value">barbara@gmail.com</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Contact</span>
-                                        <span class="detail-value"> (123) 456-7890</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">Gender:</span>
-                                        <span class="detail-value">Female</span>
-                                    </div>
-                                    <div class="detail-row">
-                                        <span class="detail-label">DOB:</span>
-                                        <span class="detail-value">06/03/2005</span>
-                                    </div>
-                                </div>
-                                <div class="btns mt-0">
-                                    <button class="btn details w-100"
-                                        onclick="window.location.href='Patient-Details.html'">View Details</button>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                     <div class="tab-pane fade" id="v-pills-departments" role="tabpanel"
                         aria-labelledby="v-pills-departments-tab">
-                        <section class="appointments-section mb-0 pb-0">
-                            <div class="appointments-header mb-2">
-                                <h4 class="mb-0">Department</h4>
-                                <div class="appointments-controls">
-                                    <div class="search-box">
-                                        <input type="text" placeholder="Type here..." class="search-input">
-                                        <i class="fas fa-search search-icon"></i>
-                                    </div>
-                                    <button class="btn-primary schedule-btn" data-bs-toggle="modal"
-                                        data-bs-target="#adddepartmentModal">
-                                        Add Department
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="detail-section">
-                                <div class="appointments mb-0">
-                                    <div class="dept-card d-flex gap-3 align-items-start">
-                                        <img src="{{ asset('admin/assets/img/hexagon.svg') }}" />
-                                        <div class="dept-info">
-                                            <h5 class="font-weight-bolder">Urology Department</h5>
-                                            <p><strong>Doctors:</strong> 15</p>
-                                            <p><strong>Nurses:</strong> 25</p>
-                                        </div>
-                                        <button class="menu-btn" id="menu-btn">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-
-                                        <!-- Popover Menu -->
-                                        <div class="popover-menu" id="popoverMenu">
-                                            <button class="edit-btn">Edit</button>
-                                            <button class="delete-btn">Delete</button>
-                                        </div>
-                                    </div>
-
-                                    <div class="dept-card d-flex gap-3 align-items-start">
-                                        <img src="{{ asset('admin/assets/img/hexagon.svg') }}" />
-                                        <div class="dept-info">
-                                            <h5 class="font-weight-bolder">Urology Department</h5>
-                                            <p><strong>Doctors:</strong> 15</p>
-                                            <p><strong>Nurses:</strong> 25</p>
-                                        </div>
-                                        <button class="menu-btn" id="menu-btn">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-
-                                        <!-- Popover Menu -->
-                                        <div class="popover-menu" id="popoverMenu">
-                                            <button class="edit-btn">Edit</button>
-                                            <button class="delete-btn">Delete</button>
-                                        </div>
-                                    </div>
-                                    <div class="dept-card d-flex gap-3 align-items-start">
-                                        <img src="{{ asset('admin/assets/img/hexagon.svg') }}" />
-                                        <div class="dept-info">
-                                            <h5 class="font-weight-bolder">Urology Department</h5>
-                                            <p><strong>Doctors:</strong> 15</p>
-                                            <p><strong>Nurses:</strong> 25</p>
-                                        </div>
-                                        <button class="menu-btn" id="menu-btn">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-
-                                        <!-- Popover Menu -->
-                                        <div class="popover-menu" id="popoverMenu">
-                                            <button class="edit-btn">Edit</button>
-                                            <button class="delete-btn">Delete</button>
-                                        </div>
-                                    </div>
-                                    <div class="dept-card d-flex gap-3 align-items-start">
-                                        <img src="{{ asset('admin/assets/img/hexagon.svg') }}" />
-                                        <div class="dept-info">
-                                            <h5 class="font-weight-bolder">Urology Department</h5>
-                                            <p><strong>Doctors:</strong> 15</p>
-                                            <p><strong>Nurses:</strong> 25</p>
-                                        </div>
-                                        <button class="menu-btn" id="menu-btn">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-
-                                        <!-- Popover Menu -->
-                                        <div class="popover-menu" id="popoverMenu">
-                                            <button class="edit-btn">Edit</button>
-                                            <button class="delete-btn">Delete</button>
-                                        </div>
-                                    </div>
-                                    <div class="dept-card d-flex gap-3 align-items-start">
-                                        <img src="{{ asset('admin/assets/img/hexagon.svg') }}" />
-                                        <div class="dept-info">
-                                            <h5 class="font-weight-bolder">Urology Department</h5>
-                                            <p><strong>Doctors:</strong> 15</p>
-                                            <p><strong>Nurses:</strong> 25</p>
-                                        </div>
-                                        <button class="menu-btn" id="menu-btn">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-
-                                        <!-- Popover Menu -->
-                                        <div class="popover-menu" id="popoverMenu">
-                                            <button class="edit-btn">Edit</button>
-                                            <button class="delete-btn">Delete</button>
-                                        </div>
-                                    </div>
-                                    <div class="dept-card d-flex gap-3 align-items-start">
-                                        <img src="{{ asset('admin/assets/img/hexagon.svg') }}" />
-                                        <div class="dept-info">
-                                            <h5 class="font-weight-bolder">Urology Department</h5>
-                                            <p><strong>Doctors:</strong> 15</p>
-                                            <p><strong>Nurses:</strong> 25</p>
-                                        </div>
-                                        <button class="menu-btn" id="menu-btn">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-
-                                        <!-- Popover Menu -->
-                                        <div class="popover-menu" id="popoverMenu">
-                                            <button class="edit-btn">Edit</button>
-                                            <button class="delete-btn">Delete</button>
-                                        </div>
-                                    </div>
-                                    <div class="dept-card d-flex gap-3 align-items-start">
-                                        <img src="{{ asset('admin/assets/img/hexagon.svg') }}" />
-                                        <div class="dept-info">
-                                            <h5 class="font-weight-bolder">Urology Department</h5>
-                                            <p><strong>Doctors:</strong> 15</p>
-                                            <p><strong>Nurses:</strong> 25</p>
-                                        </div>
-                                        <button class="menu-btn" id="menu-btn">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-
-                                        <!-- Popover Menu -->
-                                        <div class="popover-menu" id="popoverMenu">
-                                            <button class="edit-btn">Edit</button>
-                                            <button class="delete-btn">Delete</button>
-                                        </div>
-                                    </div>
-                                    <div class="dept-card d-flex gap-3 align-items-start">
-                                        <img src="{{ asset('admin/assets/img/hexagon.svg') }}" />
-                                        <div class="dept-info">
-                                            <h5 class="font-weight-bolder">Urology Department</h5>
-                                            <p><strong>Doctors:</strong> 15</p>
-                                            <p><strong>Nurses:</strong> 25</p>
-                                        </div>
-                                        <button class="menu-btn" id="menu-btn">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-
-                                        <!-- Popover Menu -->
-                                        <div class="popover-menu" id="popoverMenu">
-                                            <button class="edit-btn">Edit</button>
-                                            <button class="delete-btn">Delete</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
+                        
 
                     </div>
                     <div class="tab-pane fade" id="v-pills-laboratories" role="tabpanel"
@@ -1785,7 +1010,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <label class="form-check-label font-weight-bold">Department Name </label>
+                        <label class="form-check-label font-weight-bold">Department Name</label>
                         <input type="text" class="form-control mt-2" placeholder="Department Name"
                             aria-label="Department Name">
                         <small id="errorMsg" class="text-danger d-none">Please select a doctor.</small>
@@ -1881,4 +1106,103 @@
     </div>
 @endsection
 @section('script')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const hospitalId = "{{ $hospital->id }}";
+        const baseUrl = "{{ route('admin.hospital.detail', ['id' => ':id']) }}".replace(':id', hospitalId);
+
+        const tabMap = {
+            overview:      'v-pills-overview-tab',
+            doctor:        'v-pills-doctor-tab',
+            nurses:        'v-pills-nurses-tab',
+            receptionists: 'v-pills-receptionists-tab',
+            pharmacists:   'v-pills-pharmacists-tab',
+            patients:      'v-pills-patients-tab',
+            departments:   'v-pills-departments-tab',
+            laboratories:  'v-pills-laboratories-tab',
+            appointment:   'v-pills-appointment-tab',
+            billing:       'v-pills-billing-tab'
+        };
+
+        function loadTabContent(tabName, targetId) {
+            const container = document.querySelector(targetId);
+            if (!container) return;
+
+            // If already loaded, skip
+            if (container.dataset.loaded === 'true') return;
+
+            container.innerHTML = '<div class="p-3 text-center text-muted">Loading...</div>';
+
+            fetch(`${baseUrl}?tab=${tabName}`)
+                .then(res => res.text())
+                .then(html => {
+                    container.innerHTML = html;
+                    container.dataset.loaded = 'true';
+                })
+                .catch(err => {
+                    container.innerHTML = `<div class="p-3 text-danger">Failed to load ${tabName}.</div>`;
+                    console.error(err);
+                });
+        }
+
+        function showTabByKey(key) {
+            const btnId = tabMap[key];
+            if (!btnId) return;
+
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+
+            // Prefer Bootstrap Tab API
+            if (window.bootstrap && bootstrap.Tab) {
+                const tabInstance = bootstrap.Tab.getOrCreateInstance(btn);
+                tabInstance.show();
+            } else {
+                // Fallback if Bootstrap JS is missing
+                document.querySelectorAll('#v-pills-tab .nav-link').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('#v-pills-tabContent .tab-pane').forEach(el => el.classList.remove('show', 'active'));
+
+                btn.classList.add('active');
+                const targetSelector = btn.getAttribute('data-bs-target');
+                if (targetSelector) {
+                    const pane = document.querySelector(targetSelector);
+                    if (pane) {
+                        pane.classList.add('show', 'active');
+                    }
+                }
+            }
+        }
+
+        function activateTabFromHash() {
+            const hash = window.location.hash;         // e.g. "#patients"
+            const key = (hash ? hash.substring(1) : 'overview');  // "patients" or default "overview"
+            showTabByKey(key);
+        }
+
+        // 1) When any tab is shown (clicked or programmatic), lazy-load + update hash
+        document.querySelectorAll('[data-bs-toggle="pill"]').forEach(tab => {
+            tab.addEventListener('shown.bs.tab', function (e) {
+                const targetId = e.target.getAttribute('data-bs-target'); // e.g. "#v-pills-patients"
+                const tabName  = targetId.replace('#v-pills-', '');       // e.g. "patients"
+
+                // Update hash in URL so refresh keeps us here
+                const newUrl = window.location.pathname + window.location.search + '#' + tabName;
+                history.replaceState(null, '', newUrl);
+
+                // Lazy-load content
+                loadTabContent(tabName, targetId);
+            });
+        });
+
+        // 2) Initial activation AFTER Bootstrap did its own default stuff
+        window.addEventListener('load', function () {
+            activateTabFromHash(); // will move from Overview -> correct tab if hash exists
+        });
+
+        // 3) If hash is changed manually (rare), follow it
+        window.addEventListener('hashchange', function () {
+            activateTabFromHash();
+        });
+    });
+</script>
 @endsection
+

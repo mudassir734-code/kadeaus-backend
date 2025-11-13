@@ -13,16 +13,11 @@ class Receptionist extends Model
 
     protected $fillable = ['role_id', 'hospital_id', 'user_id'];
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
-    // public function role()
-    // {
-    //     return $this->belongsTo();
-    // }
-
-    public function hospitals()
+    public function hospital()
     {
         return $this->belongsTo(Hospital::class);
     }
