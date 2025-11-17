@@ -476,186 +476,7 @@
                     </div>
                     <div class="tab-pane fade" id="v-pills-laboratories" role="tabpanel"
                         aria-labelledby="v-pills-laboratories-tab">
-                        <section class="appointments-section mb-0 pb-0">
-                            <div class="appointments-header mb-2">
-                                <h4 class="mb-0">Laboratories</h4>
-                                <div class="appointments-controls">
-                                    <div class="search-box">
-                                        <input type="text" placeholder="Type here..." class="search-input">
-                                        <i class="fas fa-search search-icon"></i>
-                                    </div>
-                                    <button class="btn-primary schedule-btn"
-                                        onclick="window.location.href='Add-laboratory.html'">
-                                        Add Laboratory
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="detail-section">
-                                <div class="appointments mb-0">
-                                    <div class="dept-card d-flex gap-3 align-items-start">
-                                        <img src="{{ asset('admin/assets/img/Laboratories.svg') }}" />
-                                        <div class="dept-info">
-                                            <h5 class="font-weight-bolder">Alice Hughes</h5>
-                                            <p><strong>Patient ID:</strong> 15</p>
-                                            <p><strong>Gender:</strong> Female</p>
-                                            <p><strong>Report Name:</strong> Blood Test</p>
-                                            <p><strong>Date:</strong> 2023-10-01</p>
-                                            <p><strong>Time:</strong> 10:00 AM</p>
-                                        </div>
-                                        <button class="menu-btn" id="menu-btn">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-
-                                        <!-- Popover Menu -->
-                                        <div class="popover-menu" id="popoverMenu">
-                                            <button class="edit-btn">Edit</button>
-                                            <button class="delete-btn">Delete</button>
-                                        </div>
-                                    </div>
-                                    <div class="dept-card d-flex gap-3 align-items-start">
-                                        <img src="{{ asset('admin/assets/img/Laboratories.svg') }}" />
-                                        <div class="dept-info">
-                                            <h5 class="font-weight-bolder">Alice Hughes</h5>
-                                            <p><strong>Patient ID:</strong> 15</p>
-                                            <p><strong>Gender:</strong> Female</p>
-                                            <p><strong>Report Name:</strong> Blood Test</p>
-                                            <p><strong>Date:</strong> 2023-10-01</p>
-                                            <p><strong>Time:</strong> 10:00 AM</p>
-                                        </div>
-                                        <button class="menu-btn" id="menu-btn">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-
-                                        <!-- Popover Menu -->
-                                        <div class="popover-menu" id="popoverMenu">
-                                            <button class="edit-btn">Edit</button>
-                                            <button class="delete-btn">Delete</button>
-                                        </div>
-                                    </div>
-                                    <div class="dept-card d-flex gap-3 align-items-start">
-                                        <img src="{{ asset('admin/assets/img/Laboratories.svg') }}" />
-                                        <div class="dept-info">
-                                            <h5 class="font-weight-bolder">Alice Hughes</h5>
-                                            <p><strong>Patient ID:</strong> 15</p>
-                                            <p><strong>Gender:</strong> Female</p>
-                                            <p><strong>Report Name:</strong> Blood Test</p>
-                                            <p><strong>Date:</strong> 2023-10-01</p>
-                                            <p><strong>Time:</strong> 10:00 AM</p>
-                                        </div>
-                                        <button class="menu-btn" id="menu-btn">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-
-                                        <!-- Popover Menu -->
-                                        <div class="popover-menu" id="popoverMenu">
-                                            <button class="edit-btn">Edit</button>
-                                            <button class="delete-btn">Delete</button>
-                                        </div>
-                                    </div>
-                                    <div class="dept-card d-flex gap-3 align-items-start">
-                                        <img src="{{ asset('admin/assets/img/Laboratories.svg') }}" />
-                                        <div class="dept-info">
-                                            <h5 class="font-weight-bolder">Alice Hughes</h5>
-                                            <p><strong>Patient ID:</strong> 15</p>
-                                            <p><strong>Gender:</strong> Female</p>
-                                            <p><strong>Report Name:</strong> Blood Test</p>
-                                            <p><strong>Date:</strong> 2023-10-01</p>
-                                            <p><strong>Time:</strong> 10:00 AM</p>
-                                        </div>
-                                        <button class="menu-btn" id="menu-btn">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-
-                                        <!-- Popover Menu -->
-                                        <div class="popover-menu" id="popoverMenu">
-                                            <button class="edit-btn">Edit</button>
-                                            <button class="delete-btn">Delete</button>
-                                        </div>
-                                    </div>
-                                    <div class="dept-card d-flex gap-3 align-items-start">
-                                        <img src="{{ asset('admin/assets/img/Laboratories.svg') }}" />
-                                        <div class="dept-info">
-                                            <h5 class="font-weight-bolder">Alice Hughes</h5>
-                                            <p><strong>Patient ID:</strong> 15</p>
-                                            <p><strong>Gender:</strong> Female</p>
-                                            <p><strong>Report Name:</strong> Blood Test</p>
-                                            <p><strong>Date:</strong> 2023-10-01</p>
-                                            <p><strong>Time:</strong> 10:00 AM</p>
-                                        </div>
-                                        <button class="menu-btn" id="menu-btn">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-
-                                        <!-- Popover Menu -->
-                                        <div class="popover-menu" id="popoverMenu">
-                                            <button class="edit-btn">Edit</button>
-                                            <button class="delete-btn">Delete</button>
-                                        </div>
-                                    </div>
-                                    <div class="dept-card d-flex gap-3 align-items-start">
-                                        <img src="{{ asset('admin/assets/img/Laboratories.svg') }}" />
-                                        <div class="dept-info">
-                                            <h5 class="font-weight-bolder">Alice Hughes</h5>
-                                            <p><strong>Patient ID:</strong> 15</p>
-                                            <p><strong>Gender:</strong> Female</p>
-                                            <p><strong>Report Name:</strong> Blood Test</p>
-                                            <p><strong>Date:</strong> 2023-10-01</p>
-                                            <p><strong>Time:</strong> 10:00 AM</p>
-                                        </div>
-                                        <button class="menu-btn" id="menu-btn">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-
-                                        <!-- Popover Menu -->
-                                        <div class="popover-menu" id="popoverMenu">
-                                            <button class="edit-btn">Edit</button>
-                                            <button class="delete-btn">Delete</button>
-                                        </div>
-                                    </div>
-                                    <div class="dept-card d-flex gap-3 align-items-start">
-                                        <img src="{{ asset('admin/assets/img/Laboratories.svg') }}" />
-                                        <div class="dept-info">
-                                            <h5 class="font-weight-bolder">Alice Hughes</h5>
-                                            <p><strong>Patient ID:</strong> 15</p>
-                                            <p><strong>Gender:</strong> Female</p>
-                                            <p><strong>Report Name:</strong> Blood Test</p>
-                                            <p><strong>Date:</strong> 2023-10-01</p>
-                                            <p><strong>Time:</strong> 10:00 AM</p>
-                                        </div>
-                                        <button class="menu-btn" id="menu-btn">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-
-                                        <!-- Popover Menu -->
-                                        <div class="popover-menu" id="popoverMenu">
-                                            <button class="edit-btn">Edit</button>
-                                            <button class="delete-btn">Delete</button>
-                                        </div>
-                                    </div>
-                                    <div class="dept-card d-flex gap-3 align-items-start">
-                                        <img src="{{ asset('admin/assets/img/Laboratories.svg') }}" />
-                                        <div class="dept-info">
-                                            <h5 class="font-weight-bolder">Alice Hughes</h5>
-                                            <p><strong>Patient ID:</strong> 15</p>
-                                            <p><strong>Gender:</strong> Female</p>
-                                            <p><strong>Report Name:</strong> Blood Test</p>
-                                            <p><strong>Date:</strong> 2023-10-01</p>
-                                            <p><strong>Time:</strong> 10:00 AM</p>
-                                        </div>
-                                        <button class="menu-btn" id="menu-btn">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-
-                                        <!-- Popover Menu -->
-                                        <div class="popover-menu" id="popoverMenu">
-                                            <button class="edit-btn">Edit</button>
-                                            <button class="delete-btn">Delete</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </section>
+                        
                     </div>
                     <div class="tab-pane fade" id="v-pills-appointment" role="tabpanel"
                         aria-labelledby="v-pills-appointment-tab">
@@ -999,30 +820,6 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="adddepartmentModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title">Add Department</h5>
-                        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-
-                    <div class="modal-body">
-                        <label class="form-check-label font-weight-bold">Department Name</label>
-                        <input type="text" class="form-control mt-2" placeholder="Department Name"
-                            aria-label="Department Name">
-                        <small id="errorMsg" class="text-danger d-none">Please select a doctor.</small>
-                    </div>
-
-                    <div class="d-flex justify-content-end p-3">
-                        <button type="button" id="doneBtn" class="btn bg-danger text-white">Add</button>
-                    </div>
-
-                </div>
-            </div>
-        </div>
         <div class="modal " id="labreportModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -1107,6 +904,68 @@
 @endsection
 @section('script')
 <script>
+    // ====== 1) Helper: bind menu handlers inside a scope (document or tab container) ======
+    function initHospitalMenus(scope) {
+                scope = scope || document;
+
+                // ===== menu three-dots buttons =====
+                scope.querySelectorAll('.menu-btn').forEach(function (btn) {
+                    if (btn.dataset.menuBound === '1') return;
+                    btn.dataset.menuBound = '1';
+
+                    btn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        let menu = btn.nextElementSibling;
+                        if (!menu || !menu.classList.contains('popover-menu')) {
+                            menu = btn.parentElement.querySelector('.popover-menu');
+                        }
+                        if (!menu) return;
+
+                        const isVisible = menu.style.display === 'block';
+
+                        document.querySelectorAll('.popover-menu').forEach(function (m) {
+                            m.style.display = 'none';
+                        });
+
+                        menu.style.display = isVisible ? 'none' : 'block';
+                    }, true);
+                });
+
+                // ===== EDIT buttons for department modal =====
+                scope.querySelectorAll('.edit-btn[data-bs-target="#editDeptModal"]').forEach(function (btn) {
+                    if (btn.dataset.editBound === '1') return;
+                    btn.dataset.editBound = '1';
+
+                    btn.addEventListener('click', function () {
+                        const id   = this.getAttribute('data-id');
+                        const name = this.getAttribute('data-name');
+
+                        const nameInput = document.getElementById('editDeptName');
+                        const form      = document.getElementById('editDeptForm');
+
+                        if (nameInput) {
+                            nameInput.value = name || '';
+                        }
+                        if (form && id) {
+                            form.action = "{{ route('admin.hospital.update_department', ':id') }}".replace(':id', id);
+                        }
+                    }, true);
+                });
+            }
+
+
+    // Close menus when clicking outside
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.popover-menu') && !e.target.closest('.menu-btn')) {
+            document.querySelectorAll('.popover-menu').forEach(function (m) {
+                m.style.display = 'none';
+            });
+        }
+    });
+
+    // ====== 2) Your existing tab + AJAX logic (kept, just calling initHospitalMenus) ======
     document.addEventListener('DOMContentLoaded', function () {
         const hospitalId = "{{ $hospital->id }}";
         const baseUrl = "{{ route('admin.hospital.detail', ['id' => ':id']) }}".replace(':id', hospitalId);
@@ -1128,7 +987,6 @@
             const container = document.querySelector(targetId);
             if (!container) return;
 
-            // If already loaded, skip
             if (container.dataset.loaded === 'true') return;
 
             container.innerHTML = '<div class="p-3 text-center text-muted">Loading...</div>';
@@ -1138,6 +996,8 @@
                 .then(html => {
                     container.innerHTML = html;
                     container.dataset.loaded = 'true';
+
+                    initHospitalMenus(container);
                 })
                 .catch(err => {
                     container.innerHTML = `<div class="p-3 text-danger">Failed to load ${tabName}.</div>`;
@@ -1152,14 +1012,14 @@
             const btn = document.getElementById(btnId);
             if (!btn) return;
 
-            // Prefer Bootstrap Tab API
             if (window.bootstrap && bootstrap.Tab) {
                 const tabInstance = bootstrap.Tab.getOrCreateInstance(btn);
                 tabInstance.show();
             } else {
-                // Fallback if Bootstrap JS is missing
-                document.querySelectorAll('#v-pills-tab .nav-link').forEach(el => el.classList.remove('active'));
-                document.querySelectorAll('#v-pills-tabContent .tab-pane').forEach(el => el.classList.remove('show', 'active'));
+                document.querySelectorAll('#v-pills-tab .nav-link')
+                    .forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('#v-pills-tabContent .tab-pane')
+                    .forEach(el => el.classList.remove('show', 'active'));
 
                 btn.classList.add('active');
                 const targetSelector = btn.getAttribute('data-bs-target');
@@ -1173,36 +1033,33 @@
         }
 
         function activateTabFromHash() {
-            const hash = window.location.hash;         // e.g. "#patients"
-            const key = (hash ? hash.substring(1) : 'overview');  // "patients" or default "overview"
+            const hash = window.location.hash;
+            const key = (hash ? hash.substring(1) : 'overview');
             showTabByKey(key);
         }
 
-        // 1) When any tab is shown (clicked or programmatic), lazy-load + update hash
         document.querySelectorAll('[data-bs-toggle="pill"]').forEach(tab => {
             tab.addEventListener('shown.bs.tab', function (e) {
-                const targetId = e.target.getAttribute('data-bs-target'); // e.g. "#v-pills-patients"
-                const tabName  = targetId.replace('#v-pills-', '');       // e.g. "patients"
+                const targetId = e.target.getAttribute('data-bs-target');
+                const tabName  = targetId.replace('#v-pills-', '');
 
-                // Update hash in URL so refresh keeps us here
                 const newUrl = window.location.pathname + window.location.search + '#' + tabName;
                 history.replaceState(null, '', newUrl);
 
-                // Lazy-load content
                 loadTabContent(tabName, targetId);
             });
         });
 
-        // 2) Initial activation AFTER Bootstrap did its own default stuff
         window.addEventListener('load', function () {
-            activateTabFromHash(); // will move from Overview -> correct tab if hash exists
+            activateTabFromHash();
         });
 
-        // 3) If hash is changed manually (rare), follow it
         window.addEventListener('hashchange', function () {
             activateTabFromHash();
         });
+        initHospitalMenus(document);
     });
 </script>
 @endsection
+
 

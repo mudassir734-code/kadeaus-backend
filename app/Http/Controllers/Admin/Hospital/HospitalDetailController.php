@@ -16,6 +16,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Patient;
 use App\Models\Pharmacist;
 use App\Models\Receptionist;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -71,11 +72,12 @@ class HospitalDetailController extends Controller
                     return view('admin.hospital.tabs.appointments.list', compact('patients', 'hospital'));
                 
                 case 'departments' :
-                    $departments = Department::with(['hospital.user'])
-                         ->where('hospital_id', $hospital->id)
-                         ->latest()
+                    $departments = Department::where(['hospital_id' => $hospital->id])
+                         ->withCount('doctors', 'nurses')
                          ->get();
                     return view('admin.hospital.tabs.department.list', compact('departments', 'hospital'));
+
+                case 'laboratories' :
             // Add more cases for other tabs...
 
             default:
@@ -83,7 +85,7 @@ class HospitalDetailController extends Controller
         }
     }
     
-    public function view($id)
+    public function view_doctor($id)
     {
         $doctor = Doctor::with('user', 'department', 'hospital.user', 'qualification')->find($id);
         if (!$doctor) {
@@ -92,6 +94,161 @@ class HospitalDetailController extends Controller
 
         return view('admin.hospital.tabs.doctor.view', compact('doctor'));
     }
+
+// ...
+
+    public function edit_doctor(Doctor $doctor)
+    {
+        // load related models
+        $doctor->load(['user', 'hospital', 'department', 'qualification']);
+
+        $hospitals = Hospital::all();
+
+        return view('admin.hospital.tabs.doctor.edit', compact('doctor', 'hospitals'));
+    }
+
+    public function update_doctor(Request $request, Doctor $doctor)
+    {
+        $doctor->load(['user', 'qualification']);
+        $user = $doctor->user;
+        $qualification = $doctor->qualification;
+
+        $validated = Validator::make($request->all(), [
+            // basic info for user
+            'name'       => 'required|string|max:255',
+            'email'      => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($user->id),
+            ],
+            'phone'      => 'required|string|max:50',
+            'dob'        => 'required|date',
+            'gender'     => 'required|string|max:10',
+            'address'    => 'required|string|max:255',
+            'city'       => 'required|string|max:100',
+            'state'      => 'required|string|max:100',
+            'zipcode'    => 'required|string|max:20',
+
+            // doctor relations
+            'hospital_id'        => 'required|exists:hospitals,id',
+            'department_id'      => 'required|exists:departments,id',
+            'speciality_hours'   => 'required|string|max:255',
+            'working_hours_from' => 'required|string|max:50',
+            'working_hours_to'   => 'required|string|max:50',
+
+            // qualification
+            'degree'              => 'required|string|max:255',
+            'institute'           => 'required|string|max:255',
+            'start_date'          => 'required|date',
+            'end_date'            => 'required|date|after_or_equal:start_date',
+            'total_marks_CGPA'    => 'required|string|max:50',
+            'achieved_marks_CGPA' => 'required|string|max:50',
+            // attachment is OPTIONAL on update
+            'attachment'          => 'nullable|file|mimes:pdf|max:4096',
+        ]);
+
+        if ($validated->fails()) {
+            Log::error('Doctor update validation failed', [
+                'errors' => $validated->errors()->toArray(),
+                'input'  => $request->all(),
+            ]);
+
+            return back()
+                ->withErrors($validated)
+                ->withInput();
+        }
+
+        $validated = $validated->validated();
+
+        try {
+            DB::beginTransaction();
+
+            // ========== UPDATE USER ==========
+            $user->update([
+                'name'    => $validated['name'],
+                'email'   => $validated['email'],
+                'phone'   => $validated['phone'] ?? null,
+                'dob'     => $validated['dob'] ?? null,
+                'gender'  => $validated['gender'] ?? null,
+                'address' => $validated['address'] ?? null,
+                'city'    => $validated['city'] ?? null,
+                'state'   => $validated['state'] ?? null,
+                'zipcode' => $validated['zipcode'] ?? null,
+            ]);
+
+            // ========== UPDATE DOCTOR ==========
+            $doctor->update([
+                'hospital_id'        => $validated['hospital_id'],
+                'department_id'      => $validated['department_id'],
+                'speciality_hours'   => $validated['speciality_hours'] ?? null,
+                'working_hours_from' => $validated['working_hours_from'] ?? null,
+                'working_hours_to'   => $validated['working_hours_to'] ?? null,
+            ]);
+
+            // ========== HANDLE ATTACHMENT (BASE64) ==========
+            if ($request->hasFile('attachment')) {
+                $pdfData = base64_encode(
+                    file_get_contents($request->file('attachment')->getRealPath())
+                );
+            } else {
+                // keep old attachment if exists
+                $pdfData = $qualification ? $qualification->attachment : null;
+            }
+
+            // ========== UPDATE / CREATE QUALIFICATION ==========
+            if ($qualification) {
+                $qualification->update([
+                    'degree'              => $validated['degree'] ?? null,
+                    'institute'           => $validated['institute'] ?? null,
+                    'start_date'          => $validated['start_date'] ?? null,
+                    'end_date'            => $validated['end_date'] ?? null,
+                    'total_marks_CGPA'    => $validated['total_marks_CGPA'] ?? null,
+                    'achieved_marks_CGPA' => $validated['achieved_marks_CGPA'] ?? null,
+                    'attachment'          => $pdfData,
+                    'hospital_id'         => $validated['hospital_id'],
+                    'user_id'             => $user->id,
+                ]);
+            } else {
+                Qualification::create([
+                    'degree'              => $validated['degree'] ?? null,
+                    'institute'           => $validated['institute'] ?? null,
+                    'start_date'          => $validated['start_date'] ?? null,
+                    'end_date'            => $validated['end_date'] ?? null,
+                    'total_marks_CGPA'    => $validated['total_marks_CGPA'] ?? null,
+                    'achieved_marks_CGPA' => $validated['achieved_marks_CGPA'] ?? null,
+                    'attachment'          => $pdfData,
+                    'hospital_id'         => $validated['hospital_id'],
+                    'doctor_id'           => $doctor->id,
+                    'user_id'             => $user->id,
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect("admin/hospital/detail/{$validated['hospital_id']}#doctor");
+            flash('success', 'Doctor updated successfully!');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            Log::error('Doctor update failed: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return back()->withInput()->with('error', 'An error occurred while updating the doctor. Please try again.');
+        }
+    }
+
+    public function destroy_doctor($doctor)
+    {
+        $doctor = Doctor::findOrFail($doctor);
+        $hospitalId = $doctor->hospital_id;
+        $doctor->delete();
+
+        flash()->success('Doctor deleted successfully!');
+        return redirect("admin/hospital/detail/{$hospitalId}#doctor");
+    }
+
 
     public function add_nurse()
     {
@@ -201,6 +358,12 @@ class HospitalDetailController extends Controller
             return redirect()->back()->with('error', 'Nurse not found');
         }
         return view('admin.hospital.tabs.nurse.view', compact('nurse'));
+    }
+
+    public function getNurseDepartments($id)
+    {
+        $departments = Department::where('hospital_id', $id)->get(['id', 'name']);
+        return response()->json($departments);
     }
 
     public function create_receptionist()    
@@ -371,12 +534,54 @@ class HospitalDetailController extends Controller
         return view('admin.hospital.tabs.pharmacist.view', compact('pharmacist'));
     }
 
+    public function getPharmacistDepartments($id)
+    {
+        $departments = Department::where('hospital_id', $id)->get(['id', 'name']);
+        return response()->json($departments);
+    }
 
-    // Deparment Tab Logic can be added here 
+    public function store_department(Request $request)
+    {
+        $request->validate([
+            'hospital_id' => 'required|exists:hospitals,id',
+            'name' => 'required|string|max:255',
+        ]);
 
-    // public function department_list($id)
-    // {
+        Department::create([
+            'hospital_id' => $request->hospital_id,
+            'user_id' => Auth::id(),
+            'name' => $request->name,
+        ]);
 
-    // }
+        return back()->with('success', 'Department added successfully.');
+    }
+
+    public function edit_department($id)
+    {
+        $department = Department::findOrFail($id);
+        return response()->json($department);
+    }
+
+    public function update_department(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $department = Department::findOrFail($id);
+        $department->update([
+            'name' => $request->name,
+        ]);
+
+        return back()->with('success', 'Department updated successfully.');
+    }
+
+    public function delete_department($id)
+    {
+        $department = Department::findOrFail($id);
+        $department->delete();
+
+        return back()->with('success', 'Department deleted successfully.');
+    }
 
 }

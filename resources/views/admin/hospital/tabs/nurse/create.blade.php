@@ -56,7 +56,7 @@
 
             <!-- Basic Details -->
             <h6 class="section-title">Basic Details</h6>
-            <form action="{{ route('admin.hospital.store_nurse') }}" method="POST" enctype="multipart/form-data">
+            <form id="nurse_create_form" action="{{ route('admin.hospital.store_nurse') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row g-3">
                 <div class="col-md-6">
@@ -71,45 +71,45 @@
 
                 <div class="col-md-6">
                     <label class="form-label">Phone Number</label>
-                    <input name="phone" type="text" class="form-control" placeholder="Enter Phone Number">
+                    <input name="phone" type="text" class="form-control" placeholder="Enter Phone Number" required>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label">Date Of Birth</label>
-                    <input name="dob" type="date" class="form-control">
+                    <input name="dob" type="date" class="form-control" required>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label">Gender</label>
-                    <select class="form-control" name="gender" id="choices-gender-edit">
+                    <select class="form-control" name="gender" id="choices-gender-edit" required>
                         <option value="">Select Gender</option>
                         <option>Male</option><option>Female</option><option>Other</option>
                     </select>
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Hospital</label>
-                    <select class="form-control" name="hospital_id" id="choices-hospital-edit" required>
-                        <option value="">Select Hospital</option>
-                        @foreach($hospitals as $h)
-                            <option value="{{ $h->id }}">{{ $h->user?->name ?? ('Hospital #'.$h->id) }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                        <label class="form-label">Hospital</label>
+                        <select id="hospitalSelect" name="hospital_id" class="form-control @error('hospital_id') is-invalid @enderror" required>
+                            <option value="">Select Hospital</option>
+                            @foreach ($hospitals as $hospital)
+                                <option value="{{ $hospital->id }}">{{ $hospital->user?->name ?? 'N/A' }}</option>
+                            @endforeach
+                        </select>
+                        @error('hospital_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
                 <div class="col-md-6">
                     <label class="form-label">Department</label>
-                    <select class="form-control" name="department_id" id="choices-department-edit" required>
-                        <option value="">Select Department</option>
-                        @foreach($departments as $d)
-                            <option value="{{ $d->id }}" data-hospital="{{ $d->hospital_id }}">{{ $d->name }}</option>
-                        @endforeach
+                    <select id="departmentSelect" name="department_id" class="form-select" required>
+                        <option value="">Please select hospital first</option>
                     </select>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label">Working Hours</label>
-                    <input name="working_hours" type="text" class="form-control" placeholder="Enter working hours">
+                    <input name="working_hours" type="text" class="form-control" placeholder="Enter working hours" required>
                 </div>
             </div>
 
@@ -119,22 +119,22 @@
             <div class="row g-3">
                 <div class="col-12">
                     <label class="form-label">Address 1</label>
-                    <input name="address" type="text" class="form-control" placeholder="Enter Address">
+                    <input name="address" type="text" class="form-control" placeholder="Enter Address" required>
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">City</label>
-                    <input name="city" type="text" class="form-control" placeholder="Enter City">
+                    <input name="city" type="text" class="form-control" placeholder="Enter City" required>
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">State</label>
-                    <input name="state" type="text" class="form-control" placeholder="Enter State">
+                    <input name="state" type="text" class="form-control" placeholder="Enter State" required>
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Zipcode</label>
-                    <input name="zipcode" type="text" class="form-control" placeholder="Enter Zipcode">
+                    <input name="zipcode" type="text" class="form-control" placeholder="Enter Zipcode" required >
                 </div>
             </div>
 
@@ -150,34 +150,34 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label">Degree</label>
-                    <input name="degree" type="text" class="form-control" placeholder="Enter Degree Name">
+                    <input name="degree" type="text" class="form-control" placeholder="Enter Degree Name" required>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Institute</label>
-                    <input name="institute" type="text" class="form-control" placeholder="Enter Institute">
+                    <input name="institute" type="text" class="form-control" placeholder="Enter Institute" required>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Start Date</label>
-                    <input name="start_date" type="date" class="form-control">
+                    <input name="start_date" type="date" class="form-control" required>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">End Date</label>
-                    <input name="end_date" type="date" class="form-control">
+                    <input name="end_date" type="date" class="form-control" required>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Total Marks / CGPA</label>
-                    <input name="total_marks_CGPA" type="text" class="form-control" placeholder="">
+                    <input name="total_marks_CGPA" type="text" class="form-control" placeholder="" required>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Achieved Marks / CGPA</label>
-                    <input name="achieved_marks_CGPA" type="text" class="form-control" placeholder="">
+                    <input name="achieved_marks_CGPA" type="text" class="form-control" placeholder="" required>
                 </div>
                 <div class="col-12">
                     <label class="form-label">Attachment</label>
                     <div class="file-upload">
                         <label class="choose-file-btn">
                             <i class="fa-solid fa-cloud-arrow-up"></i> Choose File
-                            <input name="attachment" type="file" hidden>
+                            <input name="attachment" type="file" hidden required>
                         </label>
                         <div class="file-preview">
                             <i class="fa-solid fa-file-pdf"></i> Attachment.pdf
@@ -351,49 +351,70 @@
     </div>
 @endsection
 @section('script')
-    <script>
-        if (document.getElementById('choices-doctor-edit')) {
-            var element = document.getElementById('choices-doctor-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
-            });
-        };
-        if (document.getElementById('choices-gender-edit')) {
-            var element = document.getElementById('choices-gender-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
-            });
-        };
-        if (document.getElementById('choices-hospital-edit')) {
-            var element = document.getElementById('choices-hospital-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
-            });
-        };
-        if (document.getElementById('choices-department-edit')) {
-            var element = document.getElementById('choices-department-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
-            });
-        };
-    </script>
-
-    <script>
-        if (document.getElementById('choices-category-edit')) {
-            var element = document.getElementById('choices-category-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
-            });
-        };
-    </script>
-
-    <script>
-        var win = navigator.platform.indexOf('Win') > -1;
-        if (win && document.querySelector('#sidenav-scrollbar')) {
-            var options = {
-                damping: '0.5'
+<script>
+    $(document).ready(function(){
+        $('#nurse_create_form').validate({
+            rules:{
+                name: {
+                    required: true,
+                    minlength: 3
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                phone: {
+                    required: true,
+                    digits: true
+                },
+                dob: {
+                    required: true,
+                    date: true
+                }
             }
-            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-        }
-    </script>
+    });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const hospitalSelect = document.getElementById('hospitalSelect');
+        const departmentSelect = document.getElementById('departmentSelect');
+
+        hospitalSelect.addEventListener('change', function () {
+            const hospitalId = this.value;
+
+            // Reset department dropdown
+            departmentSelect.innerHTML = '<option value="">Loading...</option>';
+
+            if (!hospitalId) {
+                departmentSelect.innerHTML = '<option value="">Please select hospital first</option>';
+                return;
+            }
+
+            // Fetch departments for selected hospital
+            fetch(`/admin/hospital/tab/departments/${hospitalId}`)
+                .then(response => response.json())
+                .then(data => {
+                    departmentSelect.innerHTML = '';
+
+                    if (data.length === 0) {
+                        departmentSelect.innerHTML = '<option value="">No departments found</option>';
+                        return;
+                    }
+
+                    // Populate department dropdown
+                    departmentSelect.innerHTML = '<option value="">Select Department</option>';
+                    data.forEach(dept => {
+                        const option = document.createElement('option');
+                        option.value = dept.id;
+                        option.textContent = dept.name;
+                        departmentSelect.appendChild(option);
+                    });
+                })
+                .catch(() => {
+                    departmentSelect.innerHTML = '<option value="">Error loading departments</option>';
+                });
+        });
+    });
+</script>
 @endsection

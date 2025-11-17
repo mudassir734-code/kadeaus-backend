@@ -90,8 +90,14 @@
                                 </span>
                             </label>
                             <div id="departmentsContainer">
-                                @foreach(old('departments', ['']) as $dept)
-                                    <input name="departments[]" type="text" class="form-control mb-2" placeholder="Enter Department" value="{{ $dept }}">
+                                @php
+                                    $oldDepartments = old('departments');
+                                    $departments = $oldDepartments ?? $hospital->department->pluck('name')->toArray();
+                                @endphp
+
+                                @foreach($departments as $dept)
+                                    <input name="departments[]" type="text" class="form-control mb-2"
+                                        placeholder="Enter Department" value="{{ $dept }}">
                                 @endforeach
                             </div>
                         </div>
@@ -131,7 +137,8 @@
             </div>
 
 
-        </div>   
+        </div>
+           
 @endsection
 @section('script')
      <script>

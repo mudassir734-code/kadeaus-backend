@@ -1,10 +1,10 @@
 <!--   Core JS Files   -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('admin/assets/js/core/appointments.js') }}"></script>
     <script src="{{ asset('admin/assets/js/plugins/choices.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/core/popper.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/core/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('admin/cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js') }}"></script>
     <script src="{{ asset('admin/maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/plugins/dropzone.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
@@ -17,6 +17,7 @@
     <script src="{{ asset('admin/assets/js/plugins/threejs.js') }}"></script>
     <script src="{{ asset('admin/assets/js/plugins/orbit-controls.js') }}"></script>
     <script src="{{ asset('admin/assets/js/plugins/datatables.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.js"></script>
     <script>
         var calendar = new FullCalendar.Calendar(document.getElementById("calendar"), {
             contentHeight: 'auto',

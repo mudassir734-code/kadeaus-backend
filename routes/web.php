@@ -50,21 +50,31 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin','as' => 'admin.'], f
 
     Route::group(['prefix' => 'hospital/tab'], function() {
         Route::get('detail/{id}', [HospitalDetailController::class, 'detail'])->name('hospital.detail');
-        Route::get('doctor/view/{id}', [HospitalDetailController::class, 'view'])->name('hospital.view');
+        Route::get('doctor/view/{id}', [HospitalDetailController::class, 'view_doctor'])->name('hospital.view');
+        Route::get('doctor/{doctor}/edit', [HospitalDetailController::class, 'edit_doctor'])->name('hospital.edit_doctor');
+        Route::put('doctor/{doctor}', [HospitalDetailController::class, 'update_doctor'])->name('hospital.update_doctor');
+        Route::delete('doctor/{doctor}', [HospitalDetailController::class, 'destroy_doctor'])->name('hospital.destroy_doctor');
         Route::get('nurse/list', [HospitalDetailController::class, 'nurse_list'])->name('hospital.nurse_list');
         Route::get('add/nurse', [HospitalDetailController::class, 'add_nurse'])->name('hospital.add_nurse');
         Route::post('store/nurse', [HospitalDetailController::class, 'store_nurse'])->name('hospital.store_nurse');
         Route::get('nurse/view/{id}', [HospitalDetailController::class, 'nurse_view'])->name('hospital.nurse_view');
+        Route::get('departments/{id}', [HospitalDetailController::class, 'getNurseDepartments'])->name('hospital.departments');
         Route::get('receptionist/list', [HospitalDetailController::class, 'receptionist_list'])->name('hospital.receptionist_list');
         Route::get('create/receptionist', [HospitalDetailController::class, 'create_receptionist'])->name('hospital.create_receptionist');
         Route::post('store/receptionist', [HospitalDetailController::class, 'store_receptionist'])->name('hospital.store_receptionist');
         Route::get('receptionist/view/{id}', [HospitalDetailController::class, 'view_receptionist'])->name('hospital.view_receptionist');
         Route::get('pharmacist/list', [HospitalDetailController::class, 'pharmacist_list'])->name('hospital.pharmacist_list');
         Route::get('create/pharmacist', [HospitalDetailController::class, 'create_pharmacist'])->name('hospital.create_pharmacist');
+        Route::get('pharmacist/departments/{id}', [HospitalDetailController::class, 'getPharmacistDepartments'])->name('hospital.pharmacist_departments');
         Route::post('store/pharmacist', [HospitalDetailController::class, 'store_pharmacist'])->name('hospital.store_pharmacist');
         Route::get('view/pharmacist/{id}', [HospitalDetailController::class, 'view_pharmacist'])->name('hospital.view_pharmacist');
         Route::get('patient/list', [HospitalDetailController::class, 'patient_list'])->name('hospital.patient_list');
         Route::get('department/list', [HospitalDetailController::class, 'department_list'])->name('hospital.department_list');
+        Route::post('store/department', [HospitalDetailController::class, 'store_department'])->name('hospital.store_department');
+        Route::get('edit/department/{id}', [HospitalDetailController::class, 'edit_department'])->name('hospital.edit_department');
+        Route::post('update/department/{id}', [HospitalDetailController::class, 'update_department'])->name('hospital.update_department');
+        Route::post('delete/department/{id}', [HospitalDetailController::class, 'delete_department'])->name('hospital.delete_department');
+        Route::get('laboratory/list', [HospitalDetailController::class, 'laboratory_list'])->name('hospital.laboratory_list');
     });
 
     // Department Routes

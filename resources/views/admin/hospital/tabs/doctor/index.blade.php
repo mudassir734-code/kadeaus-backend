@@ -1,8 +1,4 @@
-<style>
-    .fl-wrapper{
-        z-index: 999999 !important;
-    }
-</style>
+
     <section class="appointments-section">
         <div class="appointments-header">
             <h4>Doctor</h4>

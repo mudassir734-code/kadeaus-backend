@@ -66,7 +66,7 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('admin.hospital.store_receptionist') }}" method="POST">
+            <form id="receptionist_create_form" action="{{ route('admin.hospital.store_receptionist') }}" method="POST">
                 @csrf
                 <div class="row g-3">
                     <!-- Patient Name -->
@@ -108,7 +108,7 @@
                     <!-- Gender -->
                      <div class="col-md-6">
                         <label class="form-label">Gender</label>
-                        <select class="form-control @error('gender') is-invalid @enderror" name="gender" id="choices-gender-edit">
+                        <select class="form-control @error('gender') is-invalid @enderror" name="gender" id="choices-gender-edit" required>
                             <option value="">Select Gender</option>
                             <option value="Male"   @selected(old('gender')==='Male')>Male</option>
                             <option value="Female" @selected(old('gender')==='Female')>Female</option>
@@ -161,6 +161,70 @@
     </div>
 @endsection
 @section('script')
+    <script>
+        $(document).ready(function() {
+            $("#receptionist_create_form").validate({
+                rules: {
+                    name: {
+                        required: true,
+                        maxlength: 255
+                    },
+                    email: {
+                        required: true,
+                        email: true,
+                        maxlength: 255
+                    },
+                    phone: {
+                        required: true,
+                        maxlength: 20
+                    },
+                    dob: {
+                        required: true,
+                        date: true
+                    },
+                    gender: {
+                        required: true
+                    },
+                    role_id: {
+                        required: true
+                    },
+                    hospital_id: {
+                        required: true
+                    }
+                },
+                messages: {
+                    name: {
+                        required: "Please enter the name",
+                        maxlength: "Name cannot exceed 255 characters"
+                    },
+                    email: {
+                        required: "Please enter the email",
+                        email: "Please enter a valid email address",
+                        maxlength: "Email cannot exceed 255 characters"
+                    },
+                    phone: {
+                        required: "Please enter the phone number",
+                        maxlength: "Phone number cannot exceed 20 characters"
+                    },
+                    dob: {
+                        required: "Please enter the date of birth",
+                        date: "Please enter a valid date"
+                    },
+                    gender: {
+                        required: "Please select the gender"
+                    },
+                    role_id: {
+                        required: "Please select the role"
+                    },
+                    hospital_id: {
+                        required: "Please select the hospital"
+                    },
+                    
+                }
+            });
+        });
+    </script>
+
     <script>
         if (document.getElementById('choices-role-edit')) {
             var element = document.getElementById('choices-role-edit');

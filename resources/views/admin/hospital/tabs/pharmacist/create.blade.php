@@ -66,13 +66,13 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('admin.hospital.store_pharmacist') }}" method="POST" enctype="multipart/form-data">
+            <form id="pharmacist_create_form" action="{{ route('admin.hospital.store_pharmacist') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row g-3">
                     <!-- Patient Name -->
                     <div class="col-md-6">
                         <label class="form-label">Name</label>
-                        <input name="name" type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Enter Name">
+                        <input name="name" type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Enter Name" required>
                         @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -81,7 +81,7 @@
                     <!-- Email -->
                     <div class="col-md-6">
                         <label class="form-label">Email</label>
-                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter Email">
+                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter Email" required>
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -90,7 +90,7 @@
                     <!-- Phone -->
                     <div class="col-md-6">
                         <label class="form-label">Phone Number</label>
-                        <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Enter Phone Number">
+                        <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Enter Phone Number" required>
                         @error('phone')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -99,7 +99,7 @@
                     <!-- DOB -->
                     <div class="col-md-6">
                         <label class="form-label">Date Of Birth</label>
-                        <input type="date" name="dob" class="form-control  @error('dob') is-invalid @enderror">
+                        <input type="date" name="dob" class="form-control  @error('dob') is-invalid @enderror" required>
                         @error('dob')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -108,7 +108,7 @@
                     <!-- Gender -->
                     <div class="col-md-6">
                         <label class="form-label">Gender</label>
-                        <select class="form-control  @error('gender') is-invalid @enderror" name="gender" id="choices-gender-edit">
+                        <select class="form-control  @error('gender') is-invalid @enderror" name="gender" id="choices-gender-edit" required>
                             <option value="">Select Gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -121,33 +121,27 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Hospital</label>
-                        <select class="form-control @error('hospital_id') is-invalid @enderror" name="hospital_id" id="choices-hospital-edit">
+                        <select id="hospitalSelect" name="hospital_id" class="form-control @error('hospital_id') is-invalid @enderror" required>
                             <option value="">Select Hospital</option>
                             @foreach ($hospitals as $hospital)
-                            <option value="{{ $hospital->id }}">{{ $hospital->user?->name ?? '-' }}</option>
+                                <option value="{{ $hospital->id }}">{{ $hospital->user?->name ?? 'N/A' }}</option>
                             @endforeach
                         </select>
                         @error('hospital_id')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    <!-- City -->
+                    <!-- Department -->
                     <div class="col-md-6">
                         <label class="form-label">Department</label>
-                        <select class="form-control  @error('department_id') is-invalid @enderror" name="department_id" id="choices-department-edit">
-                            <option value="">Select Department</option>
-                            @foreach ($departments as $department)
-                            <option value="{{ $department->id }}">{{ $department->name ?? '-' }}</option>
-                            @endforeach
+                        <select id="departmentSelect" name="department_id" class="form-select" required>
+                            <option value="">Please select hospital first</option>
                         </select>
-                        @error('department_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
                     </div>
                     <!-- Appointment Date -->
                     <div class="col-md-6">
                         <label class="form-label">Working Hours</label>
-                        <input type="text" name="working_hours" class="form-control @error('working_hours') is-invalid @enderror" placeholder="Enter working hours">
+                        <input type="text" name="working_hours" class="form-control @error('working_hours') is-invalid @enderror" placeholder="Enter working hours" required>
                         @error('working_hours')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -163,7 +157,7 @@
                     <!-- Address -->
                     <div class="col-12">
                         <label class="form-label">Address 1</label>
-                        <input type="text" name="address" class="form-control @error('address') is-invalid @enderror" placeholder="Enter Address">
+                        <input type="text" name="address" class="form-control @error('address') is-invalid @enderror" placeholder="Enter Address" required>
                         @error('address')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -172,7 +166,7 @@
                     <!-- City -->
                     <div class="col-md-4">
                         <label class="form-label">City</label>
-                        <input type="text" name="city" class="form-control @error('city') is-invalid @enderror" placeholder="Enter City">
+                        <input type="text" name="city" class="form-control @error('city') is-invalid @enderror" placeholder="Enter City" required>
                         @error('city')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -181,7 +175,7 @@
                     <!-- State -->
                     <div class="col-md-4">
                         <label class="form-label">State</label>
-                        <input type="text" name="state" class="form-control @error('state') is-invalid @enderror" placeholder="Enter State">
+                        <input type="text" name="state" class="form-control @error('state') is-invalid @enderror" placeholder="Enter State" required>
                         @error('state')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -190,7 +184,7 @@
                     <!-- Zipcode -->
                     <div class="col-md-4">
                         <label class="form-label">Zipcode</label>
-                        <input type="text" name="zipcode" class="form-control @error('zipcode') is-invalid @enderror" placeholder="Enter Zipcode">
+                        <input type="text" name="zipcode" class="form-control @error('zipcode') is-invalid @enderror" placeholder="Enter Zipcode" required>
                         @error('zipcode')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -208,42 +202,42 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Degree</label>
-                            <input type="text" name="degree" class="form-control @error('degree') is-invalid @enderror" placeholder="Enter Degree Name">
+                            <input type="text" name="degree" class="form-control @error('degree') is-invalid @enderror" placeholder="Enter Degree Name" required>
                             @error('degree')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Institute</label>
-                            <input type="text" name="institute" class="form-control @error('institute') is-invalid @enderror" placeholder="Enter Institute">
+                            <input type="text" name="institute" class="form-control @error('institute') is-invalid @enderror" placeholder="Enter Institute" required>
                             @error('institute')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Start Date</label>
-                            <input type="date" name="start_date" class="form-control @error('start_date') is-invalid @enderror">
+                            <input type="date" name="start_date" class="form-control @error('start_date') is-invalid @enderror" required>
                             @error('start_date')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">End Date</label>
-                            <input type="date" name="end_date" class="form-control @error('end_date') is-invalid @enderror">
+                            <input type="date" name="end_date" class="form-control @error('end_date') is-invalid @enderror" required>
                             @error('end_date')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Total Marks / CGPA</label>
-                            <input type="text" name="total_marks_CGPA" class="form-control @error('total_marks_CGPA') is-invalid @enderror" placeholder="04/01/2014">
+                            <input type="text" name="total_marks_CGPA" class="form-control @error('total_marks_CGPA') is-invalid @enderror" placeholder="04/01/2014" required>
                             @error('total_marks_CGPA')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Achieved Marks / CGPA</label>
-                            <input type="text" name="achieved_marks_CGPA" class="form-control @error('achieved_marks_CGPA') is-invalid @enderror" placeholder="04/01/2014">
+                            <input type="text" name="achieved_marks_CGPA" class="form-control @error('achieved_marks_CGPA') is-invalid @enderror" placeholder="04/01/2014" required>
                             @error('achieved_marks_CGPA')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -253,7 +247,7 @@
                         <div class="file-upload">
                             <label class="choose-file-btn">
                                 <i class="fa-solid fa-cloud-arrow-up"></i> Choose File
-                                <input name="attachment" class="@error('attachment') is-invalid @enderror" type="file" hidden>
+                                <input name="attachment" class="@error('attachment') is-invalid @enderror" type="file" hidden required>
                             </label>
                             <div class="file-preview">
                                 <i class="fa-solid fa-file-pdf"></i> Attachment.pdf
@@ -277,42 +271,105 @@
 @endsection
 @section('script')
     <script>
-        if (document.getElementById('choices-doctor-edit')) {
-            var element = document.getElementById('choices-doctor-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
+        $(document).ready(function() {
+            $("#pharmacist_create_form").validate({
+                rules: {
+                    name: {
+                        required: true,
+                        maxlength: 255
+                    },
+                    email: {
+                        required: true,
+                        email: true,
+                        maxlength: 255
+                    },
+                    phone: {
+                        required: true,
+                        maxlength: 20
+                    },
+                    dob: {
+                        required: true,
+                        date: true
+                    },
+                    gender: {
+                        required: true
+                    },
+                    role_id: {
+                        required: true
+                    },
+                    hospital_id: {
+                        required: true
+                    }
+                },
+                messages: {
+                    name: {
+                        required: "Please enter the name",
+                        maxlength: "Name cannot exceed 255 characters"
+                    },
+                    email: {
+                        required: "Please enter the email",
+                        email: "Please enter a valid email address",
+                        maxlength: "Email cannot exceed 255 characters"
+                    },
+                    phone: {
+                        required: "Please enter the phone number",
+                        maxlength: "Phone number cannot exceed 20 characters"
+                    },
+                    dob: {
+                        required: "Please enter the date of birth",
+                        date: "Please enter a valid date"
+                    },
+                    gender: {
+                        required: "Please select the gender"
+                    },
+                    hospital_id: {
+                        required: "Please select the hospital"
+                    },
+                    
+                }
             });
-        };
-        if (document.getElementById('choices-hospital-edit')) {
-            var element = document.getElementById('choices-hospital-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
-            });
-        };
-        if (document.getElementById('choices-department-edit')) {
-            var element = document.getElementById('choices-department-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
-            });
-        };
+        });
     </script>
-
     <script>
-        if (document.getElementById('choices-category-edit')) {
-            var element = document.getElementById('choices-category-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
-            });
-        };
-    </script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const hospitalSelect = document.getElementById('hospitalSelect');
+        const departmentSelect = document.getElementById('departmentSelect');
 
-    <script>
-        var win = navigator.platform.indexOf('Win') > -1;
-        if (win && document.querySelector('#sidenav-scrollbar')) {
-            var options = {
-                damping: '0.5'
+        hospitalSelect.addEventListener('change', function () {
+            const hospitalId = this.value;
+
+            // Reset department dropdown
+            departmentSelect.innerHTML = '<option value="">Loading...</option>';
+
+            if (!hospitalId) {
+                departmentSelect.innerHTML = '<option value="">Please select hospital first</option>';
+                return;
             }
-            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-        }
-    </script>
+
+            // Fetch departments for selected hospital
+            fetch(`/admin/hospital/tab/pharmacist/departments/${hospitalId}`)
+                .then(response => response.json())
+                .then(data => {
+                    departmentSelect.innerHTML = '';
+
+                    if (data.length === 0) {
+                        departmentSelect.innerHTML = '<option value="">No departments found</option>';
+                        return;
+                    }
+
+                    // Populate department dropdown
+                    departmentSelect.innerHTML = '<option value="">Select Department</option>';
+                    data.forEach(dept => {
+                        const option = document.createElement('option');
+                        option.value = dept.id;
+                        option.textContent = dept.name;
+                        departmentSelect.appendChild(option);
+                    });
+                })
+                .catch(() => {
+                    departmentSelect.innerHTML = '<option value="">Error loading departments</option>';
+                });
+        });
+    });
+</script>
 @endsection

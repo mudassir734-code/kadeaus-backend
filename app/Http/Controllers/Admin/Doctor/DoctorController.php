@@ -32,7 +32,7 @@ class DoctorController extends Controller
 
     public function store(Request $request)
     {
-         $validated = Validator::make($request->all(), [
+        $validated = Validator::make($request->all(), [
             // basic info for user
             'name'       => 'required|string|max:255',
             'email'      => 'required|email|max:255',
@@ -57,22 +57,22 @@ class DoctorController extends Controller
             'start_date'         => 'required|date',
             'end_date'           => 'required|date|after_or_equal:start_date',
             'total_marks_CGPA'   => 'required|string|max:50',
-            'achieved_marks_CGPA'=> 'required|string|max:50',
+            'achieved_marks_CGPA' => 'required|string|max:50',
             'attachment'         => 'required|file|mimes:pdf|max:4096',
         ]);
         if ($validated->fails()) {
-        Log::error('Doctor store validation failed', [
-            'errors' => $validated->errors()->toArray(),
-            'input'  => $request->all(),
-        ]);
+            Log::error('Doctor store validation failed', [
+                'errors' => $validated->errors()->toArray(),
+                'input'  => $request->all(),
+            ]);
 
-        return back()
-            ->withErrors($validated)
-            ->withInput();
-    }
+            return back()
+                ->withErrors($validated)
+                ->withInput();
+        }
 
-    // Continue if validation passes
-    $validated = $validated->validated();
+        // Continue if validation passes
+        $validated = $validated->validated();
 
         try {
             DB::beginTransaction();
@@ -130,12 +130,11 @@ class DoctorController extends Controller
             return redirect()
                 ->route('admin.doctor')
                 ->with('success', 'Doctor created successfully!');
-
         } catch (\Throwable $e) {
             DB::rollBack();
 
             // Optional: Log for debugging
-            Log::error('Doctor creation failed: '.$e->getMessage(), [
+            Log::error('Doctor creation failed: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString(),
             ]);
 
@@ -155,5 +154,4 @@ class DoctorController extends Controller
         $departments = Department::where('hospital_id', $id)->get(['id', 'name']);
         return response()->json($departments);
     }
-
 }

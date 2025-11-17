@@ -68,12 +68,12 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('admin.doctors.store') }}" method="POST" enctype="multipart/form-data">
+            <form id="doctor_craete_form" action="{{ route('admin.doctors.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">Name</label>
-                        <input name="name" type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Enter Name">
+                        <input name="name" type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Enter Name" required>
                         @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -81,7 +81,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Email</label>
-                        <input name="email" type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter Email">
+                        <input name="email" type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter Email" required>
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -89,7 +89,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Phone</label>
-                        <input name="phone" type="text" class="form-control @error('phone') is-invalid @enderror" placeholder="Enter Phone">
+                        <input name="phone" type="text" class="form-control @error('phone') is-invalid @enderror" placeholder="Enter Phone" required>
                         @error('phone')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -97,7 +97,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Date of Birth</label>
-                        <input name="dob" type="date" class="form-control @error('dob') is-invalid @enderror">
+                        <input name="dob" type="date" class="form-control @error('dob') is-invalid @enderror" required>
                         @error('dob')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -105,7 +105,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Gender</label>
-                        <select name="gender" class="form-control @error('gender') is-invalid @enderror">
+                        <select name="gender" class="form-control @error('gender') is-invalid @enderror" required>
                             <option value="">Select Gender</option>
                             <option>Male</option>
                             <option>Female</option>
@@ -118,7 +118,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Hospital</label>
-                        <select id="hospitalSelect" name="hospital_id" class="form-control @error('hospital_id') is-invalid @enderror">
+                        <select id="hospitalSelect" name="hospital_id" class="form-control @error('hospital_id') is-invalid @enderror" required>
                             <option value="">Select Hospital</option>
                             @foreach ($hospitals as $hospital)
                                 <option value="{{ $hospital->id }}">{{ $hospital->user?->name ?? 'N/A' }}</option>
@@ -131,7 +131,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Department</label>
-                        <select id="departmentSelect" name="department_id" class="form-select">
+                        <select id="departmentSelect" name="department_id" class="form-select" required>
                             <option value="">Please select hospital first</option>
                         </select>
                     </div>
@@ -139,7 +139,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Speciality Hours</label>
-                        <input name="speciality_hours" type="time" class="form-control @error('speciality_hours') is-invalid @enderror">
+                        <input name="speciality_hours" type="time" class="form-control @error('speciality_hours') is-invalid @enderror" required>
                         @error('speciality_hours')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -147,7 +147,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Working Hours (From)</label>
-                        <input name="working_hours_from" type="time" class="form-control @error('working_hours_from') is-invalid @enderror">
+                        <input name="working_hours_from" type="time" class="form-control @error('working_hours_from') is-invalid @enderror" required>
                         @error('working_hours_from')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -155,7 +155,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Working Hours (To)</label>
-                        <input name="working_hours_to" type="time" class="form-control @error('working_hours_to') is-invalid @enderror">
+                        <input name="working_hours_to" type="time" class="form-control @error('working_hours_to') is-invalid @enderror" required> 
                         @error('working_hours_to')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -167,28 +167,28 @@
                 <div class="row g-3">
                     <div class="col-12">
                         <label class="form-label">Address</label>
-                        <input name="address" type="text" class="form-control @error('address') is-invalid @enderror">
+                        <input name="address" type="text" class="form-control @error('address') is-invalid @enderror" required>
                         @error('address')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">City</label>
-                        <input name="city" type="text" class="form-control @error('city') is-invalid @enderror">
+                        <input name="city" type="text" class="form-control @error('city') is-invalid @enderror" required>
                         @error('city')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">State</label>
-                        <input name="state" type="text" class="form-control @error('state') is-invalid @enderror">
+                        <input name="state" type="text" class="form-control @error('state') is-invalid @enderror" required>
                         @error('state')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Zipcode</label>
-                        <input name="zipcode" type="text" class="form-control @error('zipcode') is-invalid @enderror">
+                        <input name="zipcode" type="text" class="form-control @error('zipcode') is-invalid @enderror" required>
                         @error('zipcode')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -200,42 +200,42 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">Degree</label>
-                        <input name="degree" type="text" class="form-control @error('degree') is-invalid @enderror">
+                        <input name="degree" type="text" class="form-control @error('degree') is-invalid @enderror" required>
                         @error('degree')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Institute</label>
-                        <input name="institute" type="text" class="form-control @error('institute') is-invalid @enderror">
+                        <input name="institute" type="text" class="form-control @error('institute') is-invalid @enderror" required>
                         @error('institute')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Start Date</label>
-                        <input name="start_date" type="date" class="form-control @error('start_date') is-invalid @enderror">
+                        <input name="start_date" type="date" class="form-control @error('start_date') is-invalid @enderror" required>
                         @error('start_date')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">End Date</label>
-                        <input name="end_date" type="date" class="form-control @error('end_date') is-invalid @enderror">
+                        <input name="end_date" type="date" class="form-control @error('end_date') is-invalid @enderror" required>
                         @error('end_date')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Total Marks / CGPA</label>
-                        <input name="total_marks_CGPA" type="text" class="form-control @error('total_marks_CGPA') is-invalid @enderror">
+                        <input name="total_marks_CGPA" type="text" class="form-control @error('total_marks_CGPA') is-invalid @enderror" required>
                         @error('total_marks_CGPA')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Achieved Marks / CGPA</label>
-                        <input name="achieved_marks_CGPA" type="text" class="form-control @error('achieved_marks_CGPA') is-invalid @enderror">
+                        <input name="achieved_marks_CGPA" type="text" class="form-control @error('achieved_marks_CGPA') is-invalid @enderror" required>
                         @error('achieved_marks_CGPA')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -245,7 +245,7 @@
                         <div class="file-upload">
                             <label class="choose-file-btn">
                                 <i class="fa-solid fa-cloud-arrow-up"></i> Choose File
-                                <input name="attachment" class="@error('attachment') is-invalid @enderror" type="file" hidden>
+                                <input name="attachment" class="@error('attachment') is-invalid @enderror" type="file" hidden required>
                             </label>
                             <div class="file-preview">
                                 <i class="fa-solid fa-file-pdf"></i> Attachment.pdf
@@ -267,6 +267,33 @@
     </div>
 @endsection
 @section('script')
+<script>
+    $(document).ready(function() {
+        $('#doctor_craete_form').validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 2
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                phone: {
+                    required: true,
+                    digits: true,
+                    minlength: 10,
+                    maxlength: 15
+                },
+                dob: {
+                    required: true,
+                    date: true
+                },
+                attachment: "required" 
+            }
+        });   
+    });
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const hospitalSelect = document.getElementById('hospitalSelect');

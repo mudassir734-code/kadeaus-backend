@@ -24,8 +24,15 @@
 
                 <!-- Right Section -->
                 <div class="profile-actions">
-                    <i class="fa-solid fa-trash"></i> Delete
-                    <i class="fa-solid fa-pen ms-3"></i> Edit
+                    <button type="button"
+                            class="btn btn-link text-danger p-0"
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteDoctorModal{{ $doctor->id }}">
+                        <i class="fa-solid fa-trash"></i> Delete
+                    </button>
+                    <a href="{{ route('admin.hospital.edit_doctor', $doctor->id) }}">
+                        <i class="fa-solid fa-pen ms-3"></i> Edit
+                    </a>
                 </div>
             </div>
         </div>
@@ -136,7 +143,39 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="modal fade" id="deleteDoctorModal{{ $doctor->id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="POST" action="{{ route('admin.hospital.destroy_doctor', $doctor->id) }}">
+                @csrf
+                @method('DELETE')
 
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete Doctor</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        Are you sure you want to delete
+                        <strong>{{ $doctor->user?->name ?? 'this doctor' }}</strong>?
+                        <br>
+                        This action cannot be undone.
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-danger">
+                            Yes, Delete
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 @endsection
 @section('script')

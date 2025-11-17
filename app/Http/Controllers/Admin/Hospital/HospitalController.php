@@ -94,10 +94,10 @@ class HospitalController extends Controller
         return view('admin.hospital.hospital-detail', compact('hospital'));
     }
 
-    public function edit($hospital_id)
+    public function edit($id)
     {
         // dd($hospital_id);
-        $hospital = Hospital::where('hospital_id', $hospital_id)->firstOrFail();
+        $hospital = Hospital::with('department')->find($id);
         return view('admin.hospital.edit-hospital', compact('hospital'));
     }
 

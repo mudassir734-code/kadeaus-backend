@@ -17,7 +17,7 @@ class Hospital extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function departments()
+    public function department()
     {
         return $this->hasMany(Department::class);
     }
