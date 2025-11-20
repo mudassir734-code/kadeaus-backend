@@ -18,6 +18,9 @@ use App\Http\Requests\HealthHistory\MedicationRequest;
 use App\Http\Requests\HealthHistory\VaccinationRequest;
 use App\Http\Requests\HealthHistory\MedicalHistoryRequest;
 use App\Http\Requests\HealthHistory\AllergyInformationRequest;
+use App\Http\Requests\HealthHistory\VaccinationHistoryRequest;
+use App\Http\Resources\VaccinationHistoryResource;
+use App\Models\VaccinationHistory;
 use Illuminate\Support\Facades\Validator;
 
 class HealthHistoryController extends Controller
@@ -215,12 +218,12 @@ class HealthHistoryController extends Controller
         }
     }
 
-    public function saveVaccination(VaccinationRequest $request)
+    public function saveVaccination(VaccinationHistoryRequest $request)
     {
         $validator = $request->validated();
 
         try {
-            $vaccination = new Vaccination;
+            $vaccination = new VaccinationHistory;
             $vaccination->user_id           = $validator['user_id']             ?? null;
             $vaccination->vaccine_name      = $validator['vaccine_name']        ?? null;
             $vaccination->type              = $validator['type']                ?? null;
@@ -236,7 +239,7 @@ class HealthHistoryController extends Controller
             $vaccination->save();
 
             Log::info("Successfully created the Vaccination Record", ['create' => 'success']);
-            return response()->apiSuccess(new VaccinationResource($vaccination), "Successfully created the Vaccination Record");
+            return response()->apiSuccess(new VaccinationHistoryResource($vaccination), "Successfully created the Vaccination Record");
 
         } catch (Exception $e) {
             return response()->apiCatchError($e);
@@ -246,14 +249,14 @@ class HealthHistoryController extends Controller
     public function getVaccination(Request $request)
     {
         try {
-            $getVaccination = Vaccination::all();
+            $getVaccination = VaccinationHistory::all();
             if ($getVaccination->isEmpty()) {
                 Log::info('No Vaccination data found.');
                 return response()->apiError('No record found while fetching the Vaccination record.');
             }
 
             Log::info("Successfully fetched the Vaccination Record", ['count' => $getVaccination->count()]);
-            return response()->apiSuccess(VaccinationResource::collection($getVaccination), "Successfully fetched the Vaccination Record.");
+            return response()->apiSuccess(VaccinationHistoryResource::collection($getVaccination), "Successfully fetched the Vaccination Record.");
 
         } catch (Exception $e) {
             return response()->apiCatchError($e);
@@ -270,7 +273,7 @@ class HealthHistoryController extends Controller
             return response()->apiError("Validation failed error", $validator->errors(), 422);
         }
         try {
-            $deleteVaccination = Vaccination::find($request->uuid);
+            $deleteVaccination = VaccinationHistory::find($request->uuid);
             if (!$deleteVaccination) {
                 return response()->apiError("Vaccination data record not found");
             }

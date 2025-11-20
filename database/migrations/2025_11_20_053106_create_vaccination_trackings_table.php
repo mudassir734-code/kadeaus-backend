@@ -11,18 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vaccinations', function (Blueprint $table) {
+        Schema::create('vaccination_trackings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable()->comment('User ID:belong to users table');
-            $table->string('vaccine_name')->nullable();
+            $table->string('name')->nullable();
             $table->enum('type', ['Childhood', 'Adult', 'Travel', 'Booster', 'Unknown'])->nullable();
-            $table->string('administered_date')->nullable();
-            $table->string('next_due_date')->nullable();
+            $table->string('primary_dose_date')->nullable();
+            $table->enum('status', ['Completed', 'Missed'])->nullable();
             $table->string('hospital')->nullable();
-            $table->string('proof_file')->nullable();
-            $table->text('note')->nullable();
-            $table->enum('status', ['active', 'pending'])->default('active')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vaccinations');
+        Schema::dropIfExists('vaccination_trackings');
     }
 };

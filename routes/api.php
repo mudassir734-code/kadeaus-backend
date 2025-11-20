@@ -6,6 +6,7 @@ use App\Http\Controllers\APIs\Auth\AuthController;
 use App\Http\Controllers\APIs\HealthHistory\HealthHistoryController;
 use App\Http\Controllers\APIs\HealthHistory\HealthProfileController;
 use App\Http\Controllers\APIs\Subscription\SubscriptionPlanController;
+use App\Http\Controllers\APIs\VaccinationTracking\VaccinationTrackingController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -56,4 +57,8 @@ Route::group(['prefix' => 'health/history'], function() {
     Route::post('/vaccination/delete', [HealthHistoryController::class, 'deleteVaccination']);
 });
 
-
+Route::group(['prefix' => 'vaccination'], function() {
+    Route::post('/tracking/store', [VaccinationTrackingController::class, 'saveVaccinationTracking']);
+    Route::post('/booster/store', [VaccinationTrackingController::class, 'saveVaccinationBooster']);
+    Route::get('/vaccination/data/get', [VaccinationTrackingController::class, 'getVaccinationData']);
+});

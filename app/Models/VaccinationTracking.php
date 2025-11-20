@@ -7,22 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 
-class VaccinationBooster extends Model
+class VaccinationTracking extends Model
 {
     use SoftDeletes, Notifiable, HasFactory;
+    
     protected $fillable = [
         'user_id',
-        'vaccination_tracking_id',
         'name',
-        'due_date',
+        'type',
+        'primary_dose_date',
         'status',
+        'hospital',
     ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function vaccinationTracking()
+
+    public function vaccinationBooster()
     {
-        return $this->belongsTo(VaccinationTracking::class, 'vaccination_tracking_id');
+        return $this->hasMany(VaccinationBooster::class, 'vaccination_tracking_id');
     }
 }
