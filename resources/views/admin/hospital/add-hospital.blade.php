@@ -122,7 +122,7 @@
             </div>
 
 
-        </div>   
+        </div>
 @endsection
 @section('script')
      <script>
@@ -137,6 +137,7 @@
             // Create input field
             const input = document.createElement("input");
             input.type = "text";
+            input.name = "departments[]";
             input.classList.add("form-control", "me-2");
             input.placeholder = "Enter Department";
 

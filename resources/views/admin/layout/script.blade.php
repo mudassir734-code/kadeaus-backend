@@ -17,6 +17,7 @@
     <script src="{{ asset('admin/assets/js/plugins/threejs.js') }}"></script>
     <script src="{{ asset('admin/assets/js/plugins/orbit-controls.js') }}"></script>
     <script src="{{ asset('admin/assets/js/plugins/datatables.js') }}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.js"></script>
     <script>
         var calendar = new FullCalendar.Calendar(document.getElementById("calendar"), {

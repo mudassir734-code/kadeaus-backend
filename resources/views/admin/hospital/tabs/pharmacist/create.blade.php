@@ -60,19 +60,21 @@
                 <div class="alert alert-danger">
                     <strong>There were some problems with your input:</strong>
                     <ul class="mb-0">
-                    @foreach ($errors->all() as $message)
-                        <li>{{ $message }}</li>
-                    @endforeach
+                        @foreach ($errors->all() as $message)
+                            <li>{{ $message }}</li>
+                        @endforeach
                     </ul>
                 </div>
             @endif
-            <form id="pharmacist_create_form" action="{{ route('admin.hospital.store_pharmacist') }}" method="POST" enctype="multipart/form-data">
+            <form id="pharmacist_create_form" action="{{ route('admin.hospital.store_pharmacist') }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
                 <div class="row g-3">
                     <!-- Patient Name -->
                     <div class="col-md-6">
                         <label class="form-label">Name</label>
-                        <input name="name" type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Enter Name" required>
+                        <input name="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                            placeholder="Enter Name" required>
                         @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -81,7 +83,8 @@
                     <!-- Email -->
                     <div class="col-md-6">
                         <label class="form-label">Email</label>
-                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter Email" required>
+                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
+                            placeholder="Enter Email" required>
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -90,7 +93,8 @@
                     <!-- Phone -->
                     <div class="col-md-6">
                         <label class="form-label">Phone Number</label>
-                        <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Enter Phone Number" required>
+                        <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror"
+                            placeholder="Enter Phone Number" required>
                         @error('phone')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -99,7 +103,8 @@
                     <!-- DOB -->
                     <div class="col-md-6">
                         <label class="form-label">Date Of Birth</label>
-                        <input type="date" name="dob" class="form-control  @error('dob') is-invalid @enderror" required>
+                        <input type="date" name="dob" class="form-control  @error('dob') is-invalid @enderror"
+                            required>
                         @error('dob')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -108,7 +113,8 @@
                     <!-- Gender -->
                     <div class="col-md-6">
                         <label class="form-label">Gender</label>
-                        <select class="form-control  @error('gender') is-invalid @enderror" name="gender" id="choices-gender-edit" required>
+                        <select class="form-control  @error('gender') is-invalid @enderror" name="gender"
+                            id="choices-gender-edit" required>
                             <option value="">Select Gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -121,7 +127,8 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Hospital</label>
-                        <select id="hospitalSelect" name="hospital_id" class="form-control @error('hospital_id') is-invalid @enderror" required>
+                        <select id="hospitalSelect" name="hospital_id"
+                            class="form-control @error('hospital_id') is-invalid @enderror" required>
                             <option value="">Select Hospital</option>
                             @foreach ($hospitals as $hospital)
                                 <option value="{{ $hospital->id }}">{{ $hospital->user?->name ?? 'N/A' }}</option>
@@ -141,7 +148,9 @@
                     <!-- Appointment Date -->
                     <div class="col-md-6">
                         <label class="form-label">Working Hours</label>
-                        <input type="text" name="working_hours" class="form-control @error('working_hours') is-invalid @enderror" placeholder="Enter working hours" required>
+                        <input type="text" name="working_hours"
+                            class="form-control @error('working_hours') is-invalid @enderror"
+                            placeholder="Enter working hours" required>
                         @error('working_hours')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -157,7 +166,8 @@
                     <!-- Address -->
                     <div class="col-12">
                         <label class="form-label">Address 1</label>
-                        <input type="text" name="address" class="form-control @error('address') is-invalid @enderror" placeholder="Enter Address" required>
+                        <input type="text" name="address" class="form-control @error('address') is-invalid @enderror"
+                            placeholder="Enter Address" required>
                         @error('address')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -166,7 +176,8 @@
                     <!-- City -->
                     <div class="col-md-4">
                         <label class="form-label">City</label>
-                        <input type="text" name="city" class="form-control @error('city') is-invalid @enderror" placeholder="Enter City" required>
+                        <input type="text" name="city" class="form-control @error('city') is-invalid @enderror"
+                            placeholder="Enter City" required>
                         @error('city')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -175,7 +186,8 @@
                     <!-- State -->
                     <div class="col-md-4">
                         <label class="form-label">State</label>
-                        <input type="text" name="state" class="form-control @error('state') is-invalid @enderror" placeholder="Enter State" required>
+                        <input type="text" name="state" class="form-control @error('state') is-invalid @enderror"
+                            placeholder="Enter State" required>
                         @error('state')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -184,7 +196,8 @@
                     <!-- Zipcode -->
                     <div class="col-md-4">
                         <label class="form-label">Zipcode</label>
-                        <input type="text" name="zipcode" class="form-control @error('zipcode') is-invalid @enderror" placeholder="Enter Zipcode" required>
+                        <input type="text" name="zipcode" class="form-control @error('zipcode') is-invalid @enderror"
+                            placeholder="Enter Zipcode" required>
                         @error('zipcode')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -196,73 +209,57 @@
                     <div class="divider"></div>
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="fw-semibold">Qualification</h5>
-                        <span class="add-btn"><i class="fa-solid fa-plus"></i> Add</span>
+                        <button type="button" id="add-qualification" class="btn btn-behance btn-sm">+ Add</button>
                     </div>
 
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Degree</label>
-                            <input type="text" name="degree" class="form-control @error('degree') is-invalid @enderror" placeholder="Enter Degree Name" required>
-                            @error('degree')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                            <input name="degree[]" type="text" class="form-control" placeholder="Enter Degree Name"
+                                required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Institute</label>
-                            <input type="text" name="institute" class="form-control @error('institute') is-invalid @enderror" placeholder="Enter Institute" required>
-                            @error('institute')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                            <input name="institute[]" type="text" class="form-control" placeholder="Enter Institute"
+                                required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Start Date</label>
-                            <input type="date" name="start_date" class="form-control @error('start_date') is-invalid @enderror" required>
-                            @error('start_date')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                            <input name="start_date[]" type="date" class="form-control" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">End Date</label>
-                            <input type="date" name="end_date" class="form-control @error('end_date') is-invalid @enderror" required>
-                            @error('end_date')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                            <input name="end_date[]" type="date" class="form-control" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Total Marks / CGPA</label>
-                            <input type="text" name="total_marks_CGPA" class="form-control @error('total_marks_CGPA') is-invalid @enderror" placeholder="04/01/2014" required>
-                            @error('total_marks_CGPA')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                            <input name="total_marks_CGPA[]" type="text" class="form-control" placeholder=""
+                                required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Achieved Marks / CGPA</label>
-                            <input type="text" name="achieved_marks_CGPA" class="form-control @error('achieved_marks_CGPA') is-invalid @enderror" placeholder="04/01/2014" required>
-                            @error('achieved_marks_CGPA')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                            <input name="achieved_marks_CGPA[]" type="text" class="form-control" placeholder=""
+                                required>
                         </div>
                         <div class="col-12">
-                        <label class="form-label">Attachment</label>
-                        <div class="file-upload">
-                            <label class="choose-file-btn">
-                                <i class="fa-solid fa-cloud-arrow-up"></i> Choose File
-                                <input name="attachment" class="@error('attachment') is-invalid @enderror" type="file" hidden required>
-                            </label>
-                            <div class="file-preview">
-                                <i class="fa-solid fa-file-pdf"></i> Attachment.pdf
+                            <label class="form-label">Attachment</label>
+                            <div class="file-upload">
+                                <label class="choose-file-btn">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Choose File
+                                    <input name="attachment[]" type="file" accept="application/pdf" hidden required>
+                                </label>
+                                <div class="file-preview">
+                                    <i class="fa-solid fa-file-pdf"></i> Attachment.pdf
+                                </div>
                             </div>
-                            @error('attachment')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
                         </div>
                     </div>
-                </div>
+                    <div id="customFieldsQualifications"></div>
 
-                <!-- Submit -->
-                <div class="mt-4 text-end">
-                    <button type="submit" class="btn btn-danger px-4 py-2">Add</button>
-                </div>
+                    <!-- Submit -->
+                    <div class="mt-4 text-end">
+                        <button type="submit" class="btn btn-danger px-4 py-2">Add</button>
+                    </div>
             </form>
         </div>
 
@@ -325,51 +322,141 @@
                     hospital_id: {
                         required: "Please select the hospital"
                     },
-                    
+
                 }
             });
         });
     </script>
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const hospitalSelect = document.getElementById('hospitalSelect');
-        const departmentSelect = document.getElementById('departmentSelect');
+        document.addEventListener('DOMContentLoaded', function() {
+            const hospitalSelect = document.getElementById('hospitalSelect');
+            const departmentSelect = document.getElementById('departmentSelect');
 
-        hospitalSelect.addEventListener('change', function () {
-            const hospitalId = this.value;
+            hospitalSelect.addEventListener('change', function() {
+                const hospitalId = this.value;
 
-            // Reset department dropdown
-            departmentSelect.innerHTML = '<option value="">Loading...</option>';
+                // Reset department dropdown
+                departmentSelect.innerHTML = '<option value="">Loading...</option>';
 
-            if (!hospitalId) {
-                departmentSelect.innerHTML = '<option value="">Please select hospital first</option>';
-                return;
-            }
+                if (!hospitalId) {
+                    departmentSelect.innerHTML = '<option value="">Please select hospital first</option>';
+                    return;
+                }
 
-            // Fetch departments for selected hospital
-            fetch(`/admin/hospital/tab/pharmacist/departments/${hospitalId}`)
-                .then(response => response.json())
-                .then(data => {
-                    departmentSelect.innerHTML = '';
+                // Fetch departments for selected hospital
+                fetch(`/admin/hospital/tab/pharmacist/departments/${hospitalId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        departmentSelect.innerHTML = '';
 
-                    if (data.length === 0) {
-                        departmentSelect.innerHTML = '<option value="">No departments found</option>';
-                        return;
-                    }
+                        if (data.length === 0) {
+                            departmentSelect.innerHTML =
+                                '<option value="">No departments found</option>';
+                            return;
+                        }
 
-                    // Populate department dropdown
-                    departmentSelect.innerHTML = '<option value="">Select Department</option>';
-                    data.forEach(dept => {
-                        const option = document.createElement('option');
-                        option.value = dept.id;
-                        option.textContent = dept.name;
-                        departmentSelect.appendChild(option);
+                        // Populate department dropdown
+                        departmentSelect.innerHTML = '<option value="">Select Department</option>';
+                        data.forEach(dept => {
+                            const option = document.createElement('option');
+                            option.value = dept.id;
+                            option.textContent = dept.name;
+                            departmentSelect.appendChild(option);
+                        });
+                    })
+                    .catch(() => {
+                        departmentSelect.innerHTML =
+                            '<option value="">Error loading departments</option>';
                     });
-                })
-                .catch(() => {
-                    departmentSelect.innerHTML = '<option value="">Error loading departments</option>';
-                });
+            });
         });
-    });
-</script>
+    </script>
+
+    <script>
+        $(document).ready(function() {
+
+            // Make sure it's bound cleanly
+            $(document).off('click', '#add-qualification').on('click', '#add-qualification', function(e) {
+                e.preventDefault();
+
+                $("#customFieldsQualifications").append(`
+            <div class="mt-5 contact-container">
+                <div class="row mt-3">
+                    <div class="col-md-12 d-flex">
+                        <div class="ms-auto my-auto me-3" style="border: none;">
+                            <a href="javascript:;" class="removeQualification btn btn-sm btn-danger">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Degree</label>
+                        <input name="degree[]" type="text" class="form-control" placeholder="Enter Degree Name" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Institute</label>
+                        <input name="institute[]" type="text" class="form-control" placeholder="Enter Institute" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Start Date</label>
+                        <input name="start_date[]" type="date" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">End Date</label>
+                        <input name="end_date[]" type="date" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Total Marks / CGPA</label>
+                        <input name="total_marks_CGPA[]" type="text" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Achieved Marks / CGPA</label>
+                        <input name="achieved_marks_CGPA[]" type="text" class="form-control" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Attachment</label>
+                        <div class="file-upload">
+                            <label class="choose-file-btn">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Choose File
+                                <input name="attachment[]" type="file" hidden required>
+                            </label>
+                            <div class="file-preview">
+                                <i class="fa-solid fa-file-pdf"></i> Attachment.pdf
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
+            });
+
+            $(document).on('click', ".removeQualification", function() {
+                let clickedElement = $(this);
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to delete this qualification",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'Cancel',
+                    confirmButtonText: 'Yes',
+                    customClass: {
+                        confirmButton: 'btn btn-primary',
+                        cancelButton: 'btn btn-outline-danger ms-3'
+                    },
+                    buttonsStyling: false,
+                    allowOutsideClick: false,
+                    backdrop: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        clickedElement.closest('.contact-container').remove();
+                    }
+                });
+            });
+
+        });
+    </script>
 @endsection

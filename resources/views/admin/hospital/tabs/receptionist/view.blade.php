@@ -55,8 +55,9 @@
                 </div>
                 <div>
                     <div class="profile-actions">
-                        <i class="fa-solid fa-trash"></i> Delete
-                        <i class="fa-solid fa-pen ms-3"></i> Edit
+                     <a href="javascript:;" onclick="deleteReceptionist({{ $receptionist->id }})"> <i class="fa-solid fa-trash"></i>
+                        Delete</a>
+                     <a href="{{route('admin.receptionist.edit',encrypt($receptionist->id))  }}"><i class="fa-solid fa-pen ms-3"></i> Edit</a>
                     </div>
                 </div>
             </div>
@@ -116,43 +117,50 @@
     </div>
 @endsection
 @section('script')
-    <script>
-        if (document.getElementById('choices-role-edit')) {
-            var element = document.getElementById('choices-role-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
+ <script>
+        function deleteReceptionist(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, do it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('admin.receptionist.delete') }}",
+                        type: "POST",
+                        data: {
+                            id: id,
+                            _method: 'DELETE' // Laravel's method spoofing
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: (response) => {
+                            if (response.status === 'success') {
+                                Swal.fire('Deleted!', response.message ||
+                                        'Receptionist has been deleted.', 'success')
+                                    .then(() => {
+                                        // redirect to returned URL
+                                        if (response.redirect_url) {
+                                            window.location.href = response.redirect_url;
+                                        }
+                                    });
+                            } else {
+                                Swal.fire('Error!', response.message || 'Something went wrong.',
+                                    'error');
+                            }
+                        },
+                        error: (xhr) => {
+                            const message = xhr.responseJSON?.message || 'Server error occurred.';
+                            Swal.fire('Error!', message, 'error');
+                        }
+                    });
+                }
             });
-        };
-        if (document.getElementById('choices-hospital-edit')) {
-            var element = document.getElementById('choices-hospital-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
-            });
-        };
-        if (document.getElementById('choices-gender-edit')) {
-            var element = document.getElementById('choices-gender-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
-            });
-        };
-    </script>
-
-    <script>
-        if (document.getElementById('choices-category-edit')) {
-            var element = document.getElementById('choices-category-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
-            });
-        };
-    </script>
-
-    <script>
-        var win = navigator.platform.indexOf('Win') > -1;
-        if (win && document.querySelector('#sidenav-scrollbar')) {
-            var options = {
-                damping: '0.5'
-            }
-            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
     </script>
 @endsection

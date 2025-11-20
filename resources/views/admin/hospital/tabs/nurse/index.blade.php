@@ -1,23 +1,24 @@
 {{-- <div class="tab-pane fade" id="v-pills-nurses" role="tabpanel" aria-labelledby="v-pills-nurses-tab"> --}}
-    <section class="appointments-section">
-        <div class="appointments-header">
-            <h4>Nurse</h4>
-            <div class="appointments-controls">
-                <div class="search-box">
-                    <input type="text" placeholder="Type here..." class="search-input">
-                    <i class="fas fa-search search-icon"></i>
-                </div>
-                <a href="{{ route('admin.hospital.add_nurse') }}"><button class="btn-primary schedule-btn">Add Nurse</button></a>
+<section class="appointments-section">
+    <div class="appointments-header">
+        <h4>Nurse</h4>
+        <div class="appointments-controls">
+            <div class="search-box">
+                <input type="text" id="nurseSearch" placeholder="Type here..." class="search-input">
+                <i class="fas fa-search search-icon"></i>
             </div>
+            <a href="{{ route('admin.hospital.add_nurse') }}"><button class="btn-primary schedule-btn">Add
+                    Nurse</button></a>
         </div>
-        @if(($nurses ?? null) && $nurses->count())
+    </div>
+    <div id="FilterData">
+        @if (($nurses ?? null) && $nurses->count())
             <div class="appointments">
-                @foreach($nurses as $nurse)
+                @foreach ($nurses as $nurse)
                     <div class="card doctor-card p-3 mb-3">
                         <div class="d-flex align-items-center mb-2">
                             <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Nurse"
-                                class="rounded-md border-radius-lg me-2"
-                                style="width: 100px; height: 100px;">
+                                class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
                             <div>
                                 <h6 class="mb-0 fw-bold">
                                     {{ $nurse->user?->name ?? 'N/A' }}
@@ -40,16 +41,19 @@
                             </p>
                         </div>
 
-                        <button class="btn details mt-3"
-                                onclick="window.location.href='{{ route('admin.hospital.nurse_view', $nurse->id) }}'">
+                        <a href="{{ route('admin.hospital.nurse_view', encrypt($nurse->id)) }}"
+                            class="btn details mt-3">
                             View Details
-                        </button>
+                        </a>
                     </div>
                 @endforeach
             </div>
         @else
-            <div class="text-muted">No record found.</div>
+            <div class="text-muted text-center">No nurse found. Please create Nurse</div>
         @endif
+    </div>
 
-    </section>
+</section>
 {{-- </div> --}}
+{{-- layout.blade.php --}}
+

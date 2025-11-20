@@ -11,7 +11,6 @@
         .appointment-container {
             max-width: 1335px;
             margin: -60px auto 40px auto;
-            /* Pull white card upward */
             background: #fff;
             padding: 30px;
             border-radius: 12px;
@@ -46,148 +45,145 @@
 @endsection
 @section('content')
 <div class="container-fluid py-4">
-            <div class="header-banner "></div>
-            <div class="appointment-container">
-                <!-- Header -->
-                <div class="d-flex align-items-center mb-4">
-                    <button class="btn btn-link text-dark p-0 me-2"><a href="{{ route('admin.hospital') }}">&larr;</a></button>
-                    <h4 class="fw-bold mb-0">Add Hospital</h4>
+    <div class="header-banner"></div>
+    <div class="appointment-container">
+        <!-- Header -->
+        <div class="d-flex align-items-center mb-4">
+            <button class="btn btn-link text-dark p-0 me-2"><a href="{{ route('admin.hospital') }}">&larr;</a></button>
+            <h4 class="fw-bold mb-0">Edit Hospital</h4>
+        </div>
+        <h6 class="section-title">Basic Details</h6>
+        <form action="{{ route('admin.hospital.update', $hospital->id) }}" method="POST">
+            @csrf
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Name</label>
+                    <input name="name" type="text" class="form-control" placeholder="Enter Name" value="{{ old('name', $hospital->user->name) }}">
                 </div>
-                <h6 class="section-title">Basic Details </h6>
-                <form action="{{ route('admin.hospital.hospitalUpdate', $hospital->id) }}" method="POST"> 
-                    @csrf
 
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Name</label>
-                            <input name="name" type="text" class="form-control" placeholder="Enter Name" 
-                                value="{{ old('name', $hospital->user->name ?? '') }}">
-                        </div>
+                <div class="col-md-6">
+                    <label class="form-label">Email</label>
+                    <input name="email" type="email" class="form-control" placeholder="Enter Email" value="{{ old('email', $hospital->user->email) }}">
+                </div>
 
-                        <div class="col-md-6">
-                            <label class="form-label">Email</label>
-                            <input name="email" type="email" class="form-control" placeholder="Enter Email"
-                                value="{{ old('email', $hospital->user->email ?? '') }}">
-                        </div>
+                <div class="col-md-6">
+                    <label class="form-label">Phone Number</label>
+                    <input name="phone" type="text" class="form-control" placeholder="Enter Phone Number" value="{{ old('phone', $hospital->user->phone) }}">
+                </div>
 
-                        <div class="col-md-6">
-                            <label class="form-label">Phone Number</label>
-                            <input name="phone" type="text" class="form-control" placeholder="Enter Phone Number"
-                                value="{{ old('phone', $hospital->user->phone ?? '') }}">
-                        </div>
+                <div class="col-md-6">
+                    <label class="form-label">Specialities</label>
+                    <input name="specialities" type="text" class="form-control" placeholder="Enter Specialities" value="{{ old('specialities', $hospital->specialities) }}">
+                </div>
 
-                        <div class="col-md-6">
-                            <label class="form-label">Specialities</label>
-                            <input name="specialities" type="text" class="form-control" placeholder="Enter Specialities"
-                                value="{{ old('specialities', $hospital->specialities ?? '') }}">
-                        </div>
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">
+                        Departments
+                        <span id="addDepartmentBtn" style="cursor: pointer;">
+                            <i class="fa-solid fa-circle-plus ms-3 text-info"></i> Add more
+                        </span>
+                    </label>
+                    <div id="departmentsContainer">
+                        @php
+                            $existingDepartments = $hospital->departments;
+                            // dd($existingDepartments);
+                        @endphp
 
-                        <div class="col-md-12 mb-3">
-                            <label class="form-label">
-                                Departments
-                                <span id="addDepartmentBtn" style="cursor: pointer;">
-                                    <i class="fa-solid fa-circle-plus ms-3 text-info"></i> Add more
-                                </span>
-                            </label>
-                            <div id="departmentsContainer">
-                                @php
-                                    $oldDepartments = old('departments');
-                                    $departments = $oldDepartments ?? $hospital->department->pluck('name')->toArray();
-                                @endphp
-
-                                @foreach($departments as $dept)
-                                    <input name="departments[]" type="text" class="form-control mb-2"
-                                        placeholder="Enter Department" value="{{ $dept }}">
-                                @endforeach
+                        @if($existingDepartments->count() > 0)
+                            @foreach($existingDepartments as $dept)
+                                <div class="d-flex align-items-center mb-2 dept-row" data-dept-id="{{ $dept->id }}">
+                                    <input name="department_ids[]" type="hidden" value="{{ $dept->id }}">
+                                    <input name="departments[]" type="text" class="form-control me-2" placeholder="Enter Department" value="{{ old('departments.' . $loop->index, $dept->name) }}">
+                                    <button type="button" class="btn btn-danger btn-sm remove-dept-btn">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="d-flex align-items-center mb-2 dept-row">
+                                <input name="departments[]" type="text" class="form-control me-2" placeholder="Enter Department" value="">
+                                <button type="button" class="btn btn-danger btn-sm remove-dept-btn">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             </div>
-                        </div>
+                        @endif
                     </div>
-
-                    <h6 class="section-title text-dark mt-3">Address Details</h6>
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <label class="form-label">Address 1</label>
-                            <input name="address" type="text" class="form-control" placeholder="Enter Address"
-                                value="{{ old('address', $hospital->user->address ?? '') }}">
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">City</label>
-                            <input name="city" type="text" class="form-control" placeholder="Enter City"
-                                value="{{ old('city', $hospital->user->city ?? '') }}">
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">State</label>
-                            <input name="state" type="text" class="form-control" placeholder="Enter State"
-                                value="{{ old('state', $hospital->user->state ?? '') }}">
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">Zipcode</label>
-                            <input name="zipcode" type="text" class="form-control" placeholder="Enter Zipcode"
-                                value="{{ old('zipcode', $hospital->user->zipcode ?? '') }}">
-                        </div>
-                    </div>
-
-                    <div class="mt-4 text-end">
-                        <button type="submit" class="btn btn-primary px-4 py-2">Update</button>
-                    </div>
-                </form>
+                </div>
             </div>
 
+            <h6 class="section-title text-dark mt-3">Address Details</h6>
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label">Address 1</label>
+                    <input name="address" type="text" class="form-control" placeholder="Enter Address" value="{{ old('address', $hospital->user->address) }}">
+                </div>
 
-        </div>
-           
+                <div class="col-md-4">
+                    <label class="form-label">City</label>
+                    <input name="city" type="text" class="form-control" placeholder="Enter City" value="{{ old('city', $hospital->user->city) }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">State</label>
+                    <input name="state" type="text" class="form-control" placeholder="Enter State" value="{{ old('state', $hospital->user->state) }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Zipcode</label>
+                    <input name="zipcode" type="text" class="form-control" placeholder="Enter Zipcode" value="{{ old('zipcode', $hospital->user->zipcode) }}">
+                </div>
+            </div>
+
+            <div class="mt-4 text-end">
+                <button type="submit" class="btn btn-danger px-4 py-2">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
 @section('script')
-     <script>
+    <script>
         const addBtn = document.getElementById("addDepartmentBtn");
         const container = document.getElementById("departmentsContainer");
 
+        // Add new department field
         addBtn.addEventListener("click", function () {
-            // Create a wrapper div for input + remove button
             const wrapper = document.createElement("div");
             wrapper.classList.add("d-flex", "align-items-center", "mb-2");
 
-            // Create input field
             const input = document.createElement("input");
             input.type = "text";
+            input.name = "departments[]";
             input.classList.add("form-control", "me-2");
             input.placeholder = "Enter Department";
 
-            // Create remove button
             const removeBtn = document.createElement("button");
-            removeBtn.classList.add("btn", "btn-danger", "btn-sm");
+            removeBtn.type = "button";
+            removeBtn.classList.add("btn", "btn-danger", "btn-sm", "remove-dept-btn");
             removeBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
 
-            // Remove the field on click
             removeBtn.addEventListener("click", () => wrapper.remove());
 
-            // Append input + remove button to wrapper
             wrapper.appendChild(input);
             wrapper.appendChild(removeBtn);
-
-            // Add wrapper into the container
             container.appendChild(wrapper);
         });
-    </script>
 
-    <script>
-        const cards = document.querySelectorAll(".doctor-card");
-
-        cards.forEach(card => {
-            card.addEventListener("click", () => {
-                // Remove active class from all cards
-                cards.forEach(c => c.classList.remove("active"));
-                // Add active class to the clicked card
-                card.classList.add("active");
-            });
+        // Handle removing existing departments
+        document.addEventListener("click", function(e) {
+            if (e.target.closest(".remove-dept-btn")) {
+                const wrapper = e.target.closest(".d-flex");
+                if (container.children.length > 1) {
+                    wrapper.remove();
+                } else {
+                    // Keep at least one field, just clear it
+                    wrapper.querySelector("input").value = "";
+                }
+            }
         });
     </script>
 
     <script>
-
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
             var options = {

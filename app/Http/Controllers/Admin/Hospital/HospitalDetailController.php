@@ -29,20 +29,20 @@ class HospitalDetailController extends Controller
 {
     public function detail(Request $request, $id)
     {
-        $tab = $request->query('tab'); 
-        
+        $tab = $request->query('tab');
+
         $hospital = Hospital::findOrFail($id);
-        
+
         switch ($tab) {
             case 'doctor':
-                
+
                 $doctors = Doctor::with(['user', 'department', 'hospital.user', 'qualification'])
                     ->where('hospital_id', $hospital->id)
                     ->latest()
                     ->get();
-                    
+
                 return view('admin.hospital.tabs.doctor.index', compact('doctors', 'hospital'));
-                
+
             case 'nurses':
                 $nurses = Nurse::with(['user', 'department', 'hospital.user', 'qualifications'])
                     ->where('hospital_id', $hospital->id)
@@ -50,41 +50,41 @@ class HospitalDetailController extends Controller
                     ->get();
                 return view('admin.hospital.tabs.nurse.index', compact('nurses', 'hospital'));
 
-                case 'receptionists':
-                    $receptionists = Receptionist::with(['user', 'hospital.user'])
-                        ->where('hospital_id', $hospital->id)
-                        ->latest()
-                        ->get();
-                    return view('admin.hospital.tabs.receptionist.list', compact('receptionists', 'hospital'));
-                
-                case 'pharmacists':
-                    $pharmacists = Pharmacist::with(['user', 'department', 'hospital.user', 'qualification'])
-                        ->where('hospital_id', $hospital->id)
-                        ->latest()
-                        ->get();
-                    return view('admin.hospital.tabs.pharmacist.list', compact('pharmacists', 'hospital'));
+            case 'receptionists':
+                $receptionists = Receptionist::with(['user', 'hospital.user'])
+                    ->where('hospital_id', $hospital->id)
+                    ->latest()
+                    ->get();
+                return view('admin.hospital.tabs.receptionist.list', compact('receptionists', 'hospital'));
 
-                case 'patients' :
-                    $patients = Patient::with(['user', 'hospital.user'])
-                        ->where('hospital_id', $hospital->id)
-                        ->latest()
-                        ->get();
-                    return view('admin.hospital.tabs.appointments.list', compact('patients', 'hospital'));
-                
-                case 'departments' :
-                    $departments = Department::where(['hospital_id' => $hospital->id])
-                         ->withCount('doctors', 'nurses')
-                         ->get();
-                    return view('admin.hospital.tabs.department.list', compact('departments', 'hospital'));
+            case 'pharmacists':
+                $pharmacists = Pharmacist::with(['user', 'department', 'hospital.user', 'qualification'])
+                    ->where('hospital_id', $hospital->id)
+                    ->latest()
+                    ->get();
+                return view('admin.hospital.tabs.pharmacist.list', compact('pharmacists', 'hospital'));
 
-                case 'laboratories' :
-            // Add more cases for other tabs...
+            case 'patients':
+                $patients = Patient::with(['user', 'hospital.user'])
+                    ->where('hospital_id', $hospital->id)
+                    ->latest()
+                    ->get();
+                return view('admin.hospital.tabs.appointments.list', compact('patients', 'hospital'));
+
+            case 'departments':
+                $departments = Department::where(['hospital_id' => $hospital->id])
+                    ->withCount('doctors', 'nurses')
+                    ->get();
+                return view('admin.hospital.tabs.department.list', compact('departments', 'hospital'));
+
+            case 'laboratories':
+                // Add more cases for other tabs...
 
             default:
                 return response()->json(['message' => 'Invalid tab'], 400);
         }
     }
-    
+
     public function view_doctor($id)
     {
         $doctor = Doctor::with('user', 'department', 'hospital.user', 'qualification')->find($id);
@@ -95,7 +95,7 @@ class HospitalDetailController extends Controller
         return view('admin.hospital.tabs.doctor.view', compact('doctor'));
     }
 
-// ...
+    // ...
 
     public function edit_doctor(Doctor $doctor)
     {
@@ -248,17 +248,39 @@ class HospitalDetailController extends Controller
         flash()->success('Doctor deleted successfully!');
         return redirect("admin/hospital/detail/{$hospitalId}#doctor");
     }
+    function nurseFilter(Request $request)
+    {
 
+        $search = $request->input('query');
+        $hospitalId = $request->input('hospital_id');
+        $hospital = Hospital::findOrFail($hospitalId);
+
+        $nurses = Nurse::with(['user', 'department', 'hospital.user', 'qualifications'])
+            ->where('hospital_id', $hospitalId)
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where(function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%")
+                            ->orWhere('phone', 'like', "%{$search}%");
+                    });
+                });
+            })
+            ->latest()
+            ->get();
+
+        return view('admin.hospital.tabs.nurse.filter', compact('nurses', 'hospital'));
+    }
 
     public function add_nurse()
     {
         // Hospitals for dropdown (show hospital user->name)
-        $hospitals = Hospital::with('user:id,name')->select('id','user_id')->get();
+        $hospitals = Hospital::with('user:id,name')->select('id', 'user_id')->get();
 
         // If you want to show all departments upfront:
-        $departments = Department::select('id','name','hospital_id')->get();
+        $departments = Department::select('id', 'name', 'hospital_id')->get();
 
-        return view('admin.hospital.tabs.nurse.create', compact('hospitals','departments'));
+        return view('admin.hospital.tabs.nurse.create', compact('hospitals', 'departments'));
     }
 
     public function store_nurse(Request $request)
@@ -266,31 +288,44 @@ class HospitalDetailController extends Controller
         // dd($request->all());
         $data = $request->validate([
             // Users table (basic)
-            'name'      => ['required','string','max:255'],
-            'email'     => ['required','email','max:255','unique:users,email'],
-            'phone'     => ['nullable','string','max:50'],
-            'dob'       => ['nullable','date'],
-            'gender'    => ['nullable','in:Male,Female,Other'],
-            'address'   => ['nullable','string','max:500'],
-            'city'      => ['nullable','string','max:100'],
-            'state'     => ['nullable','string','max:100'],
-            'zipcode'   => ['nullable','string','max:20'],
+            'name'      => ['required', 'string', 'max:255'],
+            'email'     => ['required', 'email', 'max:255', 'unique:users,email'],
+            'phone'     => ['nullable', 'string', 'max:50'],
+            'dob'       => ['nullable', 'date'],
+            'gender'    => ['nullable', 'in:Male,Female,Other'],
+            'address'   => ['nullable', 'string', 'max:500'],
+            'city'      => ['nullable', 'string', 'max:100'],
+            'state'     => ['nullable', 'string', 'max:100'],
+            'zipcode'   => ['nullable', 'string', 'max:20'],
 
             // Relations
-            'hospital_id'   => ['required','exists:hospitals,id'],
-            'department_id' => ['required','exists:departments,id'],
+            'hospital_id'   => ['required', 'exists:hospitals,id'],
+            'department_id' => ['required', 'exists:departments,id'],
 
             // Nurses table
-            'working_hours' => ['nullable','string','max:255'],
+            'working_hours' => ['nullable', 'string', 'max:255'],
 
-            // Qualification (single row per your UI)
-            'degree'                 => ['nullable','string','max:255'],
-            'institute'              => ['nullable','string','max:255'],
-            'start_date'             => ['nullable','date'],
-            'end_date'               => ['nullable','date','after_or_equal:start_date'],
-            'total_marks_CGPA'       => ['nullable','string','max:50'],
-            'achieved_marks_CGPA'    => ['nullable','string','max:50'],
-            'attachment'             => ['nullable','file','mimes:pdf,jpg,jpeg,png','max:4096'],
+            // Qualification (multiple rows – arrays)
+            'degree'                 => ['nullable', 'array'],
+            'degree.*'               => ['nullable', 'string', 'max:255'],
+
+            'institute'              => ['nullable', 'array'],
+            'institute.*'            => ['nullable', 'string', 'max:255'],
+
+            'start_date'             => ['nullable', 'array'],
+            'start_date.*'           => ['nullable', 'date'],
+
+            'end_date'               => ['nullable', 'array'],
+            'end_date.*'             => ['nullable', 'date'], // if you want after_or_equal logic, handle it manually
+
+            'total_marks_CGPA'       => ['nullable', 'array'],
+            'total_marks_CGPA.*'     => ['nullable', 'string', 'max:50'],
+
+            'achieved_marks_CGPA'    => ['nullable', 'array'],
+            'achieved_marks_CGPA.*'  => ['nullable', 'string', 'max:50'],
+
+            'attachment'             => ['nullable', 'array'],
+            'attachment.*'           => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:4096'],
         ]);
 
         DB::transaction(function () use ($data, $request) {
@@ -316,48 +351,279 @@ class HospitalDetailController extends Controller
                 'department_id' => (int)$data['department_id'],
             ]);
 
-            if ($request->hasFile('attachment')) {
-                $attachmentPath = $request->file('attachment');
-                $attachmentPath = base64_encode(file_get_contents($attachmentPath->getRealPath()));
-            }else{
-                $attachmentPath = null;
-            }
+            //  Multiple qualifications logic
+            $degrees              = $request->input('degree', []);
+            $institutes           = $request->input('institute', []);
+            $startDates           = $request->input('start_date', []);
+            $endDates             = $request->input('end_date', []);
+            $totalMarksOrCgpa     = $request->input('total_marks_CGPA', []);
+            $achievedMarksOrCgpa  = $request->input('achieved_marks_CGPA', []);
+            $attachments          = $request->file('attachment', []); // array of UploadedFile
 
-            // Only create qualification if at least one field is present
-            if (
-                ($data['degree'] ?? null) ||
-                ($data['institute'] ?? null) ||
-                ($data['start_date'] ?? null) ||
-                ($data['end_date'] ?? null) ||
-                ($data['total_marks_CGPA'] ?? null) ||
-                ($data['achieved_marks_CGPA'] ?? null) ||
-                $attachmentPath
-            ) {
+            foreach ($degrees as $index => $degree) {
+                $institute          = $institutes[$index]          ?? null;
+                $startDate          = $startDates[$index]          ?? null;
+                $endDate            = $endDates[$index]            ?? null;
+                $totalMarks         = $totalMarksOrCgpa[$index]    ?? null;
+                $achievedMarks      = $achievedMarksOrCgpa[$index] ?? null;
+                $file               = $attachments[$index]         ?? null;
+
+                // Skip completely empty rows
+                if (
+                    empty($degree) &&
+                    empty($institute) &&
+                    empty($startDate) &&
+                    empty($endDate) &&
+                    empty($totalMarks) &&
+                    empty($achievedMarks) &&
+                    !$file
+                ) {
+                    continue;
+                }
+
+                // Handle file -> base64
+                $attachmentPath = null;
+                if ($file instanceof \Illuminate\Http\UploadedFile) {
+                    $attachmentPath = base64_encode(file_get_contents($file->getRealPath()));
+                }
+
                 Qualification::create([
-                    'degree'               => $data['degree'] ?? null,
-                    'institute'            => $data['institute'] ?? null,
-                    'start_date'           => $data['start_date'] ?? null,
-                    'end_date'             => $data['end_date'] ?? null,
-                    'total_marks_CGPA'     => $data['total_marks_CGPA'] ?? null,
-                    'achieved_marks_CGPA'  => $data['achieved_marks_CGPA'] ?? null,
+                    'degree'               => $degree ?: null,
+                    'institute'            => $institute ?: null,
+                    'start_date'           => $startDate ?: null,
+                    'end_date'             => $endDate ?: null,
+                    'total_marks_CGPA'     => $totalMarks ?: null,
+                    'achieved_marks_CGPA'  => $achievedMarks ?: null,
                     'attachment'           => $attachmentPath,
                     'nurse_id'             => $nurse->id,
                     'user_id'              => $user->id,
                 ]);
             }
         });
-        return redirect("admin/hospital/detail/{$data['hospital_id']}#nurses");
+
+        $hospitalID = encrypt($data['hospital_id']);
         flash()->success('Nurse created successfully!');
+        return redirect("admin/hospital/detail/{$hospitalID}#nurses");
     }
-    
+
+
 
     public function nurse_view($id)
     {
-        $nurse = Nurse::with('user', 'department', 'hospital.user', 'qualifications')->find($id);
+        $nurseID = decrypt($id);
+        $nurse = Nurse::with('user', 'department', 'hospital.user', 'qualifications')->find($nurseID);
         if (!$nurse) {
             return redirect()->back()->with('error', 'Nurse not found');
         }
         return view('admin.hospital.tabs.nurse.view', compact('nurse'));
+    }
+    public function nurseEdit($id)
+    {
+        $nurseID = decrypt($id);
+        $nurse = Nurse::with('user', 'department', 'hospital.user', 'qualifications')->find($nurseID);
+        if (!$nurse) {
+            return redirect()->back()->with('error', 'Nurse not found');
+        }
+        // Hospitals for dropdown (show hospital user->name)
+        $hospitals = Hospital::with('user:id,name')->select('id', 'user_id')->get();
+        // If you want to show all departments upfront:
+        $departments = Department::select('id', 'name', 'hospital_id')->get();
+        return view('admin.hospital.tabs.nurse.edit', compact('nurse', 'hospitals', 'departments'));
+    }
+
+    public function storeUpdate(Request $request)
+    {
+        $nurseID = decrypt($request->id);
+        $nurse = Nurse::with(['user', 'qualifications'])->findOrFail($nurseID);
+        $user  = $nurse->user;
+
+        $data = $request->validate([
+            // Users
+            'name'      => ['required', 'string', 'max:255'],
+            'email'     => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($user->id),
+            ],
+            'phone'     => ['nullable', 'string', 'max:50'],
+            'dob'       => ['nullable', 'date'],
+            'gender'    => ['nullable', 'in:Male,Female,Other'],
+            'address'   => ['nullable', 'string', 'max:500'],
+            'city'      => ['nullable', 'string', 'max:100'],
+            'state'     => ['nullable', 'string', 'max:100'],
+            'zipcode'   => ['nullable', 'string', 'max:20'],
+
+            // Relations
+            'hospital_id'   => ['required', 'exists:hospitals,id'],
+            'department_id' => ['required', 'exists:departments,id'],
+
+            // Nurse
+            'working_hours' => ['nullable', 'string', 'max:255'],
+
+            // Qualification – arrays
+            'qualification_id'       => ['nullable', 'array'],
+            'qualification_id.*'     => ['nullable', 'integer', 'exists:qualifications,id'],
+
+            'degree'                 => ['nullable', 'array'],
+            'degree.*'               => ['nullable', 'string', 'max:255'],
+
+            'institute'              => ['nullable', 'array'],
+            'institute.*'            => ['nullable', 'string', 'max:255'],
+
+            'start_date'             => ['nullable', 'array'],
+            'start_date.*'           => ['nullable', 'date'],
+
+            'end_date'               => ['nullable', 'array'],
+            'end_date.*'             => ['nullable', 'date'],
+
+            'total_marks_CGPA'       => ['nullable', 'array'],
+            'total_marks_CGPA.*'     => ['nullable', 'string', 'max:50'],
+
+            'achieved_marks_CGPA'    => ['nullable', 'array'],
+            'achieved_marks_CGPA.*'  => ['nullable', 'string', 'max:50'],
+
+            'attachment'             => ['nullable', 'array'],
+            'attachment.*'           => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:4096'],
+        ]);
+
+        DB::transaction(function () use ($data, $request, $nurse, $user) {
+
+            // ✅ Update user
+            $user->update([
+                'name'     => $data['name'],
+                'email'    => $data['email'],
+                'phone'    => $data['phone'] ?? null,
+                'dob'      => $data['dob'] ?? null,
+                'gender'   => $data['gender'] ?? null,
+                'address'  => $data['address'] ?? null,
+                'city'     => $data['city'] ?? null,
+                'state'    => $data['state'] ?? null,
+                'zipcode'  => $data['zipcode'] ?? null,
+            ]);
+
+            //  Update nurse
+            $nurse->update([
+                'working_hours' => $data['working_hours'] ?? null,
+                'hospital_id'   => (int) $data['hospital_id'],
+                'department_id' => (int) $data['department_id'],
+            ]);
+
+            //  Qualifications
+            $ids                = $request->input('qualification_id', []);
+            $degrees            = $request->input('degree', []);
+            $institutes         = $request->input('institute', []);
+            $startDates         = $request->input('start_date', []);
+            $endDates           = $request->input('end_date', []);
+            $totalMarksOrCgpa   = $request->input('total_marks_CGPA', []);
+            $achievedMarksOrCgpa = $request->input('achieved_marks_CGPA', []);
+            $attachments        = $request->file('attachment', []);
+
+            // For deletion: which IDs are still in form?
+            $submittedIds = array_filter($ids); // non-empty
+
+            // Delete qualifications that were removed from the form
+            $idsToDelete = $nurse->qualifications
+                ->whereNotIn('id', $submittedIds)
+                ->pluck('id')
+                ->all();
+
+            if (!empty($idsToDelete)) {
+                Qualification::whereIn('id', $idsToDelete)->delete();
+            }
+
+            // Handle create / update
+            foreach ($degrees as $index => $degree) {
+
+                $qualificationId = $ids[$index] ?? null;
+                $institute       = $institutes[$index]          ?? null;
+                $startDate       = $startDates[$index]          ?? null;
+                $endDate         = $endDates[$index]            ?? null;
+                $totalMarks      = $totalMarksOrCgpa[$index]    ?? null;
+                $achievedMarks   = $achievedMarksOrCgpa[$index] ?? null;
+                $file            = $attachments[$index]         ?? null;
+
+                // Skip completely empty rows
+                if (
+                    empty($qualificationId) &&
+                    empty($degree) &&
+                    empty($institute) &&
+                    empty($startDate) &&
+                    empty($endDate) &&
+                    empty($totalMarks) &&
+                    empty($achievedMarks) &&
+                    !$file
+                ) {
+                    continue;
+                }
+
+                // Existing qualification?
+                $qualification = null;
+                if (!empty($qualificationId)) {
+                    $qualification = $nurse->qualifications->firstWhere('id', (int)$qualificationId);
+                }
+
+                // Attachment: keep old unless new file uploaded
+                $attachmentPath = $qualification?->attachment;
+
+                if ($file instanceof \Illuminate\Http\UploadedFile) {
+                    $attachmentPath = $file->store('nurse_qualifications', 'public');
+                }
+
+                $payload = [
+                    'degree'               => $degree ?: null,
+                    'institute'            => $institute ?: null,
+                    'start_date'           => $startDate ?: null,
+                    'end_date'             => $endDate ?: null,
+                    'total_marks_CGPA'     => $totalMarks ?: null,
+                    'achieved_marks_CGPA'  => $achievedMarks ?: null,
+                    'attachment'           => $attachmentPath,
+                    'nurse_id'             => $nurse->id,
+                    'user_id'              => $user->id,
+                ];
+
+                if ($qualification) {
+                    $qualification->update($payload);
+                } else {
+                    Qualification::create($payload);
+                }
+            }
+        });
+
+        $hospitalID = encrypt($nurse->hospital_id);
+        flash()->success('Nurse updated successfully!');
+        return redirect("admin/hospital/detail/{$hospitalID}#nurses");
+    }
+
+    public function nurseDelete(Request $request)
+    {
+        try {
+            $nurse = Nurse::findOrFail($request->id);
+            // delete related data
+            $nurse->qualifications()->delete();
+
+            // delete user if needed
+            if ($nurse->user) {
+                $nurse->user->delete();
+            }
+
+            $hospitalID = encrypt($nurse->hospital_id); // encrypt hospital ID
+            $redirectUrl = url("admin/hospital/detail/{$hospitalID}#nurses");
+
+            // delete nurse
+            $nurse->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Nurse and all related data deleted successfully!',
+                'redirect_url' => $redirectUrl
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Something went wrong: ' . $e->getMessage()
+            ]);
+        }
     }
 
     public function getNurseDepartments($id)
@@ -366,27 +632,27 @@ class HospitalDetailController extends Controller
         return response()->json($departments);
     }
 
-    public function create_receptionist()    
+    public function create_receptionist()
     {
         $roles = Role::query()
             ->where('guard_name', 'web')
-            ->whereIn('name', ['Receptionist','Admin','Nurse'])
+            ->whereIn('name', ['Receptionist', 'Admin', 'Nurse'])
             ->orderBy('name')
-            ->get(['id','name']);
+            ->get(['id', 'name']);
         $hospitals = Hospital::with('user:id,name')->select('id', 'user_id')->get();
         return view('admin.hospital.tabs.receptionist.create', compact('hospitals', 'roles'));
     }
 
-    public function store_receptionist(Request $request)
+    public function storeReceptionist(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name'        => ['required', 'string', 'max:255'],
             'email'       => ['required', 'email:rfc,dns', 'max:255', 'unique:users,email'],
             'phone'       => ['required', 'string'],
             'dob'         => ['required', 'date'],
-            'gender'      => ['nullable', Rule::in(['Male','Female','Other'])],
+            'gender'      => ['nullable', Rule::in(['Male', 'Female', 'Other'])],
             'hospital_id' => ['required', Rule::exists('hospitals', 'id')],
-            'role_id'     => ['required',Rule::exists('roles', 'id')->where(fn ($q) =>$q->whereIn('name', ['Receptionist','Admin','Nurse']))],
+            'role_id'     => ['required', Rule::exists('roles', 'id')->where(fn($q) => $q->whereIn('name', ['Receptionist', 'Admin', 'Nurse']))],
         ]);
         if ($validator->fails()) {
             Log::error("Receptionist store validation error", ['error' => $validator->errors()->toArray(), 'input' => $request->all()]);
@@ -395,30 +661,30 @@ class HospitalDetailController extends Controller
         $data = $validator->validated();
         try {
             DB::transaction(function () use ($data, $request) {
-            $user = User::create([
-                'name'     => $data['name'],
-                'email'    => $data['email'],
-                'phone'    => $data['phone'],
-                'dob'      => $data['dob'],
-                'gender'   => $data['gender'],
-                'password' =>Hash::make('123456789'),
-            ]);
+                $user = User::create([
+                    'name'     => $data['name'],
+                    'email'    => $data['email'],
+                    'phone'    => $data['phone'],
+                    'dob'      => $data['dob'],
+                    'gender'   => $data['gender'],
+                    'password' => Hash::make('123456789'),
+                ]);
 
-            $roleName = Role::findOrFail($data['role_id'])->name;
-            $user->assignRole($roleName);
+                $roleName = Role::findOrFail($data['role_id'])->name;
+                $user->assignRole($roleName);
 
-            Receptionist::create([
-                'hospital_id' => $data['hospital_id'],
-                'user_id'     => $user->id,
-            ]);
-        });
-            return redirect("admin/hospital/detail/{$data['hospital_id']}#receptionists");
+                Receptionist::create([
+                    'hospital_id' => $data['hospital_id'],
+                    'user_id'     => $user->id,
+                ]);
+            });
+            $hospitalID = encrypt($data['hospital_id']);
+            return redirect("admin/hospital/detail/{$hospitalID}#receptionists");
             flash()->success('Receptionist saved successfully!');
         } catch (\Throwable $th) {
             Log::error("Receptionist store failed", ['error' => $th->getMessage(), 'input' => $request->all()]);
             return back()->withInput()->with('error', 'Failed to create Receptionist. Please try again later!');
         }
-            
     }
 
     public function view_receptionist($id)
@@ -428,6 +694,154 @@ class HospitalDetailController extends Controller
             return redirect()->back()->with('error', 'Receptionist not found');
         }
         return view('admin.hospital.tabs.receptionist.view', compact('receptionist'));
+    }
+    public function receptionistEdit($id)
+    {
+        $rId = decrypt($id);
+        $receptionist = Receptionist::with('user', 'hospital.user')->findOrFail($rId);
+            $roles = Role::whereIn('name', ['Receptionist', 'Admin', 'Nurse'])->get();
+    $hospitals = Hospital::with('user')->get();
+
+        if (!$receptionist) {
+            return redirect()->back()->with('error', 'Receptionist not found');
+        }
+        return view('admin.hospital.tabs.receptionist.edit', compact('receptionist', 'roles', 'hospitals'));
+    }
+public function receptionistUpdate(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'id'          => ['required', 'string'],
+        'name'        => ['required', 'string', 'max:255'],
+        'email'       => ['required', 'email:rfc,dns', 'max:255'],
+        'phone'       => ['required', 'string'],
+        'dob'         => ['required', 'date'],
+        'gender'      => ['nullable', Rule::in(['Male', 'Female', 'Other'])],
+        'hospital_id' => ['required', Rule::exists('hospitals', 'id')],
+        'role_id'     => ['required', Rule::exists('roles', 'id')->where(fn($q) => $q->whereIn('name', ['Receptionist', 'Admin', 'Nurse']))],
+    ]);
+
+    if ($validator->fails()) {
+        Log::error("Receptionist update validation error", [
+            'error' => $validator->errors()->toArray(),
+            'input' => $request->all()
+        ]);
+        return back()->withErrors($validator)->withInput();
+    }
+
+    $data = $validator->validated();
+
+    try {
+        // Decrypt the receptionist ID
+        $receptionistId = decrypt($data['id']);
+
+        DB::transaction(function () use ($data, $receptionistId) {
+            // Find the receptionist
+            $receptionist = Receptionist::findOrFail($receptionistId);
+            $user = $receptionist->user;
+
+            // Check if email is being changed and if it's unique
+            if ($user->email !== $data['email']) {
+                $emailExists = User::where('email', $data['email'])
+                    ->where('id', '!=', $user->id)
+                    ->exists();
+
+                if ($emailExists) {
+                    throw new \Exception('Email already exists');
+                }
+            }
+
+            // Update user info
+            $user->update([
+                'name'   => $data['name'],
+                'email'  => $data['email'],
+                'phone'  => $data['phone'],
+                'dob'    => $data['dob'],
+                'gender' => $data['gender'],
+            ]);
+
+            // Update role if changed
+            $newRole = Role::findOrFail($data['role_id']);
+            $currentRoles = $user->roles->pluck('name')->toArray();
+
+            if (!in_array($newRole->name, $currentRoles)) {
+                // Remove old roles and assign new one
+                $user->syncRoles([$newRole->name]);
+            }
+
+            // Update hospital if changed
+            if ($receptionist->hospital_id !== $data['hospital_id']) {
+                $receptionist->update([
+                    'hospital_id' => $data['hospital_id'],
+                ]);
+            }
+        });
+
+        $hospitalID = encrypt($data['hospital_id']);
+        flash()->success('Receptionist updated successfully!');
+        return redirect("admin/hospital/detail/{$hospitalID}#receptionists");
+
+    } catch (\Exception $e) {
+        if ($e->getMessage() === 'Email already exists') {
+            return back()->withInput()->with('error', 'Email address is already in use.');
+        }
+
+        Log::error("Receptionist update failed", [
+            'error' => $e->getMessage(),
+            'input' => $request->all()
+        ]);
+        return back()->withInput()->with('error', 'Failed to update Receptionist. Please try again later!');
+    }
+}
+
+ function receptionistFilter(Request $request)
+    {
+
+        $search = $request->input('query');
+        $hospitalId = $request->input('hospital_id');
+        $hospital = Hospital::findOrFail($hospitalId);
+
+        $receptionists = Receptionist::with(['user', 'hospital.user'])
+            ->where('hospital_id', $hospitalId)
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where(function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%")
+                            ->orWhere('phone', 'like', "%{$search}%");
+                    });
+                });
+            })
+            ->latest()
+            ->get();
+
+        return view('admin.hospital.tabs.receptionist.filter', compact('receptionists', 'hospital'));
+    }
+    public function receptionistDelete(Request $request)
+    {
+        try {
+            $nurse = Receptionist::findOrFail($request->id);
+            // delete user if needed
+            if ($nurse->user) {
+                $nurse->user->delete();
+            }
+
+            $hospitalID = encrypt($nurse->hospital_id); // encrypt hospital ID
+            $redirectUrl = url("admin/hospital/detail/{$hospitalID}#receptionists");
+
+            // delete nurse
+            $nurse->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Receptionist and all related data deleted successfully!',
+                'redirect_url' => $redirectUrl
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Something went wrong: ' . $e->getMessage()
+            ]);
+        }
     }
 
     public function create_pharmacist()
@@ -443,23 +857,40 @@ class HospitalDetailController extends Controller
         $validator = Validator::make($request->all(), [
             'name'          => ['required', 'string', 'max:255'],
             'email'         => ['required', 'string', 'unique:users,email'],
-            'phone'         => ['nullable','string','max:50'],
-            'dob'           => ['nullable','date'],
-            'gender'        => ['nullable','in:Male,Female,Other'],
-            'address'       => ['nullable','string','max:500'],
-            'city'          => ['nullable','string','max:100'],
-            'state'         => ['nullable','string','max:100'],
-            'zipcode'       => ['nullable','string','max:20'],
-            'working_hours' => ['nullable','string','max:255'],
-            'hospital_id'   => ['required','exists:hospitals,id'],
-            'department_id' => ['required','exists:departments,id'],
-            'degree'        => ['nullable','string','max:255'],
-            'institute'     => ['nullable','string','max:255'],
-            'start_date'    => ['nullable','date'],
-            'end_date'      => ['nullable','date','after_or_equal:start_date'],
-            'total_marks_CGPA'     => ['nullable','string','max:50'],
-            'achieved_marks_CGPA'  => ['nullable','string','max:50'],
-            'attachment'           => ['nullable','file','mimes:pdf'],
+            'phone'         => ['nullable', 'string', 'max:50'],
+            'dob'           => ['nullable', 'date'],
+            'gender'        => ['nullable', 'in:Male,Female,Other'],
+            'address'       => ['nullable', 'string', 'max:500'],
+            'city'          => ['nullable', 'string', 'max:100'],
+            'state'         => ['nullable', 'string', 'max:100'],
+            'zipcode'       => ['nullable', 'string', 'max:20'],
+            'working_hours' => ['nullable', 'string', 'max:255'],
+            'hospital_id'   => ['required', 'exists:hospitals,id'],
+            'department_id' => ['required', 'exists:departments,id'],
+             // Qualification – arrays
+            'qualification_id'       => ['nullable', 'array'],
+            'qualification_id.*'     => ['nullable', 'integer', 'exists:qualifications,id'],
+
+            'degree'                 => ['nullable', 'array'],
+            'degree.*'               => ['nullable', 'string', 'max:255'],
+
+            'institute'              => ['nullable', 'array'],
+            'institute.*'            => ['nullable', 'string', 'max:255'],
+
+            'start_date'             => ['nullable', 'array'],
+            'start_date.*'           => ['nullable', 'date'],
+
+            'end_date'               => ['nullable', 'array'],
+            'end_date.*'             => ['nullable', 'date'],
+
+            'total_marks_CGPA'       => ['nullable', 'array'],
+            'total_marks_CGPA.*'     => ['nullable', 'string', 'max:50'],
+
+            'achieved_marks_CGPA'    => ['nullable', 'array'],
+            'achieved_marks_CGPA.*'  => ['nullable', 'string', 'max:50'],
+
+            'attachment'             => ['nullable', 'array'],
+            'attachment.*'           => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:4096'],
         ]);
         if ($validator->fails()) {
             Log::error("Pharmacist store validation error", [
@@ -469,8 +900,8 @@ class HospitalDetailController extends Controller
             return back()->withErrors($validator)->withInput();
         }
         $data = $validator->validated();
-        try {
-            DB::transaction(function() use ($data, $request) {
+        // try {
+            DB::transaction(function () use ($data, $request) {
                 $user = User::create([
                     'name'      => $data['name'],
                     'email'     => $data['email'],
@@ -489,50 +920,72 @@ class HospitalDetailController extends Controller
                     'department_id' => $data['department_id'],
                     'user_id'       => $user->id
                 ]);
-                if ($request->hasFile('attachment')) {
-                    $attachmentPath = $request->file('attachment');
-                    $attachmentPath = base64_encode(file_get_contents($attachmentPath->getRealPath()));
-                } else {
-                    $attachmentPath = null;
-                }
+             //  Multiple qualifications logic
+            $degrees              = $request->input('degree', []);
+            $institutes           = $request->input('institute', []);
+            $startDates           = $request->input('start_date', []);
+            $endDates             = $request->input('end_date', []);
+            $totalMarksOrCgpa     = $request->input('total_marks_CGPA', []);
+            $achievedMarksOrCgpa  = $request->input('achieved_marks_CGPA', []);
+            $attachments          = $request->file('attachment', []); // array of UploadedFile
+
+            foreach ($degrees as $index => $degree) {
+                $institute          = $institutes[$index]          ?? null;
+                $startDate          = $startDates[$index]          ?? null;
+                $endDate            = $endDates[$index]            ?? null;
+                $totalMarks         = $totalMarksOrCgpa[$index]    ?? null;
+                $achievedMarks      = $achievedMarksOrCgpa[$index] ?? null;
+                $file               = $attachments[$index]         ?? null;
+
+                // Skip completely empty rows
                 if (
-                    ($data['degree'] ?? null) ||
-                    ($data['institute'] ?? null) ||
-                    ($data['start_date'] ?? null) ||
-                    ($data['end_date'] ?? null) ||
-                    ($data['total_marks_CGPA'] ?? null) ||
-                    ($data['achieved_marks_CGPA'] ?? null) ||
-                    $attachmentPath
+                    empty($degree) &&
+                    empty($institute) &&
+                    empty($startDate) &&
+                    empty($endDate) &&
+                    empty($totalMarks) &&
+                    empty($achievedMarks) &&
+                    !$file
                 ) {
-                    Qualification::create([
-                        'degree'               => $data['degree'] ?? null,
-                        'institute'            => $data['institute'] ?? null,
-                        'start_date'           => $data['start_date'] ?? null,
-                        'end_date'             => $data['end_date'] ?? null,
-                        'total_marks_CGPA'     => $data['total_marks_CGPA'] ?? null,
-                        'achieved_marks_CGPA'  => $data['achieved_marks_CGPA'] ?? null,
-                        'attachment'           => $attachmentPath,
-                        'pharmacist_id'        => $pharmacist->id,
-                        'user_id'              => $user->id,
-                    ]);
+                    continue;
                 }
+
+                // Handle file -> base64
+                $attachmentPath = null;
+                 if ($file instanceof \Illuminate\Http\UploadedFile) {
+                    $attachmentPath = $file->store('pharmacist_qualifications', 'public');
+                }
+                Qualification::create([
+                    'degree'               => $degree ?: null,
+                    'institute'            => $institute ?: null,
+                    'start_date'           => $startDate ?: null,
+                    'end_date'             => $endDate ?: null,
+                    'total_marks_CGPA'     => $totalMarks ?: null,
+                    'achieved_marks_CGPA'  => $achievedMarks ?: null,
+                    'attachment'           => $attachmentPath,
+                    'nurse_id'             => $pharmacist->id,
+                    'user_id'              => $user->id,
+                ]);
+            }
             });
-            return redirect("/admin/hospital/detail/{$data['hospital_id']}#pharmacists");
+             $hospitalID = encrypt($data['hospital_id']); // encrypt hospital ID
+            return redirect("/admin/hospital/detail/{$hospitalID}#pharmacists");
             flash()->success('Pharmacist created successfully!');
-        } catch (\Throwable $th) {
-            Log::error("Pharmacist store failed", ['error' => $th->getMessage(), 'input' => $request->all()]);
-            return back()->withInput()->with('error', 'Failed to create Pharmacist. Please try again later!');
-        }
+        // } catch (\Throwable $th) {
+        //     Log::error("Pharmacist store failed", ['error' => $th->getMessage(), 'input' => $request->all()]);
+        //     return back()->withInput()->with('error', 'Failed to create Pharmacist. Please try again later!');
+        // }
     }
 
     public function view_pharmacist($id)
     {
         $pharmacist = Pharmacist::with('user', 'department', 'hospital.user', 'qualification')->findOrFail($id);
         if (!$pharmacist) {
-            return redirect()->back()-with('error', 'Pharmacist not found');
+            return redirect()->back() - with('error', 'Pharmacist not found');
         }
         return view('admin.hospital.tabs.pharmacist.view', compact('pharmacist'));
     }
+
 
     public function getPharmacistDepartments($id)
     {
@@ -583,5 +1036,4 @@ class HospitalDetailController extends Controller
 
         return back()->with('success', 'Department deleted successfully.');
     }
-
 }

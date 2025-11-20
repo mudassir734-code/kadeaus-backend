@@ -1,0 +1,38 @@
+ @if (($nurses ?? null) && $nurses->count())
+     <div class="appointments">
+         @foreach ($nurses as $nurse)
+             <div class="card doctor-card p-3 mb-3">
+                 <div class="d-flex align-items-center mb-2">
+                     <img src="{{ asset('admin/assets/img/team-1.jpg') }}" alt="Nurse"
+                         class="rounded-md border-radius-lg me-2" style="width: 100px; height: 100px;">
+                     <div>
+                         <h6 class="mb-0 fw-bold">
+                             {{ $nurse->user?->name ?? 'N/A' }}
+                         </h6>
+                         <small class="text-muted">
+                             <i class="fa-regular fa-envelope text-danger"></i>
+                             {{ $nurse->user?->email ?? '—' }}<br>
+                             <i class="fa-solid fa-phone text-danger"></i>
+                             {{ $nurse->user?->phone ?? '—' }}
+                         </small>
+                     </div>
+                 </div>
+
+                 <div class="d-flex justify-content-between">
+                     <h6 class="fw-bold mb-0">
+                         {{ $nurse->hospital?->user?->name ?? 'Unknown Hospital' }}
+                     </h6>
+                     <p class="text-muted mb-0">
+                         {{ $nurse->created_at?->diffForHumans() ?? '—' }}
+                     </p>
+                 </div>
+
+                 <a href="{{ route('admin.hospital.nurse_view', encrypt($nurse->id)) }}" class="btn details mt-3">
+                     View Details
+                 </a>
+             </div>
+         @endforeach
+     </div>
+ @else
+     <div class="text-muted text-center">No nurse found. Please create Nurse</div>
+ @endif

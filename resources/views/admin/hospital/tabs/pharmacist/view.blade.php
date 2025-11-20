@@ -51,7 +51,7 @@
                 <div class="d-flex justify-content-between">
                     <div class="d-flex align-items-center mb-4">
                         <button class="btn btn-link text-dark p-0 me-2">&larr;</button>
-                        <h4 class="fw-bold mb-0">Laboratories Details</h4>
+                        <h4 class="fw-bold mb-0">Pharmacist Details</h4>
                     </div>
                     <div>
                         <div class="profile-actions">
@@ -242,7 +242,7 @@
     <script>
         // Sample patient data
         const patients = [
-            
+
         ];
 
         let currentPage = 1;
@@ -266,8 +266,8 @@
                     <td>${patient.Instruction}</td>
                     <td>${patient.Duration}</td>
                     <td>${patient.date}</td>
-                
-                  
+
+
                 `;
                 tbody.appendChild(row);
             });

@@ -46,7 +46,6 @@ class HospitalController extends Controller
             'departments'   => ['nullable','array'],
             'departments.*' => ['nullable','string','max:255'],
         ]);
-
         DB::transaction(function () use ($data) {
             // Upsert basic info into users
             $user = User::updateOrCreate(
@@ -81,7 +80,7 @@ class HospitalController extends Controller
                 ->all();
 
             if (!empty($deps)) {
-                $hospital->department()->createMany($deps);
+                $hospital->departments()->createMany($deps);
             }
         });
 
@@ -90,74 +89,130 @@ class HospitalController extends Controller
 
     public function view($id)
     {
-        $hospital = Hospital::with('user')->findOrFail($id);
+        $hospitalId =decrypt($id);
+        $hospital = Hospital::with('user')->findOrFail($hospitalId);
         return view('admin.hospital.hospital-detail', compact('hospital'));
     }
 
     public function edit($id)
     {
-        // dd($id);
-        $hospital = Hospital::with('department')->find($id);
-        // dd($hospital);
+         $hId = decrypt($id);
+        $hospital = Hospital::with(['user', 'departments'])->findOrFail($hId);
         return view('admin.hospital.edit-hospital', compact('hospital'));
     }
 
-    public function update(Request $request, $id)
-    {
-        
-        $data = $request->validate([
-            // user fields
-            'name'     => ['required','string','max:255'],
-            'email'    => ['required','email','max:255'],
-            'phone'    => ['nullable','string','max:50'],
-            'address'  => ['nullable','string','max:500'],
-            'city'     => ['nullable','string','max:100'],
-            'state'    => ['nullable','string','max:100'],
-            'zipcode'  => ['nullable','string','max:20'],
+ public function update(Request $request, $id)
+{
+    $data = $request->validate([
+        // user fields
+        'name'     => ['required','string','max:255'],
+        'email'    => ['required','email','max:255'],
+        'phone'    => ['nullable','string','max:50'],
+        'address'  => ['nullable','string','max:500'],
+        'city'     => ['nullable','string','max:100'],
+        'state'    => ['nullable','string','max:100'],
+        'zipcode'  => ['nullable','string','max:20'],
 
-            // hospital
-            'specialities' => ['required','string','max:500'],
+        // hospital
+        'specialities' => ['required','string','max:500'],
+
+        // departments with IDs for updating existing ones
+        'department_ids'   => ['nullable','array'],
+        'department_ids.*' => ['nullable','integer','exists:departments,id'],
+        'departments'      => ['nullable','array'],
+        'departments.*'    => ['nullable','string','max:255'],
+    ]);
+
+    DB::transaction(function () use ($data, $id) {
+        $hospital = Hospital::findOrFail($id);
+        $user = $hospital->user;
+
+        // Update user info
+        $user->update([
+            'name'     => $data['name'],
+            'email'    => $data['email'],
+            'phone'    => $data['phone'] ?? null,
+            'address'  => $data['address'] ?? null,
+            'city'     => $data['city'] ?? null,
+            'state'    => $data['state'] ?? null,
+            'zipcode'  => $data['zipcode'] ?? null,
         ]);
 
-        DB::transaction(function () use ($data, $id) {
-            $hospital = Hospital::findOrFail($id);
-            $user = $hospital->user;
+        // Update hospital info
+        $hospital->update([
+            'specialities' => $data['specialities'],
+        ]);
 
-            // Update user info
-            $user->update([
-                'name'     => $data['name'],
-                'email'    => $data['email'],
-                'phone'    => $data['phone'] ?? null,
-                'address'  => $data['address'] ?? null,
-                'city'     => $data['city'] ?? null,
-                'state'    => $data['state'] ?? null,
-                'zipcode'  => $data['zipcode'] ?? null,
-            ]);
+        // Handle departments intelligently
+        $submittedDepartmentIds = collect($data['department_ids'] ?? [])->filter()->values();
+        $submittedDepartments = collect($data['departments'] ?? [])->filter(fn($d) => filled($d))->values();
 
-            // Update hospital info
-            $hospital->update([
-                'specialities' => $data['specialities'],
-            ]);
-        });
+        // Get existing department IDs for this hospital
+        $existingDepartmentIds = $hospital->departments()->pluck('id');
 
-        return redirect()->route('admin.hospital')->with('success', 'Record updated successfully.');
-    }
+        // Delete departments that were removed (not in submitted IDs)
+        $hospital->departments()
+            ->whereNotIn('id', $submittedDepartmentIds)
+            ->delete();
 
-    public function destroy($hospital_id)
+        // Update or create departments
+        foreach ($submittedDepartments as $index => $deptName) {
+            $deptId = $submittedDepartmentIds->get($index);
+
+            if ($deptId && $existingDepartmentIds->contains($deptId)) {
+                // Update existing department
+                $hospital->departments()->where('id', $deptId)->update(['name' => $deptName]);
+            } else {
+                // Create new department
+                $hospital->departments()->create(['name' => $deptName]);
+            }
+        }
+    });
+
+    return redirect()->route('admin.hospital')->with('success', 'Record updated successfully.');
+}
+
+    public function destroy(Request $request)
     {
-        $hospital = Hospital::where('hospital_id', $hospital_id)->firstOrFail();
+        // $hospital = Hospital::where('hospital_id', $hospital_id)->firstOrFail();
+        // $hospital->delete();
+
+        // return response()->json(['success' => true, 'message' => 'Hospital deleted successfully']);
+         try {
+        $hospital = Hospital::findOrFail($request->id);
+        // delete related data
+        $hospital->departments()->delete();
+
+        // delete user if needed
+        if ($hospital->user) {
+            $hospital->user->delete();
+        }
+
+        // delete nurse
         $hospital->delete();
 
-        return response()->json(['success' => true, 'message' => 'Hospital deleted successfully']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Nurse and all related data deleted successfully!',
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Something went wrong: ' . $e->getMessage()
+        ]);
+    }
     }
 
     protected function nextHospitalPid(): string
     {
+        // Lock the table scope by touching the hospitals table in the outer transaction.
+        // We read the last numeric part and increment.
         $last = Hospital::query()
             ->whereNotNull('hospital_id')
             ->lockForUpdate()
             ->orderByDesc('id')
-            ->value('hospital_id'); 
+            ->value('hospital_id'); // e.g., "PID-09"
 
         $nextNumber = 1;
         if ($last && preg_match('/^PID-(\d+)$/', $last, $m)) {

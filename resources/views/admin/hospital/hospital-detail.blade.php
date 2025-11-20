@@ -453,30 +453,30 @@
                 <div class="tab-content" id="v-pills-tabContent">
                     @include('admin.hospital.tabs.overview.dashboard')
                    <div class="tab-pane fade" id="v-pills-doctor" role="tabpanel" aria-labelledby="v-pills-doctor-tab">
-                        
+
                     </div>
                     <div class="tab-pane fade" id="v-pills-nurses" role="tabpanel" aria-labelledby="v-pills-nurses-tab">
-                    
+
                     </div>
                     <div class="tab-pane fade" id="v-pills-receptionists" role="tabpanel" aria-labelledby="v-pills-receptionists-tab">
 
                     </div>
                     <div class="tab-pane fade" id="v-pills-pharmacists" role="tabpanel"
                         aria-labelledby="v-pills-pharmacists-tab">
-                        
+
                     </div>
                     <div class="tab-pane fade" id="v-pills-patients" role="tabpanel"
                         aria-labelledby="v-pills-patients-tab">
-                        
+
                     </div>
                     <div class="tab-pane fade" id="v-pills-departments" role="tabpanel"
                         aria-labelledby="v-pills-departments-tab">
-                        
+
 
                     </div>
                     <div class="tab-pane fade" id="v-pills-laboratories" role="tabpanel"
                         aria-labelledby="v-pills-laboratories-tab">
-                        
+
                     </div>
                     <div class="tab-pane fade" id="v-pills-appointment" role="tabpanel"
                         aria-labelledby="v-pills-appointment-tab">
@@ -1060,6 +1060,68 @@
         initHospitalMenus(document);
     });
 </script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+// Search nurses
+    $(document).on('keyup', '#nurseSearch', function () {
+        clearTimeout(window.nurseTimer);
+
+        const query = $(this).val();
+        console.log('KEYUP FIRED, query =', query);
+
+        window.nurseTimer = setTimeout(function () {
+            nurseFilter(query);
+        }, 300);
+    });
+
+    function nurseFilter(query = '') {
+        $.ajax({
+            url: "{{ route('admin.hospital.nurses.search') }}",
+            type: 'GET',
+            data: {
+                query: query,
+                hospital_id: '{{ $hospital->id ?? '' }}', // or pass via data-attribute
+            },
+            success: function (data) {
+                $('#FilterData').html(data);
+            },
+            error: function () {
+                console.log('Search failed');
+            }
+        });
+    }
+
+// Search Receptionists
+    $(document).on('keyup', '#receptionistSearch', function () {
+        clearTimeout(window.nurseTimer);
+
+        const query = $(this).val();
+        console.log('KEYUP FIRED, query =', query);
+
+        window.nurseTimer = setTimeout(function () {
+            receptionistsFilter(query);
+        }, 300);
+    });
+
+    function receptionistsFilter(query = '') {
+        $.ajax({
+            url: "{{ route('admin.hospital.receptionists.search') }}",
+            type: 'GET',
+            data: {
+                query: query,
+                hospital_id: '{{ $hospital->id ?? '' }}', // or pass via data-attribute
+            },
+            success: function (data) {
+                $('#FilterReceptionistData').html(data);
+            },
+            error: function () {
+                console.log('Search failed');
+            }
+        });
+    }
+</script>
+
 @endsection
 
 

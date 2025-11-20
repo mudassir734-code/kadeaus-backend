@@ -29,7 +29,7 @@ class Nurse extends Model
 
     public function qualifications()
     {
-        return $this->hasOne(Qualification::class);
+        return $this->hasMany(Qualification::class);
     }
 
 }

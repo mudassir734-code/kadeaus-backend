@@ -7,6 +7,10 @@
             height: 190px;
             border-radius: 10px;
         }
+         .divider {
+            border-top: 1px solid #ddd;
+            margin: 20px 0;
+        }
     </style>
 @endsection
 @section('content')
@@ -24,8 +28,9 @@
 
                 <!-- Right Section -->
                 <div class="profile-actions">
-                    <i class="fa-solid fa-trash"></i> Delete
-                    <i class="fa-solid fa-pen ms-3"></i> Edit
+                    <a href="javascript:;" onclick="deleteNurse({{ $nurse->id }})"> <i class="fa-solid fa-trash"></i>
+                        Delete</a>
+                <a href="{{route('admin.nurse.edit',encrypt($nurse->id))  }}"><i class="fa-solid fa-pen ms-3"></i> Edit</a>
                 </div>
             </div>
         </div>
@@ -48,7 +53,8 @@
                 </div>
                 <div class="col-md-6 details-row">
                     <span class="details-label">Date of Birth:</span>
-                    <span class="details-value">{{ $nurse->user?->dob ? \Carbon\Carbon::parse($nurse->user->dob)->format('d/m/Y') : '—' }}</span>
+                    <span
+                        class="details-value">{{ $nurse->user?->dob ? \Carbon\Carbon::parse($nurse->user->dob)->format('d/m/Y') : '—' }}</span>
                 </div>
                 <div class="col-md-6 details-row">
                     <span class="details-label">Gender:</span>
@@ -71,35 +77,38 @@
         <div class="details-card mx-0 my-3">
             <h5>Qualification Details</h5>
             <hr>
+            @foreach ($nurse->qualifications as $qualification)
             <div class="row">
                 <div class="col-md-6 details-row">
                     <span class="details-label">Degree:</span>
-                    <span class="details-value">{{ $nurse->qualifications?->degree ?? '—' }}</span>
+                    <span class="details-value">{{ $qualification?->degree ?? '—' }}</span>
                 </div>
                 <div class="col-md-6 details-row">
                     <span class="details-label">Institute:</span>
-                    <span class="details-value">{{ $nurse->qualifications?->institute ?? '—' }}</span>
+                    <span class="details-value">{{ $qualification?->institute ?? '—' }}</span>
                 </div>
                 <div class="col-md-6 details-row">
                     <span class="details-label">Start Date:</span>
-                    <span class="details-value">{{ $nurse->qualifications?->start_date ? \Carbon\Carbon::parse($nurse->qualifications->start_date)->format('d/m/Y') : '—' }}</span>
+                    <span
+                        class="details-value">{{ $qualification?->start_date ? \Carbon\Carbon::parse($qualification->start_date)->format('d/m/Y') : '—' }}</span>
                 </div>
                 <div class="col-md-6 details-row">
                     <span class="details-label">End Date:</span>
-                    <span class="details-value">{{ $nurse->qualifications?->end_date ? \Carbon\Carbon::parse($nurse->qualifications->end_date)->format('d/m/Y') : '—' }}</span>
+                    <span
+                        class="details-value">{{ $qualification?->end_date ? \Carbon\Carbon::parse($qualification->end_date)->format('d/m/Y') : '—' }}</span>
                 </div>
                 <div class="col-md-6 details-row">
                     <span class="details-label">Total Marks/CGPA:</span>
-                    <span class="details-value">{{ $nurse->qualifications?->total_marks_CGPA ?? '—' }}</span>
+                    <span class="details-value">{{ $qualification?->total_marks_CGPA ?? '—' }}</span>
                 </div>
                 <div class="col-md-6 details-row">
                     <span class="details-label">Achieved Marks/CGPA:</span>
-                    <span class="details-value">{{ $nurse->qualifications?->achieved_marks_CGPA ?? '—' }}</span>
+                    <span class="details-value">{{ $qualification?->achieved_marks_CGPA ?? '—' }}</span>
                 </div>
                 <div class="col-md-6 details-row">
                     <span class="details-label">Attachment:</span>
-                    @if ($nurse->qualifications?->attachment)
-                        <a href="{{ asset('storage/' . $nurse->qualifications->attachment) }}" target="_blank"
+                    @if ($qualification?->attachment)
+                        <a href="{{ asset('storage/' . $qualification->attachment) }}" target="_blank"
                             class="details-value text-info">
                             View Attachment
                         </a>
@@ -108,6 +117,8 @@
                     @endif
                 </div>
             </div>
+               <div class="divider"></div>
+            @endforeach
         </div>
 
         <div class="details-card mx-0">
@@ -141,42 +152,49 @@
 @endsection
 @section('script')
     <script>
-        if (document.getElementById('choices-doctor-edit')) {
-            var element = document.getElementById('choices-doctor-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
+        function deleteNurse(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, do it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('admin.nurse.delete') }}",
+                        type: "POST",
+                        data: {
+                            id: id,
+                            _method: 'DELETE' // Laravel's method spoofing
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: (response) => {
+                            if (response.status === 'success') {
+                                Swal.fire('Deleted!', response.message ||
+                                        'Nurse has been deleted.', 'success')
+                                    .then(() => {
+                                        // redirect to returned URL
+                                        if (response.redirect_url) {
+                                            window.location.href = response.redirect_url;
+                                        }
+                                    });
+                            } else {
+                                Swal.fire('Error!', response.message || 'Something went wrong.',
+                                    'error');
+                            }
+                        },
+                        error: (xhr) => {
+                            const message = xhr.responseJSON?.message || 'Server error occurred.';
+                            Swal.fire('Error!', message, 'error');
+                        }
+                    });
+                }
             });
-        };
-        if (document.getElementById('choices-hospital-edit')) {
-            var element = document.getElementById('choices-hospital-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
-            });
-        };
-        if (document.getElementById('choices-department-edit')) {
-            var element = document.getElementById('choices-department-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
-            });
-        };
-    </script>
-
-    <script>
-        if (document.getElementById('choices-category-edit')) {
-            var element = document.getElementById('choices-category-edit');
-            const example = new Choices(element, {
-                searchEnabled: false
-            });
-        };
-    </script>
-
-    <script>
-        var win = navigator.platform.indexOf('Win') > -1;
-        if (win && document.querySelector('#sidenav-scrollbar')) {
-            var options = {
-                damping: '0.5'
-            }
-            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
     </script>
 @endsection

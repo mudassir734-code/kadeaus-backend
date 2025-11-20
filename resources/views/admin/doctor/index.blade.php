@@ -366,7 +366,7 @@
                  @endforeach
             </div>
             @else
-            <div class="text-muted text-center">No record found.</div>
+            <div class="text-muted text-center">No doctor found. Please create doctor</div>
             @endif
         </div>
 

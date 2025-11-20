@@ -51,41 +51,44 @@
             <!-- Header -->
             <div class="d-flex align-items-center mb-4">
                 <button class="btn btn-link text-dark p-0 me-2">&larr;</button>
-                <h4 class="fw-bold mb-0">Add Nurse</h4>
+                <h4 class="fw-bold mb-0">Edit Nurse</h4>
             </div>
             <!-- Basic Details -->
             <h6 class="section-title">Basic Details</h6>
-            <form id="nurse_create_form" action="{{ route('admin.hospital.store_nurse') }}" method="POST"
+            <form id="nurse_create_form" action="{{ route('admin.hospital.nurse.update') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" name="id" value="{{encrypt($nurse->id)  }}">
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">Name</label>
-                        <input name="name" type="text" class="form-control" placeholder="Enter Patient Name" required>
+                        <input name="name" value="{{ $nurse->user?->name ?? '-' }}" type="text" class="form-control" placeholder="Enter Patient Name" required>
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label">Email</label>
-                        <input name="email" type="email" class="form-control" placeholder="Enter Email" required>
+                        <input name="email" value="{{ $nurse->user?->email ?? '-' }}" type="email" class="form-control" placeholder="Enter Email" required>
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label">Phone Number</label>
-                        <input name="phone" type="text" class="form-control" placeholder="Enter Phone Number" required>
+                        <input name="phone" value="{{ $nurse->user?->phone ?? '-' }}" type="text" class="form-control" placeholder="Enter Phone Number" required>
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label">Date Of Birth</label>
-                        <input name="dob" type="date" class="form-control" required>
+                        <input name="dob"
+                    value="{{ $nurse->user?->dob ? \Carbon\Carbon::parse($nurse->user->dob)->format('Y-m-d') : '' }}"
+                    type="date"class="form-control" required>
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label">Gender</label>
                         <select class="form-control" name="gender" id="choices-gender-edit" required>
                             <option value="">Select Gender</option>
-                            <option>Male</option>
-                            <option>Female</option>
-                            <option>Other</option>
+                            <option {{$nurse->user?->gender === 'Male' ? 'selected' : ''  }}>Male</option>
+                            <option {{$nurse->user?->gender === 'Female' ? 'selected' : ''  }}>Female</option>
+                            <option {{$nurse->user?->gender === 'Other' ? 'selected' : ''  }}>Other</option>
                         </select>
                     </div>
 
@@ -95,7 +98,7 @@
                             class="form-control @error('hospital_id') is-invalid @enderror" required>
                             <option value="">Select Hospital</option>
                             @foreach ($hospitals as $hospital)
-                                <option value="{{ $hospital->id }}">{{ $hospital->user?->name ?? 'N/A' }}</option>
+                                <option value="{{ $hospital->id }}" {{ $nurse->hospital_id === $hospital->id ? 'selected' : '' }}>{{ $hospital->user?->name ?? 'N/A' }}</option>
                             @endforeach
                         </select>
                         @error('hospital_id')
@@ -107,12 +110,15 @@
                         <label class="form-label">Department</label>
                         <select id="departmentSelect" name="department_id" class="form-select" required>
                             <option value="">Please select hospital first</option>
+                            @foreach ($departments as $department)
+                                <option value="{{ $department->id }}" {{ $nurse->department_id === $department->id ? 'selected' : '' }}>{{ $department->name }}</option>
+                            @endforeach
                         </select>
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label">Working Hours</label>
-                        <input name="working_hours" type="text" class="form-control" placeholder="Enter working hours"
+                        <input name="working_hours" value="{{ $nurse->working_hours ?? '-' }}" type="text" class="form-control" placeholder="Enter working hours"
                             required>
                     </div>
                 </div>
@@ -123,22 +129,22 @@
                 <div class="row g-3">
                     <div class="col-12">
                         <label class="form-label">Address 1</label>
-                        <input name="address" type="text" class="form-control" placeholder="Enter Address" required>
+                        <input name="address" value="{{ $nurse->user->address ?? '-' }}" type="text" class="form-control" placeholder="Enter Address" required>
                     </div>
 
                     <div class="col-md-4">
                         <label class="form-label">City</label>
-                        <input name="city" type="text" class="form-control" placeholder="Enter City" required>
+                        <input name="city" value="{{ $nurse->user->city ?? '-' }}" type="text" class="form-control" placeholder="Enter City" required>
                     </div>
 
                     <div class="col-md-4">
                         <label class="form-label">State</label>
-                        <input name="state" type="text" class="form-control" placeholder="Enter State" required>
+                        <input name="state"  value="{{ $nurse->user->state ?? '-' }}" type="text" class="form-control" placeholder="Enter State" required>
                     </div>
 
                     <div class="col-md-4">
                         <label class="form-label">Zipcode</label>
-                        <input name="zipcode" type="text" class="form-control" placeholder="Enter Zipcode" required>
+                        <input name="zipcode" value="{{ $nurse->user->zipcode ?? '-' }}" type="text" class="form-control" placeholder="Enter Zipcode" required>
                     </div>
                 </div>
 
@@ -150,48 +156,83 @@
                         <button type="button" id="add-qualification" class="btn btn-behance btn-sm">+ Add</button>
                     </div>
                 </div>
+              <div id="existingQualifications">
+    @foreach ($nurse->qualifications as $qualification)
+        <div class="mt-5 contact-container">
+            <input type="hidden" name="qualification_id[]" value="{{ $qualification->id }}">
 
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Degree</label>
-                        <input name="degree[]" type="text" class="form-control" placeholder="Enter Degree Name" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Institute</label>
-                        <input name="institute[]" type="text" class="form-control" placeholder="Enter Institute"
-                            required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Start Date</label>
-                        <input name="start_date[]" type="date" class="form-control" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">End Date</label>
-                        <input name="end_date[]" type="date" class="form-control" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Total Marks / CGPA</label>
-                        <input name="total_marks_CGPA[]" type="text" class="form-control" placeholder="" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Achieved Marks / CGPA</label>
-                        <input name="achieved_marks_CGPA[]" type="text" class="form-control" placeholder="" required>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label">Attachment</label>
-                        <div class="file-upload">
-                            <label class="choose-file-btn">
-                                <i class="fa-solid fa-cloud-arrow-up"></i> Choose File
-                                <input name="attachment[]" type="file" accept="application/pdf" hidden required>
-                            </label>
-                            <div class="file-preview">
-                                <i class="fa-solid fa-file-pdf"></i> Attachment.pdf
-                            </div>
-                        </div>
+            <div class="row mt-3">
+                <div class="col-md-12 d-flex">
+                    <div class="ms-auto my-auto me-3" style="border: none;">
+                        <a href="javascript:;" class="removeQualification btn btn-sm btn-danger">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            Delete
+                        </a>
                     </div>
                 </div>
-                <div id="customFieldsQualifications"></div>
+            </div>
 
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Degree</label>
+                    <input name="degree[]" value="{{ $qualification->degree }}" type="text" class="form-control"
+                           placeholder="Enter Degree Name">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Institute</label>
+                    <input name="institute[]" value="{{ $qualification->institute }}" type="text"
+                           class="form-control" placeholder="Enter Institute">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Start Date</label>
+                    <input name="start_date[]" value="{{ $qualification->start_date }}" type="date"
+                           class="form-control">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">End Date</label>
+                    <input name="end_date[]" value="{{ $qualification->end_date }}" type="date"
+                           class="form-control">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Total Marks / CGPA</label>
+                    <input name="total_marks_CGPA[]" value="{{ $qualification->total_marks_CGPA }}" type="text"
+                           class="form-control">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Achieved Marks / CGPA</label>
+                    <input name="achieved_marks_CGPA[]" value="{{ $qualification->achieved_marks_CGPA }}" type="text"
+                           class="form-control">
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Attachment</label>
+                    <div class="file-upload">
+                        <label class="choose-file-btn">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Choose File
+                            {{-- NOTE: [] so it aligns with index --}}
+                            <input name="attachment[]" type="file" hidden>
+                        </label>
+
+                        @if ($qualification->attachment)
+                            <div class="mt-2">
+                                <a href="{{ asset('storage/' . $qualification->attachment) }}" target="_blank"
+                                   class="details-value text-info">
+                                    View Current Attachment
+                                </a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+</div>
+<div id="customFieldsQualifications"></div>
                 <!-- Role & Permissions -->
                 <div class="mt-4">
                     <h5 class="fw-semibold">Role & Permissions</h5>
@@ -416,7 +457,7 @@
         });
     </script>
     <script>
-$(document).ready(function() {
+        $(document).ready(function() {
 
     // Make sure it's bound cleanly
     $(document).off('click', '#add-qualification').on('click', '#add-qualification', function (e) {
@@ -501,6 +542,5 @@ $(document).ready(function() {
     });
 
 });
-
     </script>
 @endsection

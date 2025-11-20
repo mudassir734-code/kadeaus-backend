@@ -1,17 +1,4 @@
-<section class="appointments-section">
-    <div class="appointments-header">
-        <h4>Receptionists</h4>
-        <div class="appointments-controls">
-            <div class="search-box">
-                <input type="text" id="receptionistSearch" placeholder="Type here..." class="search-input">
-                <i class="fas fa-search search-icon"></i>
-            </div>
-            <button class="btn-primary schedule-btn" onclick="window.location.href='{{ route('admin.hospital.create_receptionist') }}'">
-                Add Receptionists
-            </button>
-        </div>
-    </div>
-    <div class="appointments" id="FilterReceptionistData">
+
   @forelse ($receptionists as $receptionist)
     <div class="card doctor-card p-3">
       <div class="d-flex align-items-center mb-2">
@@ -40,6 +27,3 @@
   @empty
     <div class="text_muted text-center">Not found Receptionists</div>
   @endforelse
-</div>
-
-</section>
